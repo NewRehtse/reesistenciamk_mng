@@ -19,35 +19,9 @@ admin:
   controller: App\Controller\HomeController::admin
 
 places:
-  path: /places
-  controller: App\Controller\PlaceController::list
-
-places.create:
-  path: /places/create
-  controller: App\Controller\PlaceController::create
-
-places.edit:
-  path: /places/{placeId}/edit
-  controller: App\Controller\PlaceController::update
-
-places.delete:
-  path: /places/{placeId}/delete
-  controller: App\Controller\PlaceController::delete
+  resource: "./routes/places.yaml"
+  prefix: /places
 
 things:
-  path: /things
-  controller: App\Controller\ThingController::list
-
-things.create:
-  path: /things/create
-  controller: App\Controller\ThingController::create
-
-things.edit:
-  path: /things/{thingId}/edit
-  controller: App\Controller\ThingController::update
-
-things.delete:
-  path: /things/{thingId}/delete
-  controller: App\Controller\ThingController::delete
-
-
+  resource: "./routes/things.yaml"
+  prefix: /things

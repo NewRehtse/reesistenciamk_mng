@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Needs;
 use App\Entity\Place;
+use App\Form\Type\NeedType;
 use App\Form\Type\PlaceType;
+use App\Repository\NeedsRepository;
 use App\Repository\PlaceRepository;
+use App\Repository\ThingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,9 +21,17 @@ class PlaceController extends AbstractController
     /** @var PlaceRepository */
     private $placeRepository;
 
-    public function __construct(PlaceRepository $placeRepository)
+    /** @var NeedsRepository */
+    private $needsRepository;
+
+    /** @var ThingRepository */
+    private $thingRepository;
+
+    public function __construct(PlaceRepository $placeRepository, NeedsRepository  $needRepository, ThingRepository $thingRepository)
     {
         $this->placeRepository = $placeRepository;
+        $this->needsRepository = $needRepository;
+        $this->thingRepository = $thingRepository;
     }
 
     public function list(): Response
@@ -90,5 +102,48 @@ class PlaceController extends AbstractController
         }
 
         return $this->redirectToRoute('places');
+    }
+
+    public function addNeeds(Request $request, int $placeId): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirect('/places');
+        }
+
+        $need = new Needs();
+
+        $form = $this->createForm(NeedType::class, $need);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Needs $need */
+            $need = $form->getData();
+
+            if (null === $need->thing() || null === $need->place()) {
+                return $this->redirectToRoute('places');
+            }
+
+            //No tengo claro que esto haga algo util TODO
+            $thing = $this->thingRepository->find($need->thing()->id());
+            $place = $this->placeRepository->find($need->place()->id());
+
+            if (null === $thing) {
+                return $this->redirectToRoute('places');
+            }
+            if (null === $place) {
+                return $this->redirectToRoute('places');
+            }
+
+            $need->setPlace($place);
+            $need->setThing($thing);
+
+            $this->needsRepository->save($need);
+
+            return $this->redirectToRoute('places');
+        }
+
+        return $this->render('places/addNeeds.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

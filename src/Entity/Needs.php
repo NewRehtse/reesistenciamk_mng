@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="needs")
+ * @ORM\Entity(repositoryClass="App\Repository\NeedsRepository")
  */
 class Needs
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      *
      * @var int
@@ -20,18 +21,16 @@ class Needs
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
      *
-     * @var Place
+     * @var Place|null
      */
     private $place;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Thing")
-     * @ORM\JoinColumn(name="thing", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Thing")
      *
-     * @var Thing
+     * @var Thing|null
      */
     private $thing;
 
@@ -42,7 +41,7 @@ class Needs
      */
     private $amount = 0;
 
-    public function place(): Place
+    public function place(): ?Place
     {
         return $this->place;
     }
@@ -52,7 +51,7 @@ class Needs
         $this->place = $place;
     }
 
-    public function thing(): Thing
+    public function thing(): ?Thing
     {
         return $this->thing;
     }

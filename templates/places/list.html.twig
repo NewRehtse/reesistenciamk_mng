@@ -28,7 +28,7 @@
                             {% if is_granted('ROLE_ADMIN') %}
                                 <td>
                                     {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
-                                    {{ btn.link_button('Añadir necesidad', path('places.edit', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
+                                    {{ btn.link_button('Añadir necesidad', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
                                 </td>
                             {% endif %}
                         </tr>

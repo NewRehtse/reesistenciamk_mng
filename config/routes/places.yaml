@@ -1,0 +1,19 @@
+places:
+  path: /
+  controller: App\Controller\PlaceController::list
+
+places.create:
+  path: /create
+  controller: App\Controller\PlaceController::create
+
+places.edit:
+  path: /{placeId}/edit
+  controller: App\Controller\PlaceController::update
+
+places.delete:
+  path: /{placeId}/delete
+  controller: App\Controller\PlaceController::delete
+
+places.needs.add:
+  path: /{placeId}/need/add
+  controller: App\Controller\PlaceController::addNeeds
