@@ -72,7 +72,7 @@ class AppFixtures extends Fixture
         $task->setThing($thing);
         $task->setPlace($place);
         $task->setStatus(Task::STATUS_DELIVERING);
-        $task->setDeliveryDate(new \DateTimeImmutable());
+        $task->setDeliveryDate(new \DateTime());
         $task->setDeliveryType(Task::DELIVER_TYPE_COLLECT);
         $task->setExtra('extra todo');
         $task->setMaker($user);
