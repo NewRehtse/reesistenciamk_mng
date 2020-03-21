@@ -25,3 +25,7 @@ places:
 things:
   resource: "./routes/things.yaml"
   prefix: /things
+
+tasks:
+  resource: "./routes/tasks.yaml"
+  prefix: /tasks

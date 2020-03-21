@@ -17,3 +17,7 @@ places.delete:
 places.needs.add:
   path: /{placeId}/need/add
   controller: App\Controller\PlaceController::addNeeds
+
+places.needs.list:
+  path: /{placeId}/need
+  controller: App\Controller\PlaceController::needs

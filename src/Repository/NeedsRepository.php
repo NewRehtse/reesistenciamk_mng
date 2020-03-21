@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repository;
-
 
 use App\Entity\Needs;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -32,5 +30,4 @@ class NeedsRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($need);
         $this->getEntityManager()->flush();
     }
-
 }

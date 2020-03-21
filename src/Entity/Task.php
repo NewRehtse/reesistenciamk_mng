@@ -79,8 +79,7 @@ class Task
     private $extra;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Place")
-     * @ORM\JoinColumn(name="place", referencedColumnName="id", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
      *
      * @var Place|null
      */
@@ -89,9 +88,16 @@ class Task
     /**
      * @ORM\Column(type="date", nullable=true)
      *
-     * @var \DateTimeImmutable|null
+     * @var \DateTime|null
      */
     private $deliveryDate;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    private $collectAddress;
 
     /**
      * @ORM\Column(type="integer")
@@ -180,12 +186,12 @@ class Task
         $this->place = $place;
     }
 
-    public function deliveryDate(): ?\DateTimeImmutable
+    public function deliveryDate(): ?\DateTime
     {
         return $this->deliveryDate;
     }
 
-    public function setDeliveryDate(?\DateTimeImmutable $deliveryDate): void
+    public function setDeliveryDate(?\DateTime $deliveryDate): void
     {
         $this->deliveryDate = $deliveryDate;
     }
@@ -200,5 +206,15 @@ class Task
         if (\in_array($status, static::VALID_STATUS, true)) {
             $this->status = $status;
         }
+    }
+
+    public function collectAddress(): ?string
+    {
+        return $this->collectAddress;
+    }
+
+    public function setCollectAddress(?string $collectAddress): void
+    {
+        $this->collectAddress = $collectAddress;
     }
 }

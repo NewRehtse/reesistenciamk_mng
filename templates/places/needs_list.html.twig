@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de sitios{% endblock %}
+{% block page_title %}Sitios{% endblock %}
+{% block page_subtitle %}Necesidades del sitio: {{ place.name }}{% endblock %}
+
+{% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="row">
+        <div class="col-md-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-md-4">Imprimible</th>
+                    <th scope="col" class="col-md-4">Cantidad</th>
+                    <th scope="col" class="col-md-4"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for need in needs %}
+                        <tr>
+                            <td>{{ need.thing.model }}</td>
+                            <td>{{ need.amount }}</td>
+                            <td>
+                                {{ btn.link_button('Hacer', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

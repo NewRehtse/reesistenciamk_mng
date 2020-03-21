@@ -27,7 +27,7 @@ class PlaceController extends AbstractController
     /** @var ThingRepository */
     private $thingRepository;
 
-    public function __construct(PlaceRepository $placeRepository, NeedsRepository  $needRepository, ThingRepository $thingRepository)
+    public function __construct(PlaceRepository $placeRepository, NeedsRepository $needRepository, ThingRepository $thingRepository)
     {
         $this->placeRepository = $placeRepository;
         $this->needsRepository = $needRepository;
@@ -145,5 +145,13 @@ class PlaceController extends AbstractController
         return $this->render('places/addNeeds.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    public function needs(Request $request, int $placeId): Response
+    {
+        $place = $this->placeRepository->find($placeId);
+        $needs = $this->needsRepository->findBy(['place' => $placeId]);
+
+        return $this->render('places/needs_list.html.twig', ['needs' => $needs, 'place' => $place]);
     }
 }

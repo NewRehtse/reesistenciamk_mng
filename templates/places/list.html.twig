@@ -7,15 +7,15 @@
 {% block page_content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col" class="col-md-1">#</th>
                     <th scope="col" class="col-md-4">Nombre</th>
-                    <th scope="col" class="col-md-4">Dirección</th>
+                    <th scope="col" class="col-md-3">Dirección</th>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <th scope="col" class="col-md-3">Administrar</th>
+                        <th scope="col" class="col-md-4">Administrar</th>
                     {% endif %}
                 </tr>
                 </thead>
@@ -25,12 +25,13 @@
                             <th scope="row" class="col-md-1">{{ place.id }}</th>
                             <td>{{ place.name }}</td>
                             <td>{{ place.address }}</td>
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <td>
+                            <td>
+                                {% if is_granted('ROLE_ADMIN') %}
                                     {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
                                     {{ btn.link_button('Añadir necesidad', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
-                                </td>
                             {% endif %}
+                                {{ btn.link_button('Ver necesidades', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
