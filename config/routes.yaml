@@ -1,3 +1,12 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+login:
+  path: /
+  controller: App\Controller\SecurityController::login
+
+tasks:
+  path: /tasks
+  controller: App\Controller\TasksController::list
+
