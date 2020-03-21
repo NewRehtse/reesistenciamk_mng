@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de sitios{% endblock %}
+{% block page_title %}Sitios{% endblock %}
+{% block page_subtitle %}Gestión de sitios{% endblock %}
+
+{% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="row">
+        <div class="col-md-10">
+            {{ form(form) }}
+        </div>
+    </div>
+
+    <a class="btn btn-sm btn-danger"
+       id="confirm-delete-btn"
+       data-toggle="modal" data-original-title="Delete" data-target=".delete-modal">
+        <i class="fa fa-trash"></i> Delete</a>
+
+    <div class="modal fade delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Borrar {{ form.vars.data.name }}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>¿Estas seguro?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    {{ btn.link_button('Borrar', path('places.delete', {placeId: form.vars.data.id}), 'fa fa-trash', 'danger', 'sm') }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

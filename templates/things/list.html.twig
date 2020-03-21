@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de elementos imprimibles{% endblock %}
+{% block page_title %}Imprimibles{% endblock %}
+{% block page_subtitle %}Gestión de imprimibles{% endblock %}
+
+{% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="row">
+        <div class="col-md-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-md-1">#</th>
+                    <th scope="col" class="col-md-5">Model</th>
+                    <th scope="col" class="col-md-4">Descripción</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th scope="col" class="col-md-2">Administrar</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                    {% for thing in things %}
+                        <tr>
+                            <th scope="row" class="col-md-1">{{ thing.id }}</th>
+                            <td>{{ thing.model }}</td>
+                            <td>{{ thing.description }}</td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td class="col-md-2">
+                                    {{ btn.link_button('Editar', path('things.edit', {thingId: thing.id}), 'fa fa-pen', 'info', 'sm') }}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pull-left">
+        {{ btn.link_button('Crear imprimible', path('things.create'), 'far fa-save', 'success', 'lg') }}
+    </div>
+{% endblock %}

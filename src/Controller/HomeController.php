@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,14 +10,19 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class HomeController extends AbstractController
 {
-    public function home():Response
+    public function home(): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {
-            var_dump('es admin');
+            return $this->redirect('admin');
         }
-        else {
-            var_dump('NO es admin');
-        }
+        \var_dump('NO es admin');
+
+        return $this->render('tasks/list.html.twig');
+    }
+
+    public function admin(): Response
+    {
+        \var_dump('admin');
 
         return $this->render('tasks/list.html.twig');
     }

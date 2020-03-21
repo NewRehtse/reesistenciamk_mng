@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de sitios{% endblock %}
+{% block page_title %}Sitios{% endblock %}
+{% block page_subtitle %}Gestión de sitios{% endblock %}
+
+{% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="row">
+        <div class="col-md-10">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="col-md-1">#</th>
+                    <th scope="col" class="col-md-4">Nombre</th>
+                    <th scope="col" class="col-md-4">Dirección</th>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <th scope="col" class="col-md-3">Administrar</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                    {% for place in places %}
+                        <tr>
+                            <th scope="row" class="col-md-1">{{ place.id }}</th>
+                            <td>{{ place.name }}</td>
+                            <td>{{ place.address }}</td>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <td>
+                                    {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
+                                    {{ btn.link_button('Añadir necesidad', path('places.edit', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pull-left">
+        {{ btn.link_button('Crear sitio', path('places.create'), 'far fa-save', 'success', 'lg') }}
+    </div>
+{% endblock %}

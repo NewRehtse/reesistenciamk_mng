@@ -25,17 +25,11 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
      */
     private $security;
 
-    /**
-     * @param AuthorizationCheckerInterface $security
-     */
     public function __construct(AuthorizationCheckerInterface $security)
     {
         $this->security = $security;
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -46,14 +40,16 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
     /**
      * Generate the main menu.
-     *
-     * @param SidebarMenuEvent $event
      */
     public function onSetupNavbar(SidebarMenuEvent $event)
     {
-//        $event->addItem(
-//            new MenuItemModel('homepage', 'menu.homepage', 'homepage', [], 'fas fa-tachometer-alt')
-//        );
+        $event->addItem(
+            new MenuItemModel('places', 'Sitios', 'places', [], 'fa fa-map-marker')
+        );
+
+        $event->addItem(
+            new MenuItemModel('things', 'Imprimibles', 'things', [], 'fa fa-print')
+        );
 //
 //        $event->addItem(
 //            new MenuItemModel('forms', 'menu.form', 'forms', [], 'fab fa-wpforms')
@@ -79,7 +75,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param string $route
+     * @param string          $route
      * @param MenuItemModel[] $items
      */
     protected function activateByRoute($route, $items)
@@ -87,10 +83,9 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         foreach ($items as $item) {
             if ($item->hasChildren()) {
                 $this->activateByRoute($route, $item->getChildren());
-            } elseif ($item->getRoute() == $route) {
+            } elseif ($item->getRoute() === $route) {
                 $item->setIsActive(true);
             }
         }
     }
 }
-
