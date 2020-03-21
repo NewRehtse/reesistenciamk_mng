@@ -24,6 +24,10 @@ security:
                 default_target_path: /
             logout:
                 path:   logout
+
+#            guard:
+#                authenticators:
+#                    - App\Security\LoginFormAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
