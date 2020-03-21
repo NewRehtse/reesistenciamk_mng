@@ -17,11 +17,11 @@ class PlaceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('address', TextType::class)
-            ->add('city', TextType::class)
-            ->add('postalCode', TextType::class)
-            ->add('save', SubmitType::class)
+            ->add('name', TextType::class, ['label' => 'Nombre'])
+            ->add('address', TextType::class, ['label' => 'Dirección'])
+            ->add('city', TextType::class, ['label' => 'Ciudad'])
+            ->add('postalCode', TextType::class, ['label' => 'Código Postal'])
+            ->add('save', SubmitType::class, ['label' => 'Guardar'])
         ;
     }
 

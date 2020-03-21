@@ -53,7 +53,7 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\Thing", inversedBy="tasks")
      * @ORM\JoinColumn(name="thing", referencedColumnName="id")
      *
-     * @var Thing
+     * @var ?Thing
      */
     private $thing;
 
@@ -129,7 +129,7 @@ class Task
         $this->maker = $maker;
     }
 
-    public function thing(): Thing
+    public function thing(): ?Thing
     {
         return $this->thing;
     }

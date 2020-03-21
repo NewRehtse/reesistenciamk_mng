@@ -64,7 +64,7 @@ class NeedType extends AbstractType
                         return $choice->model();
                     },
                 ])
-            ->add('amount', IntegerType::class)
+            ->add('amount', IntegerType::class, ['label' => 'Cantidad'])
             ->add('save', SubmitType::class)
         ;
     }

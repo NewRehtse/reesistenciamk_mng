@@ -50,6 +50,10 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         $event->addItem(
             new MenuItemModel('things', 'Imprimibles', 'things', [], 'fa fa-print')
         );
+
+        $event->addItem(
+            new MenuItemModel('things', 'Tareas', 'tasks', [], 'fa fa-print')
+        );
 //
 //        $event->addItem(
 //            new MenuItemModel('forms', 'menu.form', 'forms', [], 'fab fa-wpforms')

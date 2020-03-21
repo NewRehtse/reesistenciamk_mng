@@ -1,3 +1,15 @@
+tasks:
+  path: /
+  controller: App\Controller\TaskController::list
+
+task.create:
+  path: /create
+  controller: App\Controller\TaskController::create
+
 task.create.from.need:
   path: /create/need/{needId}
   controller: App\Controller\TaskController::createFromNeed
+
+task.edit:
+  path: /{taskId}/edit
+  controller: App\Controller\TaskController::edit

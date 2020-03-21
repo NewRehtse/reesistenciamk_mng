@@ -1,100 +1,52 @@
 {% extends 'base.html.twig' %}
-{#
-    Demo of the "avanzu shim layout" capabilities
-#}
 
-{% block document_title %}Dashboard browser title{% endblock %}
-{% block page_title %}Dashboard example{% endblock %}
-{% block page_subtitle %}{% endblock %}
+{% block document_title %}Gestión de tareas{% endblock %}
+{% block page_title %}Tareas{% endblock %}
+{% block page_subtitle %}Gestión de tareas{% endblock %}
 
 {% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     <div class="row">
-        <div class="col-md-6">
-            {# ... infobox widget, solid background ... #}
-            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
-                'solid' : 'red',
-                'icon'  : 'far fa-star',
-                'progress' : 40
-            } %}
-
-                {% block box_text %}Vestibulum ante ipsum primis{% endblock %}
-                {% block progress_description %}The progress description{% endblock %}
-            {% endembed %}
-
-        </div>
-        <div class="col-md-6">
-
-            {# ... infobox widget, colored icon ... #}
-            {% embed '@AdminLTE/Widgets/infobox-widget.html.twig'  with {
-                'color' : 'aqua',
-                'icon'  : 'fas fa-comments',
-            } %}
-                {% block box_text %}Vestibulum ante ipsum primis{% endblock %}
-                {% block box_number %}999.9{% endblock %}
-                {% block progress_description %}Works as well without progress bar{% endblock %}
-            {% endembed %}
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Maker</th>
+                    <th scope="col">Imprimible</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Tipo de entrega</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Fecha de entrega</th>
+                    <th scope="col">Sitio de entrega</th>
+                    <th scope="col">Sitio de recogida</th>
+                    <th scope="col">Administrar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <th scope="row" class="col-md-1">{{ task.id }}</th>
+                        <td>{{ task.maker.email }}</td>
+                        <td>{{ task.thing.model }}</td>
+                        <td>{{ task.amount }}</td>
+                        <td>{{ getDeliveryTypeText(task.deliveryType)}}</td>
+                        <td>{{ getStatusTypeText(task.status) }}</td>
+                        <td>{{ task.deliveryDate | date('Y-m-d') }}</td>
+                        <td>
+                            {{ task.place ? task.place.name : '' }}
+                        </td>
+                        <td>{{ task.collectAddress }}</td>
+                        <td>
+                            {{ btn.link_button('Editar', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            {# ... box widget with defaults ... #}
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
-
-                {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
-                {% block box_title %}Widget box title{% endblock %}
-                {% block box_body %}
-                    <div class="callout callout-info">
-                        Sed libero ipsum, auctor ac volutpat ac, adipiscing a enim. Nulla convallis quam eget tortor
-                        dictum lobortis. Aenean tincidunt arcu id lectus facilisis imperdiet. Curabitur in orci nisl.
-                        Nullam vitae arcu in tellus malesuada sollicitudin ut in sem. Ut eu nunc lacus, sit amet
-                        venenatis mauris. Donec dui neque, cursus sed molestie sit amet, tempor quis nibh. Proin nec
-                        ligula non lacus fermentum tincidunt. Nam tempus lectus ut dolor imperdiet quis commodo odio
-                        porttitor. Fusce blandit placerat posuere. Pellentesque risus leo, tempor sit amet consequat
-                        tempus, dictum vel magna. Nulla dolor turpis, dignissim a sodales quis, molestie molestie magna.
-                        Vivamus imperdiet vestibulum tellus, quis rutrum magna eleifend quis. Pellentesque convallis
-                        metus nisl. Sed eu dolor massa, sit amet luctus nulla. Mauris sit amet diam urna, eget volutpat
-                        nunc.
-                    </div>
-                {% endblock %}
-                {% block box_footer %}
-                    <div class="pull-right">
-                        {{ btn.link_button('save', '#', 'floppy') }}
-                    </div>
-                {% endblock %}
-            {% endembed %}
-        </div>
-        <div class="col-md-6">
-            {# ... box widget with some options ... #}
-            {% embed '@AdminLTE/Widgets/box-widget.html.twig' with {
-                'boxtype' : 'success',
-                'solid' : 0,
-                'collapsible' : 'widget-box.collapse'|trans ~ '... ',
-                'removable' : 'widget-box.remove'|trans ~ '...',
-            } %}
-
-                {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
-                {% block box_title %}Widget box title{% endblock %}
-                {% block box_body %}
-                    <div class="callout callout-info">
-                        Sed libero ipsum, auctor ac volutpat ac, adipiscing a enim. Nulla convallis quam eget tortor
-                        dictum lobortis. Aenean tincidunt arcu id lectus facilisis imperdiet. Curabitur in orci nisl.
-                        Nullam vitae arcu in tellus malesuada sollicitudin ut in sem. Ut eu nunc lacus, sit amet
-                        venenatis mauris. Donec dui neque, cursus sed molestie sit amet, tempor quis nibh. Proin nec
-                        ligula non lacus fermentum tincidunt. Nam tempus lectus ut dolor imperdiet quis commodo odio
-                        porttitor. Fusce blandit placerat posuere. Pellentesque risus leo, tempor sit amet consequat
-                        tempus, dictum vel magna. Nulla dolor turpis, dignissim a sodales quis, molestie molestie magna.
-                        Vivamus imperdiet vestibulum tellus, quis rutrum magna eleifend quis. Pellentesque convallis
-                        metus nisl. Sed eu dolor massa, sit amet luctus nulla. Mauris sit amet diam urna, eget volutpat
-                        nunc.
-                    </div>
-                {% endblock %}
-                {% block box_footer %}
-                    <div class="pull-right">
-                        {{ btn.link_button('save', '#', 'far fa-save', 'success', 'lg') }}
-                    </div>
-                {% endblock %}
-            {% endembed %}
-        </div>
+    <div class="pull-left">
+        {{ btn.link_button('Crear tarea', path('task.create'), 'far fa-save', 'success', 'lg') }}
     </div>
 {% endblock %}

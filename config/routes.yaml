@@ -1,7 +1,3 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
-
 login:
   path: /login
   controller: App\Controller\SecurityController::login
@@ -12,11 +8,7 @@ logout:
 
 home:
   path: /
-  controller: App\Controller\HomeController::home
-
-admin:
-  path: /admin
-  controller: App\Controller\HomeController::admin
+  controller: App\Controller\TaskController::list
 
 places:
   resource: "./routes/places.yaml"
