@@ -16,3 +16,4 @@
 ###< symfony/phpunit-bridge ###
 
 .php_cs.cache
+.env
