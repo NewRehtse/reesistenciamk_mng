@@ -1,4 +1,12 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
+{% block page_title %}Demo application{% endblock %}
 
-{% block content %}{% endblock %}
+{% block navbar_start %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'includes/javascript.html.twig' %}
+{% endblock %}
 

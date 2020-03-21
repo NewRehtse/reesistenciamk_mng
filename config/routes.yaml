@@ -6,7 +6,11 @@ login:
   path: /
   controller: App\Controller\SecurityController::login
 
-tasks:
-  path: /tasks
-  controller: App\Controller\TasksController::list
+logout:
+  path: /logout
+  controller: App\Controller\SecurityController::logout
+
+home:
+  path: /home
+  controller: App\Controller\HomeController::home
 
