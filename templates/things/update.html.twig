@@ -12,10 +12,12 @@
         </div>
     </div>
 
-    <a class="btn btn-sm btn-danger"
-       id="confirm-delete-btn"
-       data-toggle="modal" data-original-title="Delete" data-target=".delete-modal">
-        <i class="fa fa-trash"></i> Delete</a>
+    {% if false == hasTasks %}
+        <a class="btn btn-sm btn-danger"
+           id="confirm-delete-btn"
+           data-toggle="modal" data-original-title="Delete" data-target=".delete-modal">
+            <i class="fa fa-trash"></i> Delete</a>
+    {% endif %}
 
     <div class="modal fade delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">

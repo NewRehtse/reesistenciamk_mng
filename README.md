@@ -7,6 +7,8 @@ Backend para gestionar la entrada y salida de elementos imprimibles por el movim
 
 * Mysql / Sqlite (local)
 * Php 7.2
+* Yarn
+* Symfony 4.4
 
 ## Despliege local
 
@@ -34,8 +36,12 @@ php bin/console doctrine:schema:create
 ```bash
 php bin/console doctrine:fixtures:load
 ```
+5. Install assets
+```bash
+yarn encore dev
+```
 
-5. Run symfony
+6. Run symfony
 ```bash
 symfony server:start
 ```

@@ -91,6 +91,7 @@ class PlaceController extends AbstractController
 
         return $this->render('places/update.html.twig', [
             'form' => $form->createView(),
+            'hasNeeds' => $place->needs()->count() > 0,
         ]);
     }
 
@@ -102,9 +103,15 @@ class PlaceController extends AbstractController
 
         $place = $this->placeRepository->find($placeId);
 
-        if (null !== $place) {
-            $this->placeRepository->delete($place);
+        if (null === $place) {
+            return $this->redirectToRoute('places');
         }
+
+        if ($place->needs()->count() > 0) {
+            return $this->redirectToRoute('places');
+        }
+
+        $this->placeRepository->delete($place);
 
         return $this->redirectToRoute('places');
     }

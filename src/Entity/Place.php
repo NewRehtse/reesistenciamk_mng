@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -47,6 +48,18 @@ class Place
      * @var string
      */
     private $postalCode = '';
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Needs", mappedBy="place")
+     *
+     * @var PersistentCollection
+     */
+    private $needs;
+
+    public function __construct()
+    {
+        $this->needs = new PersistentCollection();
+    }
 
     public function id(): int
     {
@@ -96,5 +109,10 @@ class Place
     public function setPostalCode(string $postalCode): void
     {
         $this->postalCode = $postalCode;
+    }
+
+    public function needs(): PersistentCollection
+    {
+        return $this->needs;
     }
 }

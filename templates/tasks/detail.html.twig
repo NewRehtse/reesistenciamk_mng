@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de encargos{% endblock %}
+{% block page_title %}Encargos{% endblock %}
+{% block page_subtitle %}Encargo{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <td class="col-md-2">Imprimible</td>
+                    <td>
+                        {% if task.thing.photoUrl %}
+                            <img src="{{ task.thing.photoUrl }}" class="img-rounded" style="max-width: 75px" alt="{{ task.thing.type ~ '-' ~ task.thing.model }}">
+                        {% endif %}
+                        {{ task.thing.type }} - {{ task.thing.model }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-2">Cantidad</td>
+                    <td>{{ task.amount }}</td>
+                </tr>
+                <tr>
+                    <td>Tipo de entrega</td>
+                    <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ getStatusTypeText(task.status) }}</td>
+                </tr>
+                <tr>
+                    <td>Fecha de entrega/reparto</td>
+                    <td>
+                        {% if task.deliveryDate %}
+                            {{ task.deliveryDate| date('Y-m-d') }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% if task.deliveryType == 0 %}
+                    <tr>
+                        <td>Dirección de recogida</td>
+                        <td>{{ task.collectAddress }}</td>
+                    </tr>
+                {% elseif task.deliveryType == 1%}
+                    <tr>
+                        <td>Sitio de entrega</td>
+                        <td> {{ task.place ? task.place.name : '' }} </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td> </td>
+                        <td>Pendiente de definir sitio o dirección de entrega</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% embed '@AdminLTE/Widgets/box-widget.html.twig' %}
+                {% block box_title %}Tus números de series asignados a esta tarea{% endblock %}
+                {% block box_body %}
+                    <div class="callout">
+                        <ul>
+                            {% for sn in serialNumbers %}
+                                <li>{{ sn }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}
