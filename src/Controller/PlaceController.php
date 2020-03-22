@@ -131,14 +131,13 @@ class PlaceController extends AbstractController
             $need = $this->needsRepository->findOneBy(['thing' => $thing, 'place' => $place]);
 
             if (null !== $need) {
-                $need->setAmount($need->amount()+$currentNeed->amount());
+                $need->setAmount($need->amount() + $currentNeed->amount());
                 $this->needsRepository->save($need);
-            }
-            else {
+            } else {
                 $this->needsRepository->save($currentNeed);
             }
 
-            return $this->redirectToRoute('places.needs.list',['placeId' => $placeId]);
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
         }
 
         return $this->render('places/addNeeds.html.twig', [

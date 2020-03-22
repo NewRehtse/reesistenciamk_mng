@@ -37,6 +37,14 @@ class AppFixtures extends Fixture
         $user2->setRoles(['ROLE_ADMIN']);
         $manager->persist($user2);
 
+        $user3 = new User();
+        $user3->setId(3);
+        $user3->setEmail('mk2@makers.es');
+        $user3->setPassword($this->passwordEncoder->encodePassword($user, 'mk'));
+        $user3->setRoles(['ROLE_USER', 'ROLE_DELIVERY']);
+
+        $manager->persist($user3);
+
         $manager->flush();
         $place = new Place();
         $place->setId(1);
@@ -56,6 +64,7 @@ class AppFixtures extends Fixture
 
         $thing = new Thing();
         $thing->setId(1);
+        $thing->setType('Mascarilla');
         $thing->setDescription('sencilla');
         $thing->setModel('sencilla');
         $manager->persist($thing);
