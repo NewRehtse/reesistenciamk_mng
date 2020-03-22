@@ -8,15 +8,15 @@
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     <div class="row">
         <div class="col-md-10">
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-bordered" id="thing-table">
                 <thead>
                 <tr>
-                    <th scope="col" class="col-md-1">#</th>
-                    <th scope="col" class="col-md-2">Tipo</th>
-                    <th scope="col" class="col-md-2">Model</th>
-                    <th scope="col" class="col-md-4">Descripción</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Tipo</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Descripción</th>
                     {% if is_granted('ROLE_ADMIN') %}
-                        <th scope="col" class="col-md-2">Administrar</th>
+                        <th scope="col"></th>
                     {% endif %}
                 </tr>
                 </thead>
@@ -45,4 +45,13 @@
     <div class="pull-left">
         {{ btn.link_button('Crear imprimible', path('things.create'), 'far fa-save', 'success', 'lg') }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            $("#thing-table").dataTable();
+        });
+    </script>
 {% endblock %}
