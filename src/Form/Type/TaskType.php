@@ -40,16 +40,15 @@ class TaskType extends AbstractType
         $places = \array_merge($defaultPlaces, $places);
         $things = $this->thingRepository->findAll();
         $deliveryTypes = [
-            'Por definir' => Task::DELIVER_TYPE_UNDEFINED,
-            'Recogida' => Task::DELIVER_TYPE_COLLECT,
-            'Entregar' => Task::DELIVER_TYPE_DELIVER,
+            Task::GetDeliveryTypeText(Task::DELIVER_TYPE_UNDEFINED) => Task::DELIVER_TYPE_UNDEFINED,
+            Task::GetDeliveryTypeText(Task::DELIVER_TYPE_COLLECT) => Task::DELIVER_TYPE_COLLECT,
+            Task::GetDeliveryTypeText(Task::DELIVER_TYPE_DELIVER) => Task::DELIVER_TYPE_DELIVER,
         ];
 
         $status = [
-            'Pendiente' => Task::STATUS_DONE,
-            'Procesandose' => Task::STATUS_PROCESSING,
-            'Entregandose' => Task:: STATUS_DELIVERING,
-            'Hecho' => Task::STATUS_PENDING,
+            Task::GetStatusText(Task::STATUS_DONE) => Task::STATUS_DONE,
+            Task::GetStatusText(Task::STATUS_DELIVERED) => Task::STATUS_DELIVERED,
+            Task::GetStatusText(Task::STATUS_COLLECTED) => Task:: STATUS_COLLECTED,
         ];
 
         $builder
@@ -68,13 +67,14 @@ class TaskType extends AbstractType
                 },
             ])
             ->add('amount', IntegerType::class, ['label' => 'Cantidad'])
+            ->add('status', ChoiceType::class, ['choices' => $status, 'label' => 'Estado actual'])
+            ->add('deliveryType', ChoiceType::class, ['label' => 'Tipo de entrega', 'choices' => $deliveryTypes])
             ->add('deliveryDate', DateType::class, [
                 'label' => 'Fecha prevista de entrega/recogida',
                 'widget' => 'single_text',
                 'html5' => true,
                 'required' => false,
             ])
-            ->add('deliveryType', ChoiceType::class, ['label' => 'Tipo de entrega', 'choices' => $deliveryTypes])
             ->add('collectAddress', TextType::class,
                 [
                     'label' => 'Drección de recogida',
@@ -96,7 +96,6 @@ class TaskType extends AbstractType
                     return $choice->name();
                 },
             ])
-            ->add('status', ChoiceType::class, ['choices' => $status, 'label' => 'Estado actual'])
             ->add('extra', TextType::class, ['required' => false, 'label' => 'Otra información'])
             ->add('save', SubmitType::class, ['label' => 'Guardar'])
         ;

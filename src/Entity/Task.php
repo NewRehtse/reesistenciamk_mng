@@ -14,10 +14,10 @@ class Task
     public const DELIVER_TYPE_COLLECT = 0; //Collect at home
     public const DELIVER_TYPE_DELIVER = 1; //Deliver at place
 
-    public const STATUS_PENDING = 0;
-    public const STATUS_PROCESSING = 1;
-    public const STATUS_DELIVERING = 2;
+    public const STATUS_COLLECTED = 1;
+    public const STATUS_DELIVERED = 2;
     public const STATUS_DONE = 3;
+    private const STATUS_DEFAULT = self::STATUS_DONE;
 
     private const VALID_DELIVER = [
         self::DELIVER_TYPE_UNDEFINED,
@@ -26,10 +26,9 @@ class Task
     ];
 
     private const VALID_STATUS = [
-        self::STATUS_PENDING,
         self::STATUS_DONE,
-        self::STATUS_DELIVERING,
-        self::STATUS_PROCESSING,
+        self::STATUS_DELIVERED,
+        self::STATUS_COLLECTED,
     ];
 
     /**
@@ -104,7 +103,7 @@ class Task
      *
      * @var int
      */
-    private $status = self::STATUS_PENDING;
+    private $status = self::STATUS_DEFAULT;
 
     /**
      * @return int
@@ -216,5 +215,27 @@ class Task
     public function setCollectAddress(?string $collectAddress): void
     {
         $this->collectAddress = $collectAddress;
+    }
+
+    public static function GetStatusText(int $status): string
+    {
+        $statusMap = [
+            Task::STATUS_DELIVERED => 'Entregado',
+            Task::STATUS_COLLECTED => 'Recogido',
+            Task::STATUS_DONE => 'Hecho',
+        ];
+
+        return $statusMap[$status] ?? Task::STATUS_DEFAULT;
+    }
+
+    public static function GetDeliveryTypeText(int $deliveryType): string
+    {
+        $deliveryTypeMap = [
+            Task::DELIVER_TYPE_UNDEFINED => 'Por definir',
+            Task::DELIVER_TYPE_COLLECT => 'Recogida',
+            Task::DELIVER_TYPE_DELIVER => 'Entrega',
+        ];
+
+        return $deliveryTypeMap[$deliveryType] ?? Task::DELIVER_TYPE_UNDEFINED;
     }
 }

@@ -32,7 +32,11 @@
                         <td>{{ task.amount }}</td>
                         <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>
                         <td>{{ getStatusTypeText(task.status) }}</td>
-                        <td>{{ task.deliveryDate | date('Y-m-d') }}</td>
+                        <td>
+                            {% if task.deliveryDate %}
+                                {{ task.deliveryDate| date('Y-m-d') }}
+                            {% endif %}
+                        </td>
                         <td>
                             {{ task.place ? task.place.name : '' }}
                         </td>
