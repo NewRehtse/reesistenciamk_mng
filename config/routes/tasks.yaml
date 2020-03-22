@@ -14,3 +14,7 @@ task.edit:
   path: /{taskId}/edit
   controller: App\Controller\TaskController::edit
 
+task.detail:
+  path: /{taskId}
+  controller: App\Controller\TaskController::detail
+

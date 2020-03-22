@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\Type\TaskType;
 use App\Repository\NeedsRepository;
+use App\Repository\SerialNumberRepository;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,14 +27,19 @@ class TaskController extends AbstractController
     /** @var UserRepository */
     private $userRepository;
 
+    /** @var SerialNumberRepository */
+    private $serialNumberRepository;
+
     public function __construct(
         TaskRepository $taskRepository,
         NeedsRepository $needRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        SerialNumberRepository $serialNumberRepository
     ) {
         $this->taskRepository = $taskRepository;
         $this->needsRepository = $needRepository;
         $this->userRepository = $userRepository;
+        $this->serialNumberRepository = $serialNumberRepository;
     }
 
     public function list(): Response
@@ -41,6 +47,22 @@ class TaskController extends AbstractController
         $tasks = $this->getTasks();
 
         return $this->render('tasks/list.html.twig', ['tasks' => $tasks]);
+    }
+
+    public function detail(Request $request, int $taskId): Response
+    {
+        $task = $this->taskRepository->find($taskId);
+
+        if (null === $task) {
+            return $this->redirectToRoute('tasks');
+        }
+
+        $serialNumbers = $this->serialNumberRepository->findBy(['task' => $task]);
+
+        return $this->render('tasks/detail.html.twig', [
+            'task' => $task,
+            'serialNumbers' => $serialNumbers,
+        ]);
     }
 
     /**
@@ -72,7 +94,24 @@ class TaskController extends AbstractController
             $task->setMaker($user);
         }
 
-        return $this->handleTask($request, $task);
+        $form = $this->createForm(TaskType::class, $task);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Task $task */
+            $task = $form->getData();
+
+            $this->taskRepository->save($task);
+
+            //GENERATE S/N
+            $this->serialNumberRepository->createSerialNumers($task);
+
+            return $this->redirectToRoute('task.detail', ['taskId' => $task->id()]);
+        }
+
+        return $this->render('tasks/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     public function edit(Request $request, int $taskId): Response
@@ -112,7 +151,7 @@ class TaskController extends AbstractController
 
             $this->taskRepository->save($task);
 
-            return $this->redirectToRoute('places');
+            return $this->redirectToRoute('tasks');
         }
 
         return $this->render('tasks/create.html.twig', [
