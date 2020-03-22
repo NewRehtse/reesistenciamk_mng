@@ -52,7 +52,7 @@ class Task
      * @ORM\ManyToOne(targetEntity="App\Entity\Thing", inversedBy="tasks")
      * @ORM\JoinColumn(name="thing", referencedColumnName="id")
      *
-     * @var ?Thing
+     * @var Thing
      */
     private $thing;
 
@@ -220,22 +220,22 @@ class Task
     public static function GetStatusText(int $status): string
     {
         $statusMap = [
-            Task::STATUS_DELIVERED => 'Entregado',
-            Task::STATUS_COLLECTED => 'Recogido',
-            Task::STATUS_DONE => 'Hecho',
+            self::STATUS_DELIVERED => 'Entregado',
+            self::STATUS_COLLECTED => 'Recogido',
+            self::STATUS_DONE => 'Hecho',
         ];
 
-        return $statusMap[$status] ?? Task::STATUS_DEFAULT;
+        return $statusMap[$status] ?? self::STATUS_DEFAULT;
     }
 
     public static function GetDeliveryTypeText(int $deliveryType): string
     {
         $deliveryTypeMap = [
-            Task::DELIVER_TYPE_UNDEFINED => 'Por definir',
-            Task::DELIVER_TYPE_COLLECT => 'Recogida',
-            Task::DELIVER_TYPE_DELIVER => 'Entrega',
+            self::DELIVER_TYPE_UNDEFINED => 'Por definir',
+            self::DELIVER_TYPE_COLLECT => 'Recogida',
+            self::DELIVER_TYPE_DELIVER => 'Entrega',
         ];
 
-        return $deliveryTypeMap[$deliveryType] ?? Task::DELIVER_TYPE_UNDEFINED;
+        return $deliveryTypeMap[$deliveryType] ?? self::DELIVER_TYPE_UNDEFINED;
     }
 }

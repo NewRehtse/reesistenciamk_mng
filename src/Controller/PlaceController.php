@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Needs;
 use App\Entity\Place;
+use App\Entity\Task;
+use App\Form\Type\CoverNeedType;
 use App\Form\Type\NeedType;
 use App\Form\Type\PlaceType;
 use App\Repository\NeedsRepository;
 use App\Repository\PlaceRepository;
-use App\Repository\ThingRepository;
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,14 +26,17 @@ class PlaceController extends AbstractController
     /** @var NeedsRepository */
     private $needsRepository;
 
-    /** @var ThingRepository */
-    private $thingRepository;
+    /** @var TaskRepository */
+    private $taskRepository;
 
-    public function __construct(PlaceRepository $placeRepository, NeedsRepository $needRepository, ThingRepository $thingRepository)
-    {
+    public function __construct(
+        PlaceRepository $placeRepository,
+        NeedsRepository $needRepository,
+        TaskRepository $taskRepository
+    ) {
         $this->placeRepository = $placeRepository;
         $this->needsRepository = $needRepository;
-        $this->thingRepository = $thingRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     public function list(): Response
@@ -150,6 +155,43 @@ class PlaceController extends AbstractController
         $place = $this->placeRepository->find($placeId);
         $needs = $this->needsRepository->findBy(['place' => $placeId]);
 
-        return $this->render('places/needs_list.html.twig', ['needs' => $needs, 'place' => $place]);
+        $needsResult = [];
+        foreach ($needs as $need) {
+            $tasks = $this->taskRepository->findBy(['thing' => $need->thing()]); //TODO hacer una función que busque por estado collected o delivered
+            $collectedOrDelivered = 0;
+            foreach ($tasks as $task) {
+                if (Task::STATUS_COLLECTED === $task->status() || Task::STATUS_DELIVERED === $task->status()) {
+                    $collectedOrDelivered += $task->amount();
+                }
+            }
+            $needsResult[] = ['need' => $need, 'collectedOrDelivered' => $collectedOrDelivered];
+        }
+
+        return $this->render('places/needs_list.html.twig', ['needs' => $needsResult, 'place' => $place]);
+    }
+
+    public function coverNeed(Request $request, int $placeId, int $needId): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirect('/places');
+        }
+
+        $need = $this->needsRepository->find($needId);
+        if (null === $need) {
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
+        }
+
+        $form = $this->createForm(CoverNeedType::class, $need);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->needsRepository->save($need);
+
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
+        }
+
+        return $this->render('places/addNeeds.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
