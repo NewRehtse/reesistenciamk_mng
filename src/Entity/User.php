@@ -23,7 +23,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
-     * @var string
+     * @var string|null
      */
     private $email;
 
@@ -78,6 +78,13 @@ class User implements UserInterface
     private $phoneNumber;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    private $nickTelegram;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="maker")
      *
      * @var Task[]
@@ -101,7 +108,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -252,5 +259,21 @@ class User implements UserInterface
         $this->tasks = $tasks;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function nickTelegram(): ?string
+    {
+        return $this->nickTelegram;
+    }
+
+    /**
+     * @param string|null $nickTelegram
+     */
+    public function setNickTelegram(?string $nickTelegram): void
+    {
+        $this->nickTelegram = $nickTelegram;
     }
 }
