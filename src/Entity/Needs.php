@@ -21,7 +21,8 @@ class Needs
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="needs")
+     * @ORM\JoinColumn(name="need", referencedColumnName="id")
      *
      * @var Place|null
      */

@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -65,13 +65,13 @@ class Thing
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="thing")
      *
-     * @var Task[]
+     * @var PersistentCollection
      */
     private $tasks;
 
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->tasks = new PersistentCollection();
     }
 
     /**
@@ -110,7 +110,7 @@ class Thing
         $this->description = $description;
     }
 
-    public function tasks(): array
+    public function tasks(): PersistentCollection
     {
         return $this->tasks;
     }
