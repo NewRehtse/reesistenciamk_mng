@@ -1,44 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block document_title %}Gestión de tareas{% endblock %}
-{% block page_title %}Tareas{% endblock %}
-{% block page_subtitle %}Gestión de tareas{% endblock %}
+{% block document_title %}Gestión de encargos{% endblock %}
+{% block page_title %}Encargos{% endblock %}
+{% block page_subtitle %}Gestión de encargos{% endblock %}
 
 {% block page_content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     <div class="row">
         <div class="col-md-12">
-            <table class="table">
+            <table class="table table-striped table-bordered" id="task-table">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Maker</th>
                     <th scope="col">Imprimible</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col" class="col-md-1">Cantidad</th>
                     <th scope="col">Tipo de entrega</th>
                     <th scope="col">Estado</th>
                     <th scope="col">Fecha de entrega</th>
                     <th scope="col">Sitio de entrega</th>
                     <th scope="col">Sitio de recogida</th>
-                    <th scope="col">Administrar</th>
+                    <th scope="col" class="col-md-1"></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <th scope="row" class="col-md-1">{{ task.id }}</th>
                         <td>{{ task.maker.email }}</td>
                         <td>{{ task.thing.model }}</td>
                         <td>{{ task.amount }}</td>
-                        <td>{{ getDeliveryTypeText(task.deliveryType)}}</td>
+                        <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>
                         <td>{{ getStatusTypeText(task.status) }}</td>
-                        <td>{{ task.deliveryDate | date('Y-m-d') }}</td>
+                        <td>
+                            {% if task.deliveryDate %}
+                                {{ task.deliveryDate| date('Y-m-d') }}
+                            {% endif %}
+                        </td>
                         <td>
                             {{ task.place ? task.place.name : '' }}
                         </td>
                         <td>{{ task.collectAddress }}</td>
                         <td>
-                            {{ btn.link_button('Editar', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+                            {{ btn.link_button('', path('task.detail', {taskId: task.id}), 'fa fa-eye', 'info', 'sm') }}
+                            {{ btn.link_button('', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -47,6 +50,15 @@
         </div>
     </div>
     <div class="pull-left">
-        {{ btn.link_button('Crear tarea', path('task.create'), 'far fa-save', 'success', 'lg') }}
+        {{ btn.link_button('Crear Encargo', path('task.create'), 'far fa-save', 'success', 'lg') }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function () {
+            $("#task-table").dataTable();
+        });
+    </script>
 {% endblock %}

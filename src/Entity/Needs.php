@@ -21,7 +21,8 @@ class Needs
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="needs")
+     * @ORM\JoinColumn(name="need", referencedColumnName="id")
      *
      * @var Place|null
      */
@@ -40,6 +41,13 @@ class Needs
      * @var int
      */
     private $amount = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var int
+     */
+    private $covered = 0;
 
     public function place(): ?Place
     {
@@ -87,5 +95,15 @@ class Needs
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    public function covered(): int
+    {
+        return $this->covered;
+    }
+
+    public function setCovered(int $covered): void
+    {
+        $this->covered = $covered;
     }
 }

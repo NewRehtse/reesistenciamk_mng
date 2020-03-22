@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity
@@ -25,7 +25,14 @@ class Thing
      *
      * @var string
      */
-    private $model;
+    private $type; //filtro, mascarilla, pantalla
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @var string
+     */
+    private $model; //Modelo grande, pequeño
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
@@ -35,15 +42,36 @@ class Thing
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $urlThingiverse;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $otherUrl;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $photoUrl;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="thing")
      *
-     * @var Task[]
+     * @var PersistentCollection
      */
     private $tasks;
 
     public function __construct()
     {
-        $this->tasks = new ArrayCollection();
+        $this->tasks = new PersistentCollection();
     }
 
     /**
@@ -62,18 +90,12 @@ class Thing
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function model()
+    public function model(): ?string
     {
         return $this->model;
     }
 
-    /**
-     * @param mixed $model
-     */
-    public function setModel($model): void
+    public function setModel(string $model): void
     {
         $this->model = $model;
     }
@@ -88,7 +110,7 @@ class Thing
         $this->description = $description;
     }
 
-    public function tasks(): array
+    public function tasks(): PersistentCollection
     {
         return $this->tasks;
     }
@@ -99,5 +121,45 @@ class Thing
     public function setTasks(array $tasks): void
     {
         $this->tasks = $tasks;
+    }
+
+    public function urlThingiverse(): ?string
+    {
+        return $this->urlThingiverse;
+    }
+
+    public function setUrlThingiverse(?string $urlThingiverse): void
+    {
+        $this->urlThingiverse = $urlThingiverse;
+    }
+
+    public function otherUrl(): ?string
+    {
+        return $this->otherUrl;
+    }
+
+    public function setOtherUrl(?string $otherUrl): void
+    {
+        $this->otherUrl = $otherUrl;
+    }
+
+    public function photoUrl(): ?string
+    {
+        return $this->photoUrl;
+    }
+
+    public function setPhotoUrl(?string $photoUrl): void
+    {
+        $this->photoUrl = $photoUrl;
+    }
+
+    public function type(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

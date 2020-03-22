@@ -11,18 +11,33 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col" class="col-md-4">Imprimible</th>
-                    <th scope="col" class="col-md-4">Cantidad</th>
+                    <th scope="col" class="col-md-3">Imprimible</th>
+                    <th scope="col" class="col-md-1">Necesita</th>
+                    <th scope="col" class="col-md-1">Makers</th>
+                    <th scope="col" class="col-md-4">Progreso</th>
                     <th scope="col" class="col-md-4"></th>
                 </tr>
                 </thead>
                 <tbody>
-                    {% for need in needs %}
+                    {% for needResult in needs %}
+                        {% set need = needResult.need %}
                         <tr>
-                            <td>{{ need.thing.model }}</td>
+{#                            <td>{{ need.thing.type ~ ' - ' ~ need.thing.model }}</td>#}
+                            <td></td>
                             <td>{{ need.amount }}</td>
+                            <td>{{ needResult.collectedOrDelivered }}</td>
+                            <td>
+                                {% set percentage = (need.covered/need.amount)*100 %}
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                                         aria-valuemin="0" aria-valuemax="100" style="width:{{ percentage }}%">
+                                        <span class="sr-only">70% Complete</span>
+                                    </div>
+                                </div>
+                            </td>
                             <td>
                                 {{ btn.link_button('Hacer', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
+                                {{ btn.link_button('Cantidad entregada', path('places.needs.cover', {placeId: place.id,needId: need.id}), 'fa fa-check', '', 'sm') }}
                             </td>
                         </tr>
                     {% endfor %}

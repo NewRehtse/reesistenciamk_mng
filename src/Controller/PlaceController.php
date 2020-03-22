@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Needs;
 use App\Entity\Place;
+use App\Entity\Task;
+use App\Form\Type\CoverNeedType;
 use App\Form\Type\NeedType;
 use App\Form\Type\PlaceType;
 use App\Repository\NeedsRepository;
 use App\Repository\PlaceRepository;
-use App\Repository\ThingRepository;
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,14 +26,17 @@ class PlaceController extends AbstractController
     /** @var NeedsRepository */
     private $needsRepository;
 
-    /** @var ThingRepository */
-    private $thingRepository;
+    /** @var TaskRepository */
+    private $taskRepository;
 
-    public function __construct(PlaceRepository $placeRepository, NeedsRepository $needRepository, ThingRepository $thingRepository)
-    {
+    public function __construct(
+        PlaceRepository $placeRepository,
+        NeedsRepository $needRepository,
+        TaskRepository $taskRepository
+    ) {
         $this->placeRepository = $placeRepository;
         $this->needsRepository = $needRepository;
-        $this->thingRepository = $thingRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     public function list(): Response
@@ -86,6 +91,7 @@ class PlaceController extends AbstractController
 
         return $this->render('places/update.html.twig', [
             'form' => $form->createView(),
+            'hasNeeds' => $place->needs()->count() > 0,
         ]);
     }
 
@@ -97,9 +103,15 @@ class PlaceController extends AbstractController
 
         $place = $this->placeRepository->find($placeId);
 
-        if (null !== $place) {
-            $this->placeRepository->delete($place);
+        if (null === $place) {
+            return $this->redirectToRoute('places');
         }
+
+        if ($place->needs()->count() > 0) {
+            return $this->redirectToRoute('places');
+        }
+
+        $this->placeRepository->delete($place);
 
         return $this->redirectToRoute('places');
     }
@@ -110,36 +122,34 @@ class PlaceController extends AbstractController
             return $this->redirect('/places');
         }
 
+        $place = $this->placeRepository->find($placeId);
         $need = new Needs();
+        $need->setPlace($place);
 
         $form = $this->createForm(NeedType::class, $need);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Needs $need */
-            $need = $form->getData();
+            /** @var Needs $currentNeed */
+            $currentNeed = $form->getData();
 
-            if (null === $need->thing() || null === $need->place()) {
+            if (null === $currentNeed->thing() || null === $currentNeed->place()) {
                 return $this->redirectToRoute('places');
             }
 
-            //No tengo claro que esto haga algo util TODO
-            $thing = $this->thingRepository->find($need->thing()->id());
-            $place = $this->placeRepository->find($need->place()->id());
+            $thing = $currentNeed->thing();
+            $place = $currentNeed->place();
+            /** @var Needs|null $need */
+            $need = $this->needsRepository->findOneBy(['thing' => $thing, 'place' => $place]);
 
-            if (null === $thing) {
-                return $this->redirectToRoute('places');
+            if (null !== $need) {
+                $need->setAmount($need->amount() + $currentNeed->amount());
+                $this->needsRepository->save($need);
+            } else {
+                $this->needsRepository->save($currentNeed);
             }
-            if (null === $place) {
-                return $this->redirectToRoute('places');
-            }
 
-            $need->setPlace($place);
-            $need->setThing($thing);
-
-            $this->needsRepository->save($need);
-
-            return $this->redirectToRoute('places');
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
         }
 
         return $this->render('places/addNeeds.html.twig', [
@@ -152,6 +162,43 @@ class PlaceController extends AbstractController
         $place = $this->placeRepository->find($placeId);
         $needs = $this->needsRepository->findBy(['place' => $placeId]);
 
-        return $this->render('places/needs_list.html.twig', ['needs' => $needs, 'place' => $place]);
+        $needsResult = [];
+        foreach ($needs as $need) {
+            $tasks = $this->taskRepository->findBy(['thing' => $need->thing()]); //TODO hacer una función que busque por estado collected o delivered
+            $collectedOrDelivered = 0;
+            foreach ($tasks as $task) {
+                if (Task::STATUS_COLLECTED === $task->status() || Task::STATUS_DELIVERED === $task->status()) {
+                    $collectedOrDelivered += $task->amount();
+                }
+            }
+            $needsResult[] = ['need' => $need, 'collectedOrDelivered' => $collectedOrDelivered];
+        }
+
+        return $this->render('places/needs_list.html.twig', ['needs' => $needsResult, 'place' => $place]);
+    }
+
+    public function coverNeed(Request $request, int $placeId, int $needId): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirect('/places');
+        }
+
+        $need = $this->needsRepository->find($needId);
+        if (null === $need) {
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
+        }
+
+        $form = $this->createForm(CoverNeedType::class, $need);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->needsRepository->save($need);
+
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
+        }
+
+        return $this->render('places/addNeeds.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

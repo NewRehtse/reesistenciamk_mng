@@ -76,6 +76,7 @@ class ThingController extends AbstractController
 
         return $this->render('things/update.html.twig', [
             'form' => $form->createView(),
+            'hasTasks' => $thing->tasks()->count() > 0,
         ]);
     }
 
@@ -87,9 +88,14 @@ class ThingController extends AbstractController
 
         $thing = $this->thingRepository->find($thingId);
 
-        if (null !== $thing) {
-            $this->thingRepository->delete($thing);
+        if (null === $thing) {
+            return $this->redirectToRoute('things');
         }
+        if ($thing->tasks()->count() > 0) {
+            return $this->redirectToRoute('things');
+        }
+
+        $this->thingRepository->delete($thing);
 
         return $this->redirectToRoute('things');
     }

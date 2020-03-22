@@ -1,5 +1,11 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {% include 'includes/css.html.twig' %}
+{% endblock %}
+
+
 {% block logo_mini %}<b>R</b>MK{% endblock %}
 {% block logo_large %} <b>Reesistencia</b> Maker {% endblock %}
 
