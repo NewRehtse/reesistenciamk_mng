@@ -10,6 +10,30 @@ logout:
   path: /logout
   controller: App\Controller\SecurityController::logout
 
+users.admin:
+  path: /admin/users
+  controller: App\Controller\UserController::adminUsers
+
+users.admin.create:
+  path: /admin/users/create
+  controller: App\Controller\UserController::adminUsersCreate
+
+users.admin.edit:
+  path: /admin/users/{userId}/create
+  controller: App\Controller\UserController::adminUsersEdit
+
+users.admin.detail:
+  path: /admin/users/{userId}
+  controller: App\Controller\UserController::adminUsersDetail
+
+users.profile:
+  path: /profile
+  controller: App\Controller\UserController::profile
+
+users.profile.edit:
+  path: /profile/edit
+  controller: App\Controller\UserController::profileEdit
+
 home:
   path: /
   controller: App\Controller\TaskController::list
