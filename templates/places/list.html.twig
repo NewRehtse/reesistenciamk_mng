@@ -32,7 +32,7 @@
                                 {% if is_granted('ROLE_ADMIN') %}
                                     {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
                                     {{ btn.link_button('Añadir necesidad', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
-                            {% endif %}
+                                {% endif %}
                                 {{ btn.link_button('Ver necesidades', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
                             </td>
                         </tr>

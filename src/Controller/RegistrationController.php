@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\User;
 use App\Form\Type\UserType;
@@ -23,7 +21,6 @@ class RegistrationController extends AbstractController
         // 2) handle the submit (will only happen on POST)
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             // 3) Encode the password (you could also do this via Doctrine listener)
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
@@ -42,7 +39,7 @@ class RegistrationController extends AbstractController
 
         return $this->render(
             'security/registration.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]);
     }
 }

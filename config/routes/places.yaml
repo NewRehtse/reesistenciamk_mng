@@ -21,3 +21,7 @@ places.needs.add:
 places.needs.list:
   path: /{placeId}/need
   controller: App\Controller\PlaceController::needs
+
+places.needs.cover:
+  path: /{placeId}/need/{needId}
+  controller: App\Controller\PlaceController::coverNeed

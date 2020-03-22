@@ -261,17 +261,11 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function nickTelegram(): ?string
     {
         return $this->nickTelegram;
     }
 
-    /**
-     * @param string|null $nickTelegram
-     */
     public function setNickTelegram(?string $nickTelegram): void
     {
         $this->nickTelegram = $nickTelegram;

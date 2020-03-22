@@ -25,7 +25,14 @@ class Thing
      *
      * @var string
      */
-    private $model;
+    private $type; //filtro, mascarilla, pantalla
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @var string
+     */
+    private $model; //Modelo grande, pequeño
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
@@ -83,18 +90,12 @@ class Thing
         $this->id = $id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function model()
+    public function model(): ?string
     {
         return $this->model;
     }
 
-    /**
-     * @param mixed $model
-     */
-    public function setModel($model): void
+    public function setModel(string $model): void
     {
         $this->model = $model;
     }
@@ -122,51 +123,43 @@ class Thing
         $this->tasks = $tasks;
     }
 
-    /**
-     * @return string|null
-     */
     public function urlThingiverse(): ?string
     {
         return $this->urlThingiverse;
     }
 
-    /**
-     * @param string|null $urlThingiverse
-     */
     public function setUrlThingiverse(?string $urlThingiverse): void
     {
         $this->urlThingiverse = $urlThingiverse;
     }
 
-    /**
-     * @return string|null
-     */
     public function otherUrl(): ?string
     {
         return $this->otherUrl;
     }
 
-    /**
-     * @param string|null $otherUrl
-     */
     public function setOtherUrl(?string $otherUrl): void
     {
         $this->otherUrl = $otherUrl;
     }
 
-    /**
-     * @return string|null
-     */
     public function photoUrl(): ?string
     {
         return $this->photoUrl;
     }
 
-    /**
-     * @param string|null $photoUrl
-     */
     public function setPhotoUrl(?string $photoUrl): void
     {
         $this->photoUrl = $photoUrl;
+    }
+
+    public function type(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): void
+    {
+        $this->type = $type;
     }
 }

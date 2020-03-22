@@ -41,6 +41,13 @@ class Needs
      */
     private $amount = 0;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var int
+     */
+    private $covered = 0;
+
     public function place(): ?Place
     {
         return $this->place;
@@ -87,5 +94,15 @@ class Needs
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    public function covered(): int
+    {
+        return $this->covered;
+    }
+
+    public function setCovered(int $covered): void
+    {
+        $this->covered = $covered;
     }
 }

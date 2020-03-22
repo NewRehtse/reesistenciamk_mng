@@ -6,13 +6,18 @@ Backend para gestionar la entrada y salida de elementos imprimibles por el movim
 ### Requisitos
 
 * Mysql / Sqlite (local)
-* Php 7.1
+* Php 7.2
 
 ## Despliege local
 
+var directory must be writable
 Copy .env.dist to .env and run symfony:
+Install vendors
+Run
 
 ```bash
+cp .env.dist .env
+composer install
 symfony server:start
 ```
 
