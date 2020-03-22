@@ -15,14 +15,34 @@ Copy .env.dist to .env and run symfony:
 Install vendors
 Run
 
+1. Copy .env.dist to .env
 ```bash
 cp .env.dist .env
+```
+
+2. Install vendors with composer
+```bash
 composer install
+```
+
+3. Create db  scheme with doctrine
+```bash
+php bin/console doctrine:schema:create
+```
+
+4. Insert some data (answer yes)
+```bash
+php bin/console doctrine:fixtures:load
+```
+
+5. Run symfony
+```bash
 symfony server:start
 ```
 
+You can see it in:
 http://localhost:8000
 
-Maker: mk@makers.es
-Admin: admin@makers.es
-Pass: mk
+Usuarios: 
+Maker: mk@makers.es pass mk
+Admin: admin@makers.es pass admin
