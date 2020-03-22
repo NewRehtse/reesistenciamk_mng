@@ -38,6 +38,7 @@ php bin/console doctrine:fixtures:load
 ```
 5. Install assets
 ```bash
+yarn install
 yarn encore dev
 ```
 
