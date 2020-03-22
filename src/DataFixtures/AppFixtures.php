@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
         $task->setId(1);
         $task->setThing($thing);
         $task->setPlace($place);
-        $task->setStatus(Task::STATUS_DELIVERING);
+        $task->setStatus(Task::STATUS_DELIVERED);
         $task->setDeliveryDate(new \DateTime());
         $task->setDeliveryType(Task::DELIVER_TYPE_COLLECT);
         $task->setExtra('extra todo');
