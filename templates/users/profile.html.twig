@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}Gestión de usuarios{% endblock %}
+{% block page_title %}Usuarios{% endblock %}
+{% block page_subtitle %}Gestión de usuarios{% endblock %}
+
+{% block page_content %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="row">
+        <div class="col-md-10">
+            <table class="table table-striped table-bordered" id="users-table">
+                <tbody>
+                <tr>
+                    <td scope="col" class="col-md-1">Username</td>
+                    <td scope="row">
+                        {{ user.username }}
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="col">E-Mail</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Dirección</td>
+                    <td>
+                        {{ user.address }}
+                        <br>{{ user.city }} {{ user.postalCode }}
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="col">Teléfono</td>
+                    <td>{{ user.phoneNumber }}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Telegram</td>
+                    <td>{{ user.nickTelegram }}</td>
+                </tr>
+                </tbody>
+            </table>
+            {{ btn.link_button('Editar', path('users.profile.edit', {userId: user.id}), 'fa fa-pen', 'info', 'sm') }}
+        </div>
+    </div>
+{% endblock %}

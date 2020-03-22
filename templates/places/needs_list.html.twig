@@ -22,7 +22,8 @@
                     {% for needResult in needs %}
                         {% set need = needResult.need %}
                         <tr>
-                            <td>{{ need.thing.type ~ ' - ' ~ need.thing.model }}</td>
+{#                            <td>{{ need.thing.type ~ ' - ' ~ need.thing.model }}</td>#}
+                            <td></td>
                             <td>{{ need.amount }}</td>
                             <td>{{ needResult.collectedOrDelivered }}</td>
                             <td>
