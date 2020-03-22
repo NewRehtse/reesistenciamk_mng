@@ -24,7 +24,10 @@
                         <tr>
                             <th scope="row" class="col-md-1">{{ place.id }}</th>
                             <td>{{ place.name }}</td>
-                            <td>{{ place.address }}</td>
+                            <td>
+                                {{ place.address }}
+                                <br>{{ place.city }} {{ place.postalCode }}
+                            </td>
                             <td>
                                 {% if is_granted('ROLE_ADMIN') %}
                                     {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}

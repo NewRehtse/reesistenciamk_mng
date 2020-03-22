@@ -30,7 +30,7 @@
                         <td>{{ task.maker.email }}</td>
                         <td>{{ task.thing.model }}</td>
                         <td>{{ task.amount }}</td>
-                        <td>{{ getDeliveryTypeText(task.deliveryType)}}</td>
+                        <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>
                         <td>{{ getStatusTypeText(task.status) }}</td>
                         <td>{{ task.deliveryDate | date('Y-m-d') }}</td>
                         <td>

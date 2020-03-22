@@ -35,6 +35,27 @@ class Thing
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $urlThingiverse;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $otherUrl;
+
+    /**
+     * @ORM\Column(type="string", length=180, nullable=true)
+     *
+     * @var string|null
+     */
+    private $photoUrl;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="thing")
      *
      * @var Task[]
@@ -99,5 +120,53 @@ class Thing
     public function setTasks(array $tasks): void
     {
         $this->tasks = $tasks;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function urlThingiverse(): ?string
+    {
+        return $this->urlThingiverse;
+    }
+
+    /**
+     * @param string|null $urlThingiverse
+     */
+    public function setUrlThingiverse(?string $urlThingiverse): void
+    {
+        $this->urlThingiverse = $urlThingiverse;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function otherUrl(): ?string
+    {
+        return $this->otherUrl;
+    }
+
+    /**
+     * @param string|null $otherUrl
+     */
+    public function setOtherUrl(?string $otherUrl): void
+    {
+        $this->otherUrl = $otherUrl;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function photoUrl(): ?string
+    {
+        return $this->photoUrl;
+    }
+
+    /**
+     * @param string|null $photoUrl
+     */
+    public function setPhotoUrl(?string $photoUrl): void
+    {
+        $this->photoUrl = $photoUrl;
     }
 }

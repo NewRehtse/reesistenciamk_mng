@@ -2,6 +2,10 @@ login:
   path: /login
   controller: App\Controller\SecurityController::login
 
+registration:
+  path: /registration
+  controller: App\Controller\RegistrationController::register
+
 logout:
   path: /logout
   controller: App\Controller\SecurityController::logout

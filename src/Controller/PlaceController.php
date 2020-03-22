@@ -110,36 +110,35 @@ class PlaceController extends AbstractController
             return $this->redirect('/places');
         }
 
+        $place = $this->placeRepository->find($placeId);
         $need = new Needs();
+        $need->setPlace($place);
 
         $form = $this->createForm(NeedType::class, $need);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Needs $need */
-            $need = $form->getData();
+            /** @var Needs $currentNeed */
+            $currentNeed = $form->getData();
 
-            if (null === $need->thing() || null === $need->place()) {
+            if (null === $currentNeed->thing() || null === $currentNeed->place()) {
                 return $this->redirectToRoute('places');
             }
 
-            //No tengo claro que esto haga algo util TODO
-            $thing = $this->thingRepository->find($need->thing()->id());
-            $place = $this->placeRepository->find($need->place()->id());
+            $thing = $currentNeed->thing();
+            $place = $currentNeed->place();
+            /** @var Needs|null $need */
+            $need = $this->needsRepository->findOneBy(['thing' => $thing, 'place' => $place]);
 
-            if (null === $thing) {
-                return $this->redirectToRoute('places');
+            if (null !== $need) {
+                $need->setAmount($need->amount()+$currentNeed->amount());
+                $this->needsRepository->save($need);
             }
-            if (null === $place) {
-                return $this->redirectToRoute('places');
+            else {
+                $this->needsRepository->save($currentNeed);
             }
 
-            $need->setPlace($place);
-            $need->setThing($thing);
-
-            $this->needsRepository->save($need);
-
-            return $this->redirectToRoute('places');
+            return $this->redirectToRoute('places.needs.list',['placeId' => $placeId]);
         }
 
         return $this->render('places/addNeeds.html.twig', [
