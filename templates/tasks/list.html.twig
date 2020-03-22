@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block document_title %}Gestión de tareas{% endblock %}
-{% block page_title %}Tareas{% endblock %}
-{% block page_subtitle %}Gestión de tareas{% endblock %}
+{% block document_title %}Gestión de encargos{% endblock %}
+{% block page_title %}Encargos{% endblock %}
+{% block page_subtitle %}Gestión de encargos{% endblock %}
 
 {% block page_content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
@@ -47,6 +47,6 @@
         </div>
     </div>
     <div class="pull-left">
-        {{ btn.link_button('Crear tarea', path('task.create'), 'far fa-save', 'success', 'lg') }}
+        {{ btn.link_button('Crear Encargo', path('task.create'), 'far fa-save', 'success', 'lg') }}
     </div>
 {% endblock %}

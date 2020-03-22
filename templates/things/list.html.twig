@@ -12,7 +12,8 @@
                 <thead>
                 <tr>
                     <th scope="col" class="col-md-1">#</th>
-                    <th scope="col" class="col-md-5">Model</th>
+                    <th scope="col" class="col-md-2">Tipo</th>
+                    <th scope="col" class="col-md-2">Model</th>
                     <th scope="col" class="col-md-4">Descripción</th>
                     {% if is_granted('ROLE_ADMIN') %}
                         <th scope="col" class="col-md-2">Administrar</th>
@@ -22,9 +23,14 @@
                 <tbody>
                     {% for thing in things %}
                         <tr>
-                            <th scope="row" class="col-md-1">{{ thing.id }}</th>
+                            <th scope="row" class="col-md-1">
+                                {% if thing.photoUrl %}
+                                    <img src="{{ thing.photoUrl }}" class="img-rounded" style="max-width: 75px" alt="{{ thing.type ~ '-' ~ thing.model }}">
+                                {% endif %}
+                            </th>
+                            <td>{{ thing.type }}</td>
                             <td>{{ thing.model }}</td>
-                            <td>{{ thing.description }}</td>
+                            <td>{{ thing.description|raw }}</td>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <td class="col-md-2">
                                     {{ btn.link_button('Editar', path('things.edit', {thingId: thing.id}), 'fa fa-pen', 'info', 'sm') }}

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form\Type;
-
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -23,12 +21,12 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, ['label' => 'E-Mail *'])
-            ->add('password', RepeatedType::class,  [
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Contraseña *'),
-                'second_options' => array('label' => 'Repite Contraseña *'),
+                'first_options' => ['label' => 'Contraseña *'],
+                'second_options' => ['label' => 'Repite Contraseña *'],
             ])
-            ->add('nick', TextType::class, ['required'=> false, 'label' => 'Nick'])
+            ->add('nick', TextType::class, ['required' => false, 'label' => 'Nick'])
             ->add('address', TextType::class, ['required' => false, 'label' => 'Dirección'])
             ->add('city', TextType::class, ['required' => false, 'label' => 'Ciudad'])
             ->add('postalCode', TextType::class, ['required' => false, 'label' => 'Código Postal'])
@@ -40,8 +38,8 @@ class UserType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => User::class,
-        ));
+        ]);
     }
 }
