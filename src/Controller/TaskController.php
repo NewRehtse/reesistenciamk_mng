@@ -52,6 +52,10 @@ class TaskController extends AbstractController
             return $this->taskRepository->findAll();
         }
 
+        if ($this->isGranted('ROLE_DELIVERY')) {
+            return $this->taskRepository->findBy(['status' => Task::STATUS_DONE, 'deliveryType' => Task::DELIVER_TYPE_COLLECT]);
+        }
+
         $user = $this->getCurrentUser();
         if (null === $user) {
             return [];
