@@ -85,13 +85,6 @@ class Task
     private $place;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     *
-     * @var \DateTime|null
-     */
-    private $deliveryDate;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      *
      * @var string|null
@@ -183,16 +176,6 @@ class Task
     public function setPlace(?Place $place): void
     {
         $this->place = $place;
-    }
-
-    public function deliveryDate(): ?\DateTime
-    {
-        return $this->deliveryDate;
-    }
-
-    public function setDeliveryDate(?\DateTime $deliveryDate): void
-    {
-        $this->deliveryDate = $deliveryDate;
     }
 
     public function status(): int
