@@ -4,12 +4,10 @@ namespace App\Form\Type;
 
 use App\Entity\Place;
 use App\Entity\Task;
-use App\Entity\Thing;
 use App\Repository\PlaceRepository;
 use App\Repository\ThingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
-class TaskType extends AbstractType
+class TaskUpdateType extends AbstractType
 {
     /** @var PlaceRepository */
     private $placeRepository;
@@ -51,21 +49,6 @@ class TaskType extends AbstractType
         ];
 
         $builder
-            ->add('thing', ChoiceType::class, [
-                'label' => 'Imprimible',
-                'choices' => $things,
-                'choice_value' => function (?Thing $thing = null) {
-                    return $thing ? $thing->id() : null;
-                },
-                'choice_label' => function (?Thing $choice, $key, $value) {
-                    if (null === $choice) {
-                        return 'Sin modelo';
-                    }
-
-                    return $choice->model();
-                },
-            ])
-            ->add('amount', IntegerType::class, ['label' => 'Cantidad'])
             ->add('status', ChoiceType::class, ['choices' => $status, 'label' => 'Estado actual'])
             ->add('deliveryType', ChoiceType::class, ['label' => 'Tipo de entrega', 'choices' => $deliveryTypes])
             ->add('collectAddress', TextType::class,

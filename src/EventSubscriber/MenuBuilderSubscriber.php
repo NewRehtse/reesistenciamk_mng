@@ -52,7 +52,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         );
 
         $event->addItem(
-            new MenuItemModel('tasks', 'Tareas', 'tasks', [], 'fa fa-print')
+            new MenuItemModel('tasks', 'Lotes', 'tasks', [], 'fa fa-print')
         );
         $event->addItem(
             new MenuItemModel('profile', 'Perfil', 'users.profile', [], 'fa fa-user')

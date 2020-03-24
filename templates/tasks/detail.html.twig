@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block document_title %}Gestión de encargos{% endblock %}
-{% block page_title %}Encargos{% endblock %}
-{% block page_subtitle %}Encargo{% endblock %}
+{% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+{% block document_title %}Gestión de lotes{% endblock %}
+{% block page_title %}Lote{% endblock %}
+{% block page_subtitle %}
+    <span>
+    {{ btn.link_button('Editar Lote', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+    </span>
+{% endblock %}
 
 {% block page_content %}
     <div class="row">
@@ -29,14 +34,6 @@
                 <tr>
                     <td>Status</td>
                     <td>{{ getStatusTypeText(task.status) }}</td>
-                </tr>
-                <tr>
-                    <td>Fecha de entrega/reparto</td>
-                    <td>
-                        {% if task.deliveryDate %}
-                            {{ task.deliveryDate| date('Y-m-d') }}
-                        {% endif %}
-                    </td>
                 </tr>
                 {% if task.deliveryType == 0 %}
                     <tr>

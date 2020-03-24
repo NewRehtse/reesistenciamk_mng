@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\Type\TaskType;
+use App\Form\Type\TaskUpdateType;
 use App\Repository\NeedsRepository;
 use App\Repository\SerialNumberRepository;
 use App\Repository\TaskRepository;
@@ -94,24 +95,7 @@ class TaskController extends AbstractController
             $task->setMaker($user);
         }
 
-        $form = $this->createForm(TaskType::class, $task);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Task $task */
-            $task = $form->getData();
-
-            $this->taskRepository->save($task);
-
-            //GENERATE S/N
-            $this->serialNumberRepository->createSerialNumers($task);
-
-            return $this->redirectToRoute('task.detail', ['taskId' => $task->id()]);
-        }
-
-        return $this->render('tasks/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->handleCreateTaskForm($request, $task);
     }
 
     public function edit(Request $request, int $taskId): Response
@@ -121,7 +105,20 @@ class TaskController extends AbstractController
             return $this->redirect('/tasks');
         }
 
-        return $this->handleTask($request, $task);
+        $form = $this->createForm(TaskUpdateType::class, $task);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $task = $form->getData();
+
+            $this->taskRepository->save($task);
+
+            return $this->redirectToRoute('tasks');
+        }
+
+        return $this->render('tasks/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     public function createFromNeed(Request $request, int $needId): Response
@@ -138,20 +135,24 @@ class TaskController extends AbstractController
             $task->setMaker($user);
         }
 
-        return $this->handleTask($request, $task);
+        return $this->handleCreateTaskForm($request, $task);
     }
 
-    private function handleTask(Request $request, Task $task): Response
+    public function handleCreateTaskForm(Request $request, Task $task)
     {
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Task $task */
             $task = $form->getData();
 
             $this->taskRepository->save($task);
 
-            return $this->redirectToRoute('tasks');
+            //GENERATE S/N
+            $this->serialNumberRepository->createSerialNumers($task);
+
+            return $this->redirectToRoute('task.detail', ['taskId' => $task->id()]);
         }
 
         return $this->render('tasks/create.html.twig', [
