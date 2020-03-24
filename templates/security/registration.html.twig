@@ -1,11 +1,25 @@
-{% extends 'security/security.base.html.twig' %}
+{% extends '@AdminLTE/layout/security-layout.html.twig' %}
 
-{% block content %}
-    <div class="limiter">
-        <div class="container-login100">
-            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-                {{ form(form) }}
-            </div>
-        </div>
-    </div>
-{% endblock content %}
+{% block title %}Reesistencia MK | Registro{% endblock %}
+{% block login_social_auth %}{% endblock %}
+
+{% block logo_login %}<b>Reesistencia</b> Maker{% endblock %}
+
+{% block login_box_msg %}
+    {{ 'Registrate y participa' }}
+{% endblock %}
+
+{% block login_form %}
+    {% form_theme form '@AdminLTE/layout/form-theme-security.html.twig' %}
+    {{ form_start(form, {'method': 'post', 'action': path('registration'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block login_actions %}
+    <br>
+    <a href="{{ path('login') }}">
+        {{ 'Volver al login' }}
+    </a>
+{% endblock %}
+
