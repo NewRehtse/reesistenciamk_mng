@@ -32,6 +32,7 @@ class UserType extends AbstractType
             ->add('postalCode', TextType::class, ['required' => false, 'label' => 'Código Postal'])
             ->add('phoneNumber', TextType::class, ['required' => false, 'label' => 'Teléfono'])
             ->add('nickTelegram', TextType::class, ['required' => false, 'label' => 'Nick telegram'])
+            ->add('printer', TextType::class, ['required' => false, 'label' => 'Impresora'])
             ->add('save', SubmitType::class, ['label' => 'Registrarse', 'attr' => ['class' => 'login100-form-btn']])
         ;
     }
