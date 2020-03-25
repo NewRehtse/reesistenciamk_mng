@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block document_title %}Gestión de sitios{% endblock %}
-{% block page_title %}Sitios{% endblock %}
-{% block page_subtitle %}Gestión de sitios{% endblock %}
+{% block document_title %}Gestión de demandantes{% endblock %}
+{% block page_title %}Demandantes{% endblock %}
+{% block page_subtitle %}Gestión de demandantes{% endblock %}
 
 {% block page_content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
@@ -29,11 +29,9 @@
                                 <br>{{ place.city }} {{ place.postalCode }}
                             </td>
                             <td>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
-                                    {{ btn.link_button('Añadir necesidad', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
-                                {% endif %}
-                                {{ btn.link_button('Ver necesidades', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                                {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
+                                {{ btn.link_button('Solicitar material', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
+                                {{ btn.link_button('Ver solicitudes', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
                             </td>
                         </tr>
                     {% endfor %}
@@ -42,7 +40,7 @@
         </div>
     </div>
     <div class="pull-left">
-        {{ btn.link_button('Crear sitio', path('places.create'), 'far fa-save', 'success', 'lg') }}
+        {{ btn.link_button('Crear demandante', path('places.create'), 'far fa-save', 'success', 'lg') }}
     </div>
 {% endblock %}
 

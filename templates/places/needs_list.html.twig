@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block document_title %}Gestión de sitios{% endblock %}
-{% block page_title %}Sitios{% endblock %}
-{% block page_subtitle %}Necesidades del sitio: {{ place.name }}{% endblock %}
+{% block document_title %}Gestión de solicitudes{% endblock %}
+{% block page_title %}Solicitudes{% endblock %}
+{% block page_subtitle %}Solicitudes del demandante: <span class="text-bold">{{ place.name }}</span>{% endblock %}
 
 {% block page_content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col" class="col-md-3">Imprimible</th>
                     <th scope="col" class="col-md-1">Necesita</th>
                     <th scope="col" class="col-md-1">Makers</th>
-                    <th scope="col" class="col-md-4">Progreso</th>
+                    <th scope="col" class="col-md-3">Progreso</th>
                     <th scope="col" class="col-md-4"></th>
                 </tr>
                 </thead>
@@ -23,7 +23,6 @@
                         {% set need = needResult.need %}
                         <tr>
                             <td>{{ need.thing.type ~ ' - ' ~ need.thing.model }}</td>
-                            <td></td>
                             <td>{{ need.amount }}</td>
                             <td>{{ needResult.collectedOrDelivered }}</td>
                             <td>
@@ -36,8 +35,10 @@
                                 </div>
                             </td>
                             <td>
-                                {{ btn.link_button('Hacer', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
-                                {{ btn.link_button('Cantidad entregada', path('places.needs.cover', {placeId: place.id,needId: need.id}), 'fa fa-check', '', 'sm') }}
+                                {{ btn.link_button('Añadir lote', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    {{ btn.link_button('Cantidad entregada', path('places.needs.cover', {placeId: place.id,needId: need.id}), 'fa fa-check', '', 'sm') }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

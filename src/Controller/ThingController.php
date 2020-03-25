@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Task;
 use App\Entity\Thing;
 use App\Form\Type\ThingType;
+use App\Repository\TaskRepository;
 use App\Repository\ThingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,16 +19,28 @@ class ThingController extends AbstractController
     /** @var ThingRepository */
     private $thingRepository;
 
-    public function __construct(ThingRepository $thingRepository)
+    /** @var TaskRepository */
+    private $taskRepository;
+
+    public function __construct(ThingRepository $thingRepository, TaskRepository $taskRepository)
     {
         $this->thingRepository = $thingRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     public function list(): Response
     {
         $things = $this->thingRepository->findAll();
 
-        return $this->render('things/list.html.twig', ['things' => $things]);
+        $result = [];
+        foreach ($things as $thing) {
+            $collected = $this->taskRepository->howManyThingsByStatus(Task::STATUS_COLLECTED);
+            $delivered = $this->taskRepository->howManyThingsByStatus(Task::STATUS_DELIVERED);
+            $done = $this->taskRepository->howManyThingsByStatus(Task::STATUS_DONE);
+            $result[] = ['thing' => $thing, 'delivered' => $delivered, 'collected' => $collected, 'done' => $done];
+        }
+
+        return $this->render('things/list.html.twig', ['results' => $result]);
     }
 
     public function create(Request $request): Response

@@ -44,7 +44,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     public function onSetupNavbar(SidebarMenuEvent $event)
     {
         $event->addItem(
-            new MenuItemModel('places', 'Sitios', 'places', [], 'fa fa-map-marker')
+            new MenuItemModel('places', 'Demandantes', 'places', [], 'fa fa-map-marker')
         );
 
         $event->addItem(

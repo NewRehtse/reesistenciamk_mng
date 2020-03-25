@@ -13,27 +13,33 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Tipo</th>
-                    <th scope="col">Model</th>
+                    <th scope="col">Modelo</th>
                     <th scope="col">Descripción</th>
+                    <th scope="col">Hechas</th>
+                    <th scope="col">Recogidas</th>
+                    <th scope="col">Entregadas</th>
                     {% if is_granted('ROLE_ADMIN') %}
                         <th scope="col"></th>
                     {% endif %}
                 </tr>
                 </thead>
                 <tbody>
-                    {% for thing in things %}
+                    {% for result in results %}
                         <tr>
                             <th scope="row" class="col-md-1">
-                                {% if thing.photoUrl %}
-                                    <img src="{{ thing.photoUrl }}" class="img-rounded" style="max-width: 75px" alt="{{ thing.type ~ '-' ~ thing.model }}">
+                                {% if result.thing.photoUrl %}
+                                    <img src="{{ result.thing.photoUrl }}" class="img-rounded" style="max-width: 75px" alt="{{ result.thing.type ~ '-' ~ result.thing.model }}">
                                 {% endif %}
                             </th>
-                            <td>{{ thing.type }}</td>
-                            <td>{{ thing.model }}</td>
-                            <td>{{ thing.description|raw }}</td>
+                            <td>{{ result.thing.type }}</td>
+                            <td>{{ result.thing.model }}</td>
+                            <td>{{ result.thing.description|raw }}</td>
+                            <td>{{ result.done }}</td>
+                            <td>{{ result.collected }}</td>
+                            <td>{{ result.delivered }}</td>
                             {% if is_granted('ROLE_ADMIN') %}
                                 <td class="col-md-2">
-                                    {{ btn.link_button('Editar', path('things.edit', {thingId: thing.id}), 'fa fa-pen', 'info', 'sm') }}
+                                    {{ btn.link_button('Editar', path('things.edit', {thingId: result.thing.id}), 'fa fa-pen', 'info', 'sm') }}
                                 </td>
                             {% endif %}
                         </tr>
