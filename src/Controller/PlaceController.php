@@ -70,9 +70,9 @@ class PlaceController extends AbstractController
 
     public function update(Request $request, int $placeId): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect('/places');
-        }
+//        if (!$this->isGranted('ROLE_ADMIN')) {
+//            return $this->redirect('/places');
+//        }
 
         $place = $this->placeRepository->find($placeId);
 
@@ -118,9 +118,9 @@ class PlaceController extends AbstractController
 
     public function addNeeds(Request $request, int $placeId): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect('/places');
-        }
+//        if (!$this->isGranted('ROLE_ADMIN')) {
+//            return $this->redirect('/places');
+//        }
 
         $place = $this->placeRepository->find($placeId);
         $need = new Needs();
@@ -164,13 +164,7 @@ class PlaceController extends AbstractController
 
         $needsResult = [];
         foreach ($needs as $need) {
-            $tasks = $this->taskRepository->findBy(['thing' => $need->thing()]); //TODO hacer una función que busque por estado collected o delivered
-            $collectedOrDelivered = 0;
-            foreach ($tasks as $task) {
-                if (Task::STATUS_COLLECTED === $task->status() || Task::STATUS_DELIVERED === $task->status()) {
-                    $collectedOrDelivered += $task->amount();
-                }
-            }
+            $collectedOrDelivered = $this->taskRepository->howManyThingsDelivered($need->thing());
             $needsResult[] = ['need' => $need, 'collectedOrDelivered' => $collectedOrDelivered];
         }
 

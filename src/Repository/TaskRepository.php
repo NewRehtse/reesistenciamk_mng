@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Task;
+use App\Entity\Thing;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -29,5 +30,33 @@ class TaskRepository extends ServiceEntityRepository
     {
         $this->getEntityManager()->persist($task);
         $this->getEntityManager()->flush();
+    }
+
+    public function howManyThingsDelivered(Thing $thing): int
+    {
+        $tasks = $this->findBy(['thing' => $thing]);
+        $collectedOrDelivered = 0;
+
+        foreach ($tasks as $task) {
+            if (Task::STATUS_COLLECTED === $task->status() || Task::STATUS_DELIVERED === $task->status()) {
+                $collectedOrDelivered += $task->amount();
+            }
+        }
+
+        return $collectedOrDelivered;
+    }
+
+    public function howManyThingsByStatus(int $status): int
+    {
+        $tasks = $this->findBy(['status' => $status]);
+
+        $howMany = 0;
+        foreach ($tasks as $task) {
+            if ($status === $task->status()) {
+                $howMany += $task->amount();
+            }
+        }
+
+        return $howMany;
     }
 }

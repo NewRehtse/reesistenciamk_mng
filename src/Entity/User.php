@@ -85,6 +85,13 @@ class User implements UserInterface
     private $nickTelegram;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string|null
+     */
+    private $printer;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="maker")
      *
      * @var Task[]
@@ -269,5 +276,15 @@ class User implements UserInterface
     public function setNickTelegram(?string $nickTelegram): void
     {
         $this->nickTelegram = $nickTelegram;
+    }
+
+    public function printer(): ?string
+    {
+        return $this->printer;
+    }
+
+    public function setPrinter(?string $printer): void
+    {
+        $this->printer = $printer;
     }
 }
