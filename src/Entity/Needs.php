@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Needs
 {
+    use Audit;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")

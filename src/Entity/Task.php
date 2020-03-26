@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Task
 {
+    use Audit;
+
     public const DELIVER_TYPE_UNDEFINED = -1; //Not defined
     public const DELIVER_TYPE_COLLECT = 0; //Collect at home
     public const DELIVER_TYPE_DELIVER = 1; //Deliver at place

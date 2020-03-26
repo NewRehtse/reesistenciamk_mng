@@ -12,6 +12,8 @@ use Doctrine\ORM\PersistentCollection;
  */
 class Thing
 {
+    use Audit;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
