@@ -13,6 +13,8 @@ use Doctrine\ORM\PersistentCollection;
  */
 class Place
 {
+    use Audit;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

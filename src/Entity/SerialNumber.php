@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SerialNumber
 {
+    use Audit;
+
     private const SERIAL_NUMBER_PREFIX = 'RMK';
     /**
      * @ORM\Id()
