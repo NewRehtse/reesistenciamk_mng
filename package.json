@@ -32,6 +32,7 @@
         "fs": "0.0.1-security",
         "iconify": "^1.2.0",
         "ionicons": "^5.0.1",
+        "morris.js": "github:morrisjs/morris.js",
         "popper": "^1.0.1"
     }
 }
