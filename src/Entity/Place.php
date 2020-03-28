@@ -25,28 +25,28 @@ class Place
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=191, unique=true)
      *
      * @var string
      */
     private $name = '';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=191, nullable=true)
      *
      * @var string
      */
     private $address = '';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=191, nullable=true)
      *
      * @var string
      */
     private $city = '';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=191, nullable=true)
      *
      * @var string
      */
