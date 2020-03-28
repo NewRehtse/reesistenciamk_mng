@@ -30,4 +30,13 @@ class PlaceRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($place);
         $this->getEntityManager()->flush();
     }
+
+    public function topRequestor(): array
+    {
+        return $this->getEntityManager()
+                ->createQuery("SELECT sum(n.amount) as amount, p.name
+                                    FROM App\Entity\Needs n, App\Entity\Place p
+                                    WHERE p.id=n.place GROUP BY n.place ORDER BY amount DESC")
+                ->execute();
+    }
 }

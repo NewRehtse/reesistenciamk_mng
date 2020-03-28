@@ -36,7 +36,7 @@ users.profile.edit:
 
 home:
   path: /
-  controller: App\Controller\TaskController::list
+  controller: App\Controller\DashboardController::index
 
 places:
   resource: "./routes/places.yaml"

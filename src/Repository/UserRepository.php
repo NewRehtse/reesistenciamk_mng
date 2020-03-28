@@ -61,6 +61,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function topMakers(): array
+    {
+        return $this->getEntityManager()
+                ->createQuery("SELECT sum(t.amount) as amount, u.nick as nick, u.nickTelegram as telegram 
+                                    FROM App\Entity\Task t, App\Entity\User u
+                                    WHERE t.maker=u.id GROUP BY t.maker ORDER BY amount DESC")
+                ->execute();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

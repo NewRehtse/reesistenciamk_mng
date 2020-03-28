@@ -45,9 +45,9 @@ class ThingController extends AbstractController
 
     public function create(Request $request): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect('/things');
-        }
+//        if (!$this->isGranted('ROLE_ADMIN')) {
+//            return $this->redirect('/things');
+//        }
 
         $thing = new Thing();
 

@@ -30,4 +30,13 @@ class ThingRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($thing);
         $this->getEntityManager()->flush();
     }
+
+    public function topNeeded(): array
+    {
+        return $this->getEntityManager()
+                ->createQuery("SELECT sum(n.amount) as amount, t
+                                    FROM App\Entity\Needs n, App\Entity\Thing t
+                                    WHERE t.id=n.thing GROUP BY n.thing ORDER BY amount DESC")
+                ->execute();
+    }
 }
