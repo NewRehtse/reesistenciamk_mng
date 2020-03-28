@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua"><i class="fa fa-print"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Imprimibles hechos</span>
+                <span class="info-box-number">{{ printedThings }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-trophy"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Top Maker</span>
+                <span class="info-box-number">{{ topMaker.nick|default(topMaker.telegram)|default("Anonimo") }}</span>
+                <span class="info-box-number">{{ topMaker.amount }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+
+    <!-- fix for small devices only -->
+    <div class="clearfix visible-sm-block"></div>
+
+    {% if topRequestor.name|default(false) %}
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-map-marker"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Top Demandante</span>
+                <span class="info-box-number">{{ topRequestor.name }}</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    {% endif %}
+    <!-- /.col -->
+    {% if topDeliverer.name|default(false) %}
+    <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Top Delivery</span>
+                <span class="info-box-number">Protección Civil</span>
+            </div>
+            <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+    </div>
+    <!-- /.col -->
+    {% endif %}
+</div>

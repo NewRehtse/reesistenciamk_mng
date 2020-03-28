@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block document_title %}{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block page_content %}
+    {% include 'dashboard/boxes.html.twig' %}
+
+    {% include 'dashboard/printed-things.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

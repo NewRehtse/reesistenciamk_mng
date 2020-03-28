@@ -1,11 +1,7 @@
 require('../vendor/kevinpapst/adminlte-bundle/Resources/assets/admin-lte');
 
-require('datatables.net-dt');
-// require('popper')
-// require('child_process')
-// require('fs')
-
 require('bootstrap')();
+require('datatables.net-dt');
 require( 'datatables.net-bs4' )();
 
 // ------ for charts ------

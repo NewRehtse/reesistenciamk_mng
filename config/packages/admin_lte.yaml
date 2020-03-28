@@ -21,6 +21,6 @@ admin_lte:
         breadcrumb_menu: true
 
     routes:
-        adminlte_welcome: tasks
+        adminlte_welcome: home
         adminlte_profile: profile
         adminlte_login_check: login
