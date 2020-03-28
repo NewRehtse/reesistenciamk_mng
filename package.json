@@ -30,8 +30,6 @@
         "datatables.net-bs4": "^1.10.20",
         "datatables.net-dt": "^1.10.20",
         "fs": "0.0.1-security",
-        "iconify": "^1.2.0",
-        "ionicons": "^5.0.1",
         "popper": "^1.0.1"
     }
 }
