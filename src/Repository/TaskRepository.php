@@ -46,6 +46,20 @@ class TaskRepository extends ServiceEntityRepository
         return $collectedOrDelivered;
     }
 
+    public function howManyThingsByIdAndStatus(Thing $thing, int $status): int
+    {
+        $tasks = $this->findBy(['status' => $status, 'thing' => $thing]);
+
+        $howMany = 0;
+        foreach ($tasks as $task) {
+            if ($status === $task->status()) {
+                $howMany += $task->amount();
+            }
+        }
+
+        return $howMany;
+    }
+
     public function howManyThingsByStatus(int $status): int
     {
         $tasks = $this->findBy(['status' => $status]);

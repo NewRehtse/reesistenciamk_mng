@@ -34,9 +34,9 @@ class ThingController extends AbstractController
 
         $result = [];
         foreach ($things as $thing) {
-            $collected = $this->taskRepository->howManyThingsByStatus(Task::STATUS_COLLECTED);
-            $delivered = $this->taskRepository->howManyThingsByStatus(Task::STATUS_DELIVERED);
-            $done = $this->taskRepository->howManyThingsByStatus(Task::STATUS_DONE);
+            $collected = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_COLLECTED);
+            $delivered = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DELIVERED);
+            $done = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DONE);
             $result[] = ['thing' => $thing, 'delivered' => $delivered, 'collected' => $collected, 'done' => $done];
         }
 
