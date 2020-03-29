@@ -43,10 +43,10 @@ class Task
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Maker", inversedBy="tasks")
      * @ORM\JoinColumn(name="maker", referencedColumnName="id")
      *
-     * @var User
+     * @var Maker
      */
     private $maker;
 
@@ -80,16 +80,17 @@ class Task
     private $extra;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="Place")
      *
      * @var Place|null
      */
     private $place;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="collectAddress", referencedColumnName="id")
      *
-     * @var string|null
+     * @var Address|null
      */
     private $collectAddress;
 
@@ -113,12 +114,12 @@ class Task
         $this->id = $id;
     }
 
-    public function maker(): User
+    public function maker(): Maker
     {
         return $this->maker;
     }
 
-    public function setMaker(User $maker): void
+    public function setMaker(Maker $maker): void
     {
         $this->maker = $maker;
     }
@@ -192,12 +193,12 @@ class Task
         }
     }
 
-    public function collectAddress(): ?string
+    public function collectAddress(): ?Address
     {
         return $this->collectAddress;
     }
 
-    public function setCollectAddress(?string $collectAddress): void
+    public function setCollectAddress(?Address $collectAddress): void
     {
         $this->collectAddress = $collectAddress;
     }

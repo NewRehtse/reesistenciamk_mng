@@ -38,7 +38,14 @@
                 {% if task.deliveryType == 0 %}
                     <tr>
                         <td>Dirección de recogida</td>
-                        <td>{{ task.collectAddress }}</td>
+                        <td>
+                            {% if task.collectAddress %}
+                                {{ task.collectAddress.address1 }}
+                                <br>
+                                {{ task.collectAddress.address2 }}
+                                <br>{{ task.collectAddress.city }} {{ task.collectAddress.postalCode }}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% elseif task.deliveryType == 1%}
                     <tr>

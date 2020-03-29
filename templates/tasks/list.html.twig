@@ -24,7 +24,7 @@
                 <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <td>{{ task.maker.email }}</td>
+                        <td>{{ task.maker.user.nick|default('Anónimo')}}</td>
                         <td>{{ task.thing.model }}</td>
                         <td>{{ task.amount }}</td>
                         <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>

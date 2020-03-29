@@ -1,0 +1,45 @@
+<div class="col-md-6">
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Solicitar recogida</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <form role="form">
+            <div class="box-body">
+
+                <div class="row">
+                    <div class="col-xs-9">
+                        <label>Lote/s</label>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-xs-9">
+                        <div class="form-group">
+                            {% if tasks|length >0 %}
+                                <select multiple="" class="form-control">
+                                    {% for task in tasks %}
+                                        <option value="{{ task.id }}">{{ task.thing.type }} - {{ task.thing.model }} : {{ task.amount }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                No tienes lotes creados
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <a class="btn btn-app" href="{{ path('task.create') }}">
+                            <i class="fa fa-print"></i> Crear
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Solicitar</button>
+            </div>
+        </form>
+    </div>
+    <!-- /.box -->
+</div>

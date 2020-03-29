@@ -26,6 +26,7 @@ class UserController extends AbstractController
 
     public function profile(): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
 
         return $this->render('users/profile.html.twig', ['user' => $user]);

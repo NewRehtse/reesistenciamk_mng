@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Maker;
 use App\Entity\Task;
 use App\Entity\Thing;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -72,5 +73,10 @@ class TaskRepository extends ServiceEntityRepository
         }
 
         return $howMany;
+    }
+
+    public function findByMaker(Maker $maker): array
+    {
+        return $this->findBy(['maker' => $maker]);
     }
 }
