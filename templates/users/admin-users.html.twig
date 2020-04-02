@@ -29,8 +29,12 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.roles|join(',') }}</td>
                         <td>
-                            {{ user.address }}
-                            <br>{{ user.city }} {{ user.postalCode }}
+                            {% if user.address %}
+                                {{ user.address.address1 }}
+                                <br>
+                                {{ user.address.address2 }}
+                                <br>{{ user.address.city }} {{ user.address.postalCode }}
+                            {% endif %}
                         </td>
                         <td>{{ user.phoneNumber }}</td>
                         <td>{{ user.nickTelegram }}</td>

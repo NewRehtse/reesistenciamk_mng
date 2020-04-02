@@ -19,6 +19,7 @@ class Task
     public const STATUS_COLLECTED = 1;
     public const STATUS_DELIVERED = 2;
     public const STATUS_DONE = 3;
+    public const STATUS_COLLECT_REQUESTED = 4;
     private const STATUS_DEFAULT = self::STATUS_DONE;
 
     private const VALID_DELIVER = [
@@ -31,6 +32,7 @@ class Task
         self::STATUS_DONE,
         self::STATUS_DELIVERED,
         self::STATUS_COLLECTED,
+        self::STATUS_COLLECT_REQUESTED,
     ];
 
     /**
@@ -43,10 +45,10 @@ class Task
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Maker", inversedBy="tasks")
      * @ORM\JoinColumn(name="maker", referencedColumnName="id")
      *
-     * @var User
+     * @var Maker
      */
     private $maker;
 
@@ -80,16 +82,17 @@ class Task
     private $extra;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Place")
+     * @ORM\ManyToOne(targetEntity="Place")
      *
      * @var Place|null
      */
     private $place;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="collectAddress", referencedColumnName="id")
      *
-     * @var string|null
+     * @var Address|null
      */
     private $collectAddress;
 
@@ -113,12 +116,12 @@ class Task
         $this->id = $id;
     }
 
-    public function maker(): User
+    public function maker(): Maker
     {
         return $this->maker;
     }
 
-    public function setMaker(User $maker): void
+    public function setMaker(Maker $maker): void
     {
         $this->maker = $maker;
     }
@@ -192,12 +195,12 @@ class Task
         }
     }
 
-    public function collectAddress(): ?string
+    public function collectAddress(): ?Address
     {
         return $this->collectAddress;
     }
 
-    public function setCollectAddress(?string $collectAddress): void
+    public function setCollectAddress(?Address $collectAddress): void
     {
         $this->collectAddress = $collectAddress;
     }
@@ -208,9 +211,10 @@ class Task
             self::STATUS_DELIVERED => 'Entregado',
             self::STATUS_COLLECTED => 'Recogido',
             self::STATUS_DONE => 'Hecho',
+            self::STATUS_COLLECT_REQUESTED => 'Pendiente de recogida',
         ];
 
-        return $statusMap[$status] ?? self::STATUS_DEFAULT;
+        return $statusMap[$status] ?? '';
     }
 
     public static function GetDeliveryTypeText(int $deliveryType): string
@@ -221,6 +225,6 @@ class Task
             self::DELIVER_TYPE_DELIVER => 'Entrega',
         ];
 
-        return $deliveryTypeMap[$deliveryType] ?? self::DELIVER_TYPE_UNDEFINED;
+        return $deliveryTypeMap[$deliveryType] ?? '';
     }
 }

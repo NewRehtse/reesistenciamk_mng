@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
+use App\Entity\Maker;
 use App\Entity\Needs;
 use App\Entity\Place;
 use App\Entity\Task;
@@ -22,12 +24,42 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $address = new Address();
+        $address->setId(1);
+        $address->setCity('Burgos');
+        $address->setAddress1('Avenida Reyes Católicos');
+        $address->setPostalCode('09004');
+
+        $address2 = new Address();
+        $address2->setId(1);
+        $address2->setCity('Madrid');
+        $address2->setAddress1('Plaza Mayor, 3');
+        $address2->setPostalCode('28001');
+
+        $address3 = new Address();
+        $address3->setId(1);
+        $address3->setCity('Burgos');
+        $address3->setAddress1('Calle Vitoria, 3');
+        $address3->setPostalCode('09001');
+
+        $manager->persist($address);
+        $manager->persist($address2);
+        $manager->persist($address3);
+
         $user = new User();
         $user->setId(1);
         $user->setEmail('mk@makers.es');
         $user->setPassword($this->passwordEncoder->encodePassword($user, 'mk'));
         $user->setRoles(['ROLE_USER']);
+        $user->setAddress($address2);
 
+        $maker = new Maker();
+        $maker->setId(1);
+        $maker->setUser($user);
+        $maker->setPrinter('HP CFGBD 301');
+        $user->setMaker($maker);
+
+        $manager->persist($maker);
         $manager->persist($user);
 
         $user2 = new User();
@@ -35,31 +67,23 @@ class AppFixtures extends Fixture
         $user2->setEmail('admin@makers.es');
         $user2->setPassword($this->passwordEncoder->encodePassword($user, 'admin'));
         $user2->setRoles(['ROLE_ADMIN']);
+        $maker2 = new Maker();
+        $maker2->setId(21);
+        $maker2->setUser($user2);
+        $maker2->setPrinter('HP CFGBD 301');
+        $user2->setMaker($maker2);
         $manager->persist($user2);
 
-        $user3 = new User();
-        $user3->setId(3);
-        $user3->setEmail('mk2@makers.es');
-        $user3->setPassword($this->passwordEncoder->encodePassword($user, 'mk'));
-        $user3->setRoles(['ROLE_USER', 'ROLE_DELIVERY']);
-
-        $manager->persist($user3);
-
-        $manager->flush();
         $place = new Place();
         $place->setId(1);
         $place->setName('HUBU');
-        $place->setAddress('Burgos');
-        $place->setCity('Burgos');
-        $place->setPostalCode('09007');
+        $place->setAddress($address);
         $manager->persist($place);
 
         $place = new Place();
         $place->setId(2);
         $place->setName('RESI');
-        $place->setAddress('Burgos');
-        $place->setCity('Burgos');
-        $place->setPostalCode('09007');
+        $place->setAddress($address2);
         $manager->persist($place);
 
         $thing = new Thing();
@@ -83,7 +107,7 @@ class AppFixtures extends Fixture
         $task->setStatus(Task::STATUS_DELIVERED);
         $task->setDeliveryType(Task::DELIVER_TYPE_COLLECT);
         $task->setExtra('extra todo');
-        $task->setMaker($user);
+        $task->setMaker($maker);
         $manager->persist($task);
 
         $manager->flush();

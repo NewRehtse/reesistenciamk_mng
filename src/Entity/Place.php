@@ -25,32 +25,26 @@ class Place
     private $id;
 
     /**
+     * @ORM\OneToOne(targetEntity="User", mappedBy="place")
+     *
+     * @var User|null
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
+     *
+     * @var Address|null
+     */
+    private $address;
+
+    /**
      * @ORM\Column(type="string", length=191, unique=true)
      *
      * @var string
      */
     private $name = '';
-
-    /**
-     * @ORM\Column(type="string", length=191, nullable=true)
-     *
-     * @var string
-     */
-    private $address = '';
-
-    /**
-     * @ORM\Column(type="string", length=191, nullable=true)
-     *
-     * @var string
-     */
-    private $city = '';
-
-    /**
-     * @ORM\Column(type="string", length=191, nullable=true)
-     *
-     * @var string
-     */
-    private $postalCode = '';
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Needs", mappedBy="place")
@@ -84,38 +78,28 @@ class Place
         $this->name = $name;
     }
 
-    public function address(): string
+    public function needs(): PersistentCollection
+    {
+        return $this->needs;
+    }
+
+    public function user(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): void
+    {
+        $this->user = $user;
+    }
+
+    public function address(): ?Address
     {
         return $this->address;
     }
 
-    public function setAddress(string $address): void
+    public function setAddress(Address $address): void
     {
         $this->address = $address;
-    }
-
-    public function city(): string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
-    }
-
-    public function postalCode(): string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(string $postalCode): void
-    {
-        $this->postalCode = $postalCode;
-    }
-
-    public function needs(): PersistentCollection
-    {
-        return $this->needs;
     }
 }

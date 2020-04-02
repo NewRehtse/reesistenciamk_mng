@@ -12,7 +12,7 @@
 {% block login_form %}
     {% form_theme form '@AdminLTE/layout/form-theme-security.html.twig' %}
     {{ form_start(form, {'method': 'post', 'action': path('registration'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    {{ form_widget(form) }}
+        {{ form_widget(form) }}
     {{ form_end(form) }}
 {% endblock %}
 

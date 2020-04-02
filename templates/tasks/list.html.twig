@@ -24,7 +24,7 @@
                 <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <td>{{ task.maker.email }}</td>
+                        <td>{{ task.maker.user.nick|default('Anónimo')}}</td>
                         <td>{{ task.thing.model }}</td>
                         <td>{{ task.amount }}</td>
                         <td><span class="badge">{{ getDeliveryTypeText(task.deliveryType)}}</span></td>
@@ -32,7 +32,14 @@
                         <td>
                             {{ task.place ? task.place.name : '' }}
                         </td>
-                        <td>{{ task.collectAddress }}</td>
+                        <td>
+                            {% if task.collectAddress %}
+                                {{ task.collectAddress.address1 }}
+                                <br>
+                                {{ task.collectAddress.address2 }}
+                                <br>{{ task.collectAddress.city }} {{ task.collectAddress.postalCode }}
+                            {% endif %}
+                        </td>
                         <td>
                             {{ btn.link_button('', path('task.detail', {taskId: task.id}), 'fa fa-eye', 'info', 'sm') }}
                             {{ btn.link_button('', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
@@ -43,9 +50,11 @@
             </table>
         </div>
     </div>
-    <div class="pull-left">
-        {{ btn.link_button('Crear lote', path('task.create'), 'far fa-save', 'success', 'lg') }}
-    </div>
+    {% if user.maker %}
+        <div class="pull-left">
+            {{ btn.link_button('Crear lote', path('task.create'), 'far fa-save', 'success', 'lg') }}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

@@ -5,7 +5,28 @@
 {% block page_subtitle %}{% endblock %}
 
 {% block page_content %}
+    {% if user.address == null or (user.nickTelegram == '' and user.phoneNumber == '') %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-info"></i> Rellena tu información!</h4>
+            Falta información en tu perfil! Necesitamos tu teléfono o telegram para poder contactar contigo, y tu dirección es necesaria para saber dónde ir a recoger/llevar piezas.
+            <br>Editalo en tu <a href="{{ path('users.profile') }}">perfil de usuario</a>.
+        </div>
+    {% endif %}
+
+    {% block page_content_start %}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} alert-dismissible">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endblock %}
+
     {% include 'dashboard/boxes.html.twig' %}
+
+    {% include 'dashboard/forms.html.twig' %}
 
     {% include 'dashboard/printed-things.html.twig' %}
 {% endblock %}

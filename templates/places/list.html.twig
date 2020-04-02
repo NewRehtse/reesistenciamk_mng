@@ -25,8 +25,12 @@
                             <th scope="row" class="col-md-1">{{ place.id }}</th>
                             <td>{{ place.name }}</td>
                             <td>
-                                {{ place.address }}
-                                <br>{{ place.city }} {{ place.postalCode }}
+                                {% if place.address %}
+                                    {{ place.address.address1 }}
+                                    <br>
+                                    {{ place.address.address2 }}
+                                    <br>{{ place.address.city }} {{ place.address.postalCode }}
+                                {% endif %}
                             </td>
                             <td>
                                 {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}

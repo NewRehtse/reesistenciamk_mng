@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -52,27 +51,6 @@ class User implements UserInterface
     private $nick;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string|null
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string|null
-     */
-    private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @var string
-     */
-    private $postalCode;
-
-    /**
      * @ORM\Column(type="integer", nullable=true)
      *
      * @var int|null
@@ -87,23 +65,38 @@ class User implements UserInterface
     private $nickTelegram;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\OneToOne(targetEntity="Maker", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="maker", referencedColumnName="id")
      *
-     * @var string|null
+     * @var Maker|null
      */
-    private $printer;
+    private $maker;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="maker")
+     * @ORM\OneToOne(targetEntity="Delivery", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="delivery", referencedColumnName="id")
      *
-     * @var Task[]
+     * @var Delivery|null
      */
-    private $tasks;
+    private $delivery;
 
-    public function __construct()
-    {
-        $this->tasks = new ArrayCollection();
-    }
+    /**
+     * @ORM\OneToOne(targetEntity="Place", inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="place", referencedColumnName="id")
+     *
+     * @var Place|null
+     */
+    private $place;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="address", referencedColumnName="id")
+     *
+     * @var Address|null
+     */
+    private $address;
+
+    private $userType;
 
     public function getId(): ?int
     {
@@ -202,42 +195,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getCity(): ?string
-    {
-        return $this->city;
-    }
-
-    public function setCity(?string $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
-    public function getPostalCode(): ?string
-    {
-        return $this->postalCode;
-    }
-
-    public function setPostalCode(?string $postalCode): self
-    {
-        $this->postalCode = $postalCode;
-
-        return $this;
-    }
-
     public function getPhoneNumber(): ?int
     {
         return $this->phoneNumber;
@@ -246,26 +203,6 @@ class User implements UserInterface
     public function setPhoneNumber(?int $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    /**
-     * @return Task[]
-     */
-    public function getTasks(): array
-    {
-        return $this->tasks;
-    }
-
-    /**
-     * @param Task[] $tasks
-     *
-     * @return $this
-     */
-    public function setTasks(array $tasks)
-    {
-        $this->tasks = $tasks;
 
         return $this;
     }
@@ -280,13 +217,62 @@ class User implements UserInterface
         $this->nickTelegram = $nickTelegram;
     }
 
-    public function printer(): ?string
+    public function address(): ?Address
     {
-        return $this->printer;
+        return $this->address;
     }
 
-    public function setPrinter(?string $printer): void
+    public function setAddress(Address $address): void
     {
-        $this->printer = $printer;
+        $this->address = $address;
+    }
+
+    public function maker(): ?Maker
+    {
+        return $this->maker;
+    }
+
+    public function setMaker(?Maker $maker): void
+    {
+        $this->roles[] = 'ROLE_MAKER';
+        $this->maker = $maker;
+    }
+
+    public function delivery(): ?Delivery
+    {
+        return $this->delivery;
+    }
+
+    public function setDelivery(?Delivery $delivery): void
+    {
+        $this->roles[] = 'ROLE_DELIVERY';
+        $this->delivery = $delivery;
+    }
+
+    public function place(): ?Place
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?Place $place): void
+    {
+        $this->roles[] = 'ROLE_PLACE';
+        $this->place = $place;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function userType()
+    {
+        return $this->userType;
+    }
+
+    /**
+     * @param mixed $userType
+     */
+    public function setUserType($userType): void
+    {
+        $this->userType = $userType;
     }
 }

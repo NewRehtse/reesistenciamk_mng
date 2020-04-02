@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\Type\TaskType;
@@ -47,7 +48,13 @@ class TaskController extends AbstractController
     {
         $tasks = $this->getTasks();
 
-        return $this->render('tasks/list.html.twig', ['tasks' => $tasks]);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('tasks/list.html.twig', [
+            'user' => $user,
+            'tasks' => $tasks,
+        ]);
     }
 
     public function detail(Request $request, int $taskId): Response
@@ -76,7 +83,7 @@ class TaskController extends AbstractController
         }
 
         if ($this->isGranted('ROLE_DELIVERY')) {
-            return $this->taskRepository->findBy(['status' => Task::STATUS_DONE, 'deliveryType' => Task::DELIVER_TYPE_COLLECT]);
+            return $this->taskRepository->findBy(['status' => Task::STATUS_COLLECT_REQUESTED]);
         }
 
         $user = $this->getCurrentUser();
@@ -91,8 +98,18 @@ class TaskController extends AbstractController
     {
         $task = new Task();
         $user = $this->getCurrentUser();
-        if (null !== $user) {
-            $task->setMaker($user);
+        if (null !== $user && null !== $user->maker()) {
+            $task->setMaker($user->maker());
+        }
+
+        $userAddress = $user->address();
+        if (null !== $userAddress) {
+            $taskAddress = new Address();
+            $taskAddress->setPostalCode($userAddress->postalCode());
+            $taskAddress->setCity($userAddress->city());
+            $taskAddress->setAddress1($userAddress->address1());
+            $taskAddress->setAddress2($userAddress->address2());
+            $task->setCollectAddress($taskAddress);
         }
 
         return $this->handleCreateTaskForm($request, $task);
@@ -121,6 +138,26 @@ class TaskController extends AbstractController
         ]);
     }
 
+    public function updateStatus(Request $request, int $taskId): Response
+    {
+        $task = $this->taskRepository->find($taskId);
+        if (null === $task) {
+            return $this->redirect('/tasks');
+        }
+        $status = $request->get('status', '');
+        if ('collected' === $status) {
+            $task->setStatus(Task::STATUS_COLLECTED);
+            $this->taskRepository->save($task);
+        }
+
+        $this->addFlash(
+                'info',
+                'Material recogido!'
+        );
+
+        return $this->redirectToRoute('home');
+    }
+
     public function createFromNeed(Request $request, int $needId): Response
     {
         $task = new Task();
@@ -146,6 +183,14 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Task $task */
             $task = $form->getData();
+            if (0 === $task->amount()) {
+                $this->addFlash(
+                        'warning',
+                        'No puedes crear un lote con 0 imprimibles... '
+                );
+
+                return $this->redirectToRoute('tasks', []);
+            }
 
             $this->taskRepository->save($task);
 

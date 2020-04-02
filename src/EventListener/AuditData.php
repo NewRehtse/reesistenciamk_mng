@@ -2,8 +2,7 @@
 
 namespace App\EventListener;
 
-// use App\Entity\History;
-// use App\Entity\Session;
+use App\Entity\User;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -21,17 +20,19 @@ class AuditData
     {
         $entity = $args->getObject();
 
-        //Control para que si no es instancia de las que hemos puesto aqui, se salga
-        // (entidades que no tienen datos de audición)
-        // if ($entity instanceof Session || $entity instanceof History) {
-        //     return;
-        // }
+        $token = $this->tokenStorage->getToken();
 
         // Si nos llega ya con un usario creador, lo respetamos, para cuando importamos/exportamos
-        if (!$entity->getCrtUser()) {
-            $user = $this->tokenStorage->getToken()->getUser()->getUsername();
+        if (null !== $token && !$entity->getCrtUser()) {
+            $email = '';
+            $user = $token->getUser();
+            if ($user instanceof User) {
+                $email = $user->getEmail();
+            } elseif ($entity instanceof User) {
+                $email = $entity->getEmail(); //When registration
+            }
 
-            $entity->setCrtUser($user);
+            $entity->setCrtUser($email);
         }
 
         // Idem para la fecha
@@ -45,13 +46,12 @@ class AuditData
     { //Solo cuando se crea
         $entity = $args->getObject();
 
-        //Control para que si no es instancia de las que hemos puesto aqui, se salga
-        // (entidades que no tienen datos de audición)
-        // if ($entity instanceof Session || $entity instanceof History) {
-        //     return;
-        // }
+        $token = $this->tokenStorage->getToken();
+        if (null === $token) {
+            return;
+        }
 
-        $user = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $user = $token->getUser()->getEmail();
 
         $entity->setUpdUser($user);
         $entity->setUpdDate(new \DateTime());
