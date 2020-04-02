@@ -1,3 +1,4 @@
+{% if user.maker %}
 <div class="col-md-6">
     <div class="box box-success">
         <div class="box-header with-border">
@@ -5,7 +6,7 @@
         </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form">
+        <form role="form" action="{{ path('home') }}" method="POST">
             <div class="box-body">
 
                 <div class="row">
@@ -18,13 +19,13 @@
                     <div class="col-xs-9">
                         <div class="form-group">
                             {% if tasks|length >0 %}
-                                <select multiple="" class="form-control">
+                                <select id="tasks" name="tasks[]" multiple class="form-control">
                                     {% for task in tasks %}
                                         <option value="{{ task.id }}">{{ task.thing.type }} - {{ task.thing.model }} : {{ task.amount }}</option>
                                     {% endfor %}
                                 </select>
                             {% else %}
-                                No tienes lotes creados
+                                No tienes lotes pendientes de recoger
                             {% endif %}
                         </div>
                     </div>
@@ -37,9 +38,11 @@
             </div>
 
             <div class="box-footer">
+                <input type="hidden" class="form-control" id="collect" name="collect" value="collect">
                 <button type="submit" class="btn btn-primary">Solicitar</button>
             </div>
         </form>
     </div>
     <!-- /.box -->
 </div>
+{% endif %}

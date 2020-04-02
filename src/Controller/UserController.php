@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Delivery;
+use App\Entity\Maker;
 use App\Entity\User;
 use App\Form\Type\CreateUserType;
 use App\Form\Type\EditProfile;
@@ -107,6 +109,16 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
+            if (\in_array('ROLE_MAKER', $user->getRoles(), true)) {
+                $maker = new Maker();
+                $maker->setUser($user);
+                $user->setMaker($maker);
+            }
+            if (\in_array('ROLE_DELIVERY', $user->getRoles(), true)) {
+                $delivery = new Delivery();
+                $delivery->setUser($user);
+                $user->setDelivery($delivery);
+            }
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 

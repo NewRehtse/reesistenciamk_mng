@@ -48,7 +48,13 @@ class TaskController extends AbstractController
     {
         $tasks = $this->getTasks();
 
-        return $this->render('tasks/list.html.twig', ['tasks' => $tasks]);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('tasks/list.html.twig', [
+            'user' => $user,
+            'tasks' => $tasks,
+        ]);
     }
 
     public function detail(Request $request, int $taskId): Response
@@ -77,7 +83,7 @@ class TaskController extends AbstractController
         }
 
         if ($this->isGranted('ROLE_DELIVERY')) {
-            return $this->taskRepository->findBy(['status' => Task::STATUS_DONE, 'deliveryType' => Task::DELIVER_TYPE_COLLECT]);
+            return $this->taskRepository->findBy(['status' => Task::STATUS_COLLECT_REQUESTED]);
         }
 
         $user = $this->getCurrentUser();
@@ -130,6 +136,26 @@ class TaskController extends AbstractController
         return $this->render('tasks/create.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    public function updateStatus(Request $request, int $taskId): Response
+    {
+        $task = $this->taskRepository->find($taskId);
+        if (null === $task) {
+            return $this->redirect('/tasks');
+        }
+        $status = $request->get('status', '');
+        if ('collected' === $status) {
+            $task->setStatus(Task::STATUS_COLLECTED);
+            $this->taskRepository->save($task);
+        }
+
+        $this->addFlash(
+                'info',
+                'Material recogido!'
+        );
+
+        return $this->redirectToRoute('home');
     }
 
     public function createFromNeed(Request $request, int $needId): Response

@@ -18,3 +18,7 @@ task.detail:
   path: /{taskId}
   controller: App\Controller\TaskController::detail
 
+task.update_status:
+    path: /{taskId}/update_status
+    controller: App\Controller\TaskController::updateStatus
+

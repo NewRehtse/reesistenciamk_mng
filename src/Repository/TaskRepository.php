@@ -79,4 +79,14 @@ class TaskRepository extends ServiceEntityRepository
     {
         return $this->findBy(['maker' => $maker]);
     }
+
+    public function findByStatus(int $status): array
+    {
+        return $this->findBy(['status' => $status]);
+    }
+
+    public function findByMakerAndStatus(Maker $maker, int $status): array
+    {
+        return $this->findBy(['maker' => $maker, 'status' => $status]);
+    }
 }

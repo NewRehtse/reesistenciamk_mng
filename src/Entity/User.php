@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -66,7 +65,7 @@ class User implements UserInterface
     private $nickTelegram;
 
     /**
-     * @ORM\OneToOne(targetEntity="Maker", inversedBy="user")
+     * @ORM\OneToOne(targetEntity="Maker", inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="maker", referencedColumnName="id")
      *
      * @var Maker|null
@@ -74,7 +73,7 @@ class User implements UserInterface
     private $maker;
 
     /**
-     * @ORM\OneToOne(targetEntity="Delivery", inversedBy="user")
+     * @ORM\OneToOne(targetEntity="Delivery", inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="delivery", referencedColumnName="id")
      *
      * @var Delivery|null
@@ -82,7 +81,7 @@ class User implements UserInterface
     private $delivery;
 
     /**
-     * @ORM\OneToOne(targetEntity="Place", inversedBy="user")
+     * @ORM\OneToOne(targetEntity="Place", inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="place", referencedColumnName="id")
      *
      * @var Place|null
@@ -98,11 +97,6 @@ class User implements UserInterface
     private $address;
 
     private $userType;
-
-    public function __construct()
-    {
-        $this->tasks = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {

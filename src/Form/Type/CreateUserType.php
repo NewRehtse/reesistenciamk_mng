@@ -38,9 +38,7 @@ class CreateUserType extends AbstractType
                 'choices' => $roles,
                 'multiple' => true,
             ])
-            ->add('address', TextType::class, ['required' => false, 'label' => 'Dirección'])
-            ->add('city', TextType::class, ['required' => false, 'label' => 'Ciudad'])
-            ->add('postalCode', TextType::class, ['required' => false, 'label' => 'Código Postal'])
+            ->add('address', AddressType::class, ['required' => false, 'label' => 'Dirección'])
             ->add('phoneNumber', TextType::class, ['required' => false, 'label' => 'Teléfono'])
             ->add('nickTelegram', TextType::class, ['required' => false, 'label' => 'Nick telegram'])
             ->add('save', SubmitType::class, ['label' => 'Crear usuario', 'attr' => ['class' => 'login100-form-btn']])

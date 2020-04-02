@@ -51,7 +51,7 @@ class TaskUpdateType extends AbstractType
         $builder
             ->add('status', ChoiceType::class, ['choices' => $status, 'label' => 'Estado actual'])
             ->add('deliveryType', ChoiceType::class, ['label' => 'Tipo de entrega', 'choices' => $deliveryTypes])
-            ->add('collectAddress', TextType::class,
+            ->add('collectAddress', AddressType::class,
                 [
                     'label' => 'Drección de recogida',
                     'attr' => ['placeholder' => 'Rellenar en caso de que sea de tipo Recogida'],

@@ -1,0 +1,43 @@
+{% if user.delivery %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+    <div class="col-md-6">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">Recoger material</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr role="row">
+                    <th scope="col">Maker</th>
+                    <th scope="col">Imprimible</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Sitio de recogida</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for task in tasksToCollect %}
+                    <tr role="row">
+                        <td>{{ task.maker.user.nick|default('Anonimo') }}</td>
+                        <td>{{ task.thing.type ~ ' - ' ~ task.thing.model }}</td>
+                        <td>{{ task.amount }}</td>
+                        <td>
+                            {% if task.collectAddress %}
+                                {{ task.collectAddress.address1 }}
+                                <br>
+                                {{ task.collectAddress.address2 }}
+                                <br>{{ task.collectAddress.city }} {{ task.collectAddress.postalCode }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ btn.link_button('Recogido', path('task.update_status', {taskId: task.id, status: 'collected'}), 'fa fa-pen', 'info', 'sm') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- /.box -->
+    </div>
+{% endif %}
