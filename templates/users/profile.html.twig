@@ -42,6 +42,7 @@
                 </tbody>
             </table>
             {{ btn.link_button('Editar', path('users.profile.edit', {userId: user.id}), 'fa fa-pen', 'info', 'sm') }}
+            {{ btn.link_button('Cambiar contraseña', path('users.profile.edit_password', {userId: user.id}), 'fa fa-pen', 'info', 'sm') }}
         </div>
     </div>
 {% endblock %}

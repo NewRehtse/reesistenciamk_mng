@@ -34,6 +34,10 @@ users.profile.edit:
   path: /profile/edit
   controller: App\Controller\UserController::profileEdit
 
+users.profile.edit_password:
+    path: /profile/edit/password
+    controller: App\Controller\UserController::editPassword
+
 home:
   path: /
   controller: App\Controller\DashboardController::index
