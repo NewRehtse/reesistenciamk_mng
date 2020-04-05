@@ -6,13 +6,16 @@ use App\Entity\Delivery;
 use App\Entity\Maker;
 use App\Entity\User;
 use App\Form\Type\CreateUserType;
+use App\Form\Type\EditPassword;
 use App\Form\Type\EditProfile;
 use App\Form\Type\EditUserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
@@ -37,7 +40,6 @@ class UserController extends AbstractController
     public function profileEdit(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = $this->getUser();
-        $currentRoles = $user->getRoles();
 
         $form = $this->createForm(EditProfile::class, $user);
 
@@ -45,9 +47,6 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
-            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
-            $user->setPassword($password);
-            $user->setRoles($currentRoles); //Los roles no se actualizan
 
             $this->userRepository->save($user);
 
@@ -56,6 +55,52 @@ class UserController extends AbstractController
 
         return $this->render('users/profile-edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        /** @var UserInterface $user */
+        $user = $this->getUser();
+        $oldPassword = $user->getPassword();
+
+        $form = $this->createForm(EditPassword::class, $user);
+
+        if ('POST' === $request->getMethod()) {
+            $formData = $request->request->get('edit_password');
+            $currentPassword = $formData['current'] ?? '';
+            $encoder = new NativePasswordEncoder();
+            $valid = $encoder->isPasswordValid($oldPassword, $currentPassword, '');
+
+            if (!$valid) {
+                $this->addFlash(
+                        'error',
+                        'La contraseña actual no coincide.'
+                );
+
+                return $this->redirectToRoute('users.profile');
+            }
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $form->getData();
+            $password = $passwordEncoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
+
+            $this->userRepository->save($user);
+
+            $this->addFlash(
+                    'success',
+                    'Contraseña cambiada.'
+            );
+
+            return $this->redirectToRoute('users.profile');
+        }
+
+        return $this->render('users/profile-edit.html.twig', [
+                'form' => $form->createView(),
         ]);
     }
 
