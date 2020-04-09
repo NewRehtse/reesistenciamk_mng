@@ -66,7 +66,8 @@ class UserController extends AbstractController
 
         $form = $this->createForm(EditPassword::class, $user);
 
-        if ('POST' === $request->getMethod()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $request->request->get('edit_password');
             $currentPassword = $formData['current'] ?? '';
             $encoder = new NativePasswordEncoder();
@@ -75,15 +76,14 @@ class UserController extends AbstractController
             if (!$valid) {
                 $this->addFlash(
                         'error',
-                        'La contraseña actual no coincide.'
+                        'La contraseña actual no coincide, vuelve a hacer login e intenta cambiarla de nuevo.'
                 );
 
+                $this->getDoctrine()->getManager()->refresh($user);
+                //Realmente redirige al login
                 return $this->redirectToRoute('users.profile');
             }
-        }
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
             /** @var User $user */
             $user = $form->getData();
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
@@ -96,6 +96,7 @@ class UserController extends AbstractController
                     'Contraseña cambiada.'
             );
 
+            $this->getDoctrine()->getManager()->refresh($user);
             return $this->redirectToRoute('users.profile');
         }
 
