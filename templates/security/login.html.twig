@@ -6,6 +6,15 @@
 {% block login_social_auth %}{% endblock %}
 
             {% block login_form %}
+                {% block page_content_start %}
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ label }} alert-dismissible">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock %}
                 <form action="{{ path('login') }}" method="post">
                     {% block login_form_start %}{% endblock %}
                     <div class="form-group has-feedback">
