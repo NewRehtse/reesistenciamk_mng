@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
@@ -60,7 +59,7 @@ class UserController extends AbstractController
 
     public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        /** @var UserInterface $user */
+        /** @var User $user */
         $user = $this->getUser();
         $oldPassword = $user->getPassword();
 
@@ -79,7 +78,7 @@ class UserController extends AbstractController
                         'La contraseña actual no coincide, vuelve a hacer login e intenta cambiarla de nuevo.'
                 );
 
-                $this->getDoctrine()->getManager()->refresh($user);
+                $this->userRepository->refreshUser($user);
                 //Realmente redirige al login
                 return $this->redirectToRoute('users.profile');
             }
@@ -96,7 +95,9 @@ class UserController extends AbstractController
                     'Contraseña cambiada.'
             );
 
-            $this->getDoctrine()->getManager()->refresh($user);
+            //This make
+            $this->userRepository->refreshUser($user);
+
             return $this->redirectToRoute('users.profile');
         }
 
