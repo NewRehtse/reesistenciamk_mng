@@ -1,0 +1,219 @@
+services:
+    orchestrator:
+        alias: 'app.orchestrator'
+
+    app.interface.orchestrator:
+        class: App\Orchestrator\OrchestratorInterface
+
+    App\Orchestrator\OrchestratorInterface: '@orchestrator'
+
+    app.orchestrator:
+        class: App\Orchestrator\OrchestratorChain
+        public: false
+
+    app.orchestrator.home:
+        class: App\Orchestrator\Dashboard\IndexOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@security.token_storage'
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.home.add_needs:
+        class: App\Orchestrator\Dashboard\AddNeedsOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@security.token_storage'
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.home.request_collect:
+        class: App\Orchestrator\Dashboard\RequestCollectOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@security.token_storage'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.list:
+        class: App\Orchestrator\Place\ListOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.create:
+        class: App\Orchestrator\Place\CreateOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.delete:
+        class: App\Orchestrator\Place\DeleteOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.add-needs:
+        class: App\Orchestrator\Place\AddNeedsOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.list-needs:
+        class: App\Orchestrator\Place\ListNeedsOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.places.cover-needs:
+        class: App\Orchestrator\Place\CoverNeedsOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.tasks.list:
+        class: App\Orchestrator\Task\ListOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.tasks.detail:
+        class: App\Orchestrator\Task\DetailOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.tasks.create:
+        class: App\Orchestrator\Task\CreateOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.tasks.update-status:
+        class: App\Orchestrator\Task\UpdateStatusOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.thing.create:
+        class: App\Orchestrator\Thing\CreateOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.thing.delete:
+        class: App\Orchestrator\Thing\DeleteOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.thing.list:
+        class: App\Orchestrator\Thing\ListOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.user.create:
+        class: App\Orchestrator\User\CreateUserOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+            - '@security.password_encoder'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.user.edit-password:
+        class: App\Orchestrator\User\EditPasswordOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+            - '@security.password_encoder'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.user.list:
+        class: App\Orchestrator\User\ListOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.user.profile-edit:
+        class: App\Orchestrator\User\ProfileEditOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.user.detail:
+        class: App\Orchestrator\User\UserDetailOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+        tags:
+            - { name: 'orchestrator' }

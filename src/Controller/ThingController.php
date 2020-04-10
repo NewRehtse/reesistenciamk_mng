@@ -2,45 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Task;
-use App\Entity\Thing;
-use App\Form\Type\ThingType;
-use App\Repository\TaskRepository;
-use App\Repository\ThingRepository;
+use App\Orchestrator\OrchestratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class ThingController extends AbstractController
 {
-    /** @var ThingRepository */
-    private $thingRepository;
+    /** @var OrchestratorInterface */
+    private $orchestrator;
 
-    /** @var TaskRepository */
-    private $taskRepository;
-
-    public function __construct(ThingRepository $thingRepository, TaskRepository $taskRepository)
+    public function __construct(OrchestratorInterface $orchestrator)
     {
-        $this->thingRepository = $thingRepository;
-        $this->taskRepository = $taskRepository;
+        $this->orchestrator = $orchestrator;
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $things = $this->thingRepository->findAll();
+        $content = $this->orchestrator->content($request, 'thing-list');
 
-        $result = [];
-        foreach ($things as $thing) {
-            $collected = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_COLLECTED);
-            $delivered = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DELIVERED);
-            $done = $this->taskRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DONE);
-            $result[] = ['thing' => $thing, 'delivered' => $delivered, 'collected' => $collected, 'done' => $done];
-        }
-
-        return $this->render('things/list.html.twig', ['results' => $result]);
+        return $this->render('things/list.html.twig', $content);
     }
 
     public function create(Request $request): Response
@@ -48,23 +33,18 @@ class ThingController extends AbstractController
 //        if (!$this->isGranted('ROLE_ADMIN')) {
 //            return $this->redirect('/things');
 //        }
+        $content = $this->orchestrator->content($request, 'thing-create');
 
-        $thing = new Thing();
-
-        $form = $this->createForm(ThingType::class, $thing);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $thing = $form->getData();
-
-            $this->thingRepository->save($thing);
+        if (isset($content['thingId'])) {
+            $this->addFlash(
+                    'info',
+                    'Imprimible creado creado'
+            );
 
             return $this->redirectToRoute('things');
         }
 
-        return $this->render('things/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('things/create.html.twig', $content);
     }
 
     public function update(Request $request, int $thingId): Response
@@ -73,25 +53,18 @@ class ThingController extends AbstractController
             return $this->redirect('/things');
         }
 
-        $thing = $this->thingRepository->find($thingId);
+        $content = $this->orchestrator->content($request, 'thing-update');
 
-        $form = $this->createForm(ThingType::class, $thing);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $thing = $form->getData();
-
-            $this->thingRepository->save($thing);
+        if (isset($content['thingId'])) {
+            $this->addFlash(
+                    'info',
+                    'Imprimible creado creado'
+            );
 
             return $this->redirectToRoute('things');
         }
 
-        return $this->render('things/update.html.twig', [
-            'form' => $form->createView(),
-            'hasTasks' => $thing->tasks()->count() > 0,
-        ]);
+        return $this->render('things/update.html.twig', $content);
     }
 
     public function delete(Request $request, int $thingId): Response
@@ -100,16 +73,22 @@ class ThingController extends AbstractController
             return $this->redirect('/things');
         }
 
-        $thing = $this->thingRepository->find($thingId);
+        try {
+            $this->orchestrator->content($request, 'thing-delete');
+        } catch (NotFoundHttpException $notFoundHttpException) {
+            $this->addFlash('error', $notFoundHttpException->getMessage());
 
-        if (null === $thing) {
+            return $this->redirectToRoute('things');
+        } catch (\InvalidArgumentException $invalidArgumentException) {
+            $this->addFlash('error', $invalidArgumentException->getMessage());
+
             return $this->redirectToRoute('things');
         }
-        if ($thing->tasks()->count() > 0) {
-            return $this->redirectToRoute('things');
-        }
 
-        $this->thingRepository->delete($thing);
+        $this->addFlash(
+                'info',
+                'Imprimible borrado'
+        );
 
         return $this->redirectToRoute('things');
     }

@@ -73,11 +73,11 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 //            new MenuItemModel('sub-demo2', 'Form - Sidebar', 'forms3', [], 'far fa-arrow-alt-circle-up')
 //        );
 //        $event->addItem($demo);
-        if ($this->security->isGranted('ROLE_ADMIN')) {
-            $event->addItem(
+//        if ($this->security->isGranted('ROLE_ADMIN')) {
+        $event->addItem(
                 new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users')
             );
-        }
+//        }
 
         if ($this->security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $event->addItem(

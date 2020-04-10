@@ -11,7 +11,7 @@
 
 namespace App\Twig;
 
-use App\Entity\Task;
+use App\Persistence\Doctrine\Entity\Task;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

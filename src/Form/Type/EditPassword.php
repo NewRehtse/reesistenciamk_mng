@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\User;
+use App\Persistence\Doctrine\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;

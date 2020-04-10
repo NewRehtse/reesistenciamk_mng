@@ -2,11 +2,11 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Place;
-use App\Entity\Task;
-use App\Entity\Thing;
-use App\Repository\PlaceRepository;
-use App\Repository\ThingRepository;
+use App\Persistence\Doctrine\Entity\Place;
+use App\Persistence\Doctrine\Entity\Task;
+use App\Persistence\Doctrine\Entity\Thing;
+use App\Persistence\Doctrine\Repository\PlaceRepository;
+use App\Persistence\Doctrine\Repository\ThingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
