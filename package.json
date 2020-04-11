@@ -27,7 +27,7 @@
     "dependencies": {
         "child_process": "^1.0.2",
         "datatables.net": "^1.10.20",
-        "datatables.net-bs4": "^1.10.20",
+        "datatables.net-bs": "^1.10.20",
         "datatables.net-dt": "^1.10.20",
         "fs": "0.0.1-security",
         "popper": "^1.0.1"
