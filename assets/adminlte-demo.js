@@ -28,10 +28,9 @@ require('../vendor/kevinpapst/adminlte-bundle/Resources/assets/default_avatar.pn
 require('icheck');
 require('icheck/skins/square/blue.css');
 
-require('datatables.net-dt');
+require('datatables.net');
+require('datatables.net-bs');
 
-require('bootstrap')();
-require( 'datatables.net-bs4' )();
 
 // ------ for charts ------
 const Chart = require('chart.js/dist/Chart.min');
