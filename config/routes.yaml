@@ -4,7 +4,7 @@ login:
 
 registration:
   path: /registration
-  controller: App\Controller\RegistrationController::register
+  controller: App\Controller\SecurityController::register
 
 logout:
   path: /logout
@@ -19,7 +19,7 @@ users.admin.create:
   controller: App\Controller\UserController::adminUsersCreate
 
 users.admin.edit:
-  path: /admin/users/{userId}/create
+  path: /admin/users/{userId}/edit
   controller: App\Controller\UserController::adminUsersEdit
 
 users.admin.detail:
@@ -28,15 +28,15 @@ users.admin.detail:
 
 users.profile:
   path: /profile
-  controller: App\Controller\UserController::profile
+  controller: App\Controller\ProfileController::profile
 
 users.profile.edit:
   path: /profile/edit
-  controller: App\Controller\UserController::profileEdit
+  controller: App\Controller\ProfileController::profileEdit
 
 users.profile.edit_password:
     path: /profile/edit/password
-    controller: App\Controller\UserController::editPassword
+    controller: App\Controller\ProfileController::editPassword
 
 home:
   path: /

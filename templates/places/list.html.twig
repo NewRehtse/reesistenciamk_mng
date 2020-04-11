@@ -14,9 +14,7 @@
                     <th scope="col" class="col-md-1">#</th>
                     <th scope="col" class="col-md-4">Nombre</th>
                     <th scope="col" class="col-md-3">Dirección</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th scope="col" class="col-md-4">Administrar</th>
-                    {% endif %}
+                    <th scope="col" class="col-md-4"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,9 +31,15 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
-                                {{ btn.link_button('Solicitar material', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
-                                {{ btn.link_button('Ver solicitudes', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                                {% if is_granted('place_edit', place) %}
+                                    {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
+                                {% endif %}
+                                {% if is_granted('place_add_need', place) %}
+                                    {{ btn.link_button('Solicitar material', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
+                                {% endif %}
+                                {% if is_granted('place_list_needs', place) %}
+                                    {{ btn.link_button('Ver solicitudes', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

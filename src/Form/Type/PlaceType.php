@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Place;
+use App\Persistence\Doctrine\Entity\Place;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

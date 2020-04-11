@@ -1,0 +1,29 @@
+#
+# This file should contain the repositories service definition
+#
+#    base.repository:
+#        alias: 'json.base.repository'
+#
+#    in_memory.base.repository:
+#        class: Vocento\Infrastructure\Persistance\InMemory\InMemoryBaseRepository
+#        public: false
+#
+#    json.base.repository:
+#        class: Vocento\Infrastructure\Persistance\Json\JsonBaseRepository
+#        public: false
+#        arguments:
+#            - '%json.base.repository.filename%'
+#
+#
+services:
+  general.doctrine.repository:
+    class: App\Persistence\Doctrine\GeneralDoctrineRepository
+    arguments:
+      - '@App\Persistence\Doctrine\Repository\TaskRepository'
+      - '@App\Persistence\Doctrine\Repository\UserRepository'
+      - '@App\Persistence\Doctrine\Repository\PlaceRepository'
+      - '@App\Persistence\Doctrine\Repository\ThingRepository'
+      - '@App\Persistence\Doctrine\Repository\NeedsRepository'
+      - '@App\Persistence\Doctrine\Repository\RequestCollectRepository'
+      - '@App\Persistence\Doctrine\Repository\SerialNumberRepository'
+

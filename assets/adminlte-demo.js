@@ -29,9 +29,6 @@ require('icheck');
 require('icheck/skins/square/blue.css');
 
 require('datatables.net-dt');
-// require('popper')
-// require('child_process')
-// require('fs')
 
 require('bootstrap')();
 require( 'datatables.net-bs4' )();

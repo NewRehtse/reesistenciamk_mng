@@ -4,9 +4,11 @@
 {% block document_title %}Gestión de lotes{% endblock %}
 {% block page_title %}Lote{% endblock %}
 {% block page_subtitle %}
-    <span>
-    {{ btn.link_button('Editar Lote', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
-    </span>
+    {% if is_granted('task_edit', task) %}
+        <span>
+        {{ btn.link_button('Editar Lote', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+        </span>
+    {% endif %}
 {% endblock %}
 
 {% block page_content %}

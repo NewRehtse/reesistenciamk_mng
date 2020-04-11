@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Address;
-use App\Entity\Maker;
-use App\Entity\Needs;
-use App\Entity\Place;
-use App\Entity\Task;
-use App\Entity\Thing;
-use App\Entity\User;
+use App\Persistence\Doctrine\Entity\Address;
+use App\Persistence\Doctrine\Entity\Maker;
+use App\Persistence\Doctrine\Entity\Needs;
+use App\Persistence\Doctrine\Entity\Place;
+use App\Persistence\Doctrine\Entity\Task;
+use App\Persistence\Doctrine\Entity\Thing;
+use App\Persistence\Doctrine\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -78,6 +78,7 @@ class AppFixtures extends Fixture
         $place->setId(1);
         $place->setName('HUBU');
         $place->setAddress($address);
+        $place->setOwner($user2);
         $manager->persist($place);
 
         $place = new Place();
@@ -91,6 +92,7 @@ class AppFixtures extends Fixture
         $thing->setType('Mascarilla');
         $thing->setDescription('sencilla');
         $thing->setModel('sencilla');
+        $thing->setOwner($user2);
         $manager->persist($thing);
 
         $needs = new Needs();

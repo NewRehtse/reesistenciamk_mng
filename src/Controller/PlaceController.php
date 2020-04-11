@@ -2,197 +2,159 @@
 
 namespace App\Controller;
 
-use App\Entity\Needs;
-use App\Entity\Place;
-use App\Entity\Task;
-use App\Form\Type\CoverNeedType;
-use App\Form\Type\NeedType;
-use App\Form\Type\PlaceType;
-use App\Repository\NeedsRepository;
-use App\Repository\PlaceRepository;
-use App\Repository\TaskRepository;
+use App\Orchestrator\OrchestratorInterface;
+use App\Security\PlaceVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class PlaceController extends AbstractController
 {
-    /** @var PlaceRepository */
-    private $placeRepository;
+    /** @var OrchestratorInterface */
+    private $orchestrator;
 
-    /** @var NeedsRepository */
-    private $needsRepository;
-
-    /** @var TaskRepository */
-    private $taskRepository;
-
-    public function __construct(
-        PlaceRepository $placeRepository,
-        NeedsRepository $needRepository,
-        TaskRepository $taskRepository
-    ) {
-        $this->placeRepository = $placeRepository;
-        $this->needsRepository = $needRepository;
-        $this->taskRepository = $taskRepository;
+    public function __construct(OrchestratorInterface $orchestrator)
+    {
+        $this->orchestrator = $orchestrator;
     }
 
-    public function list(): Response
+    public function list(Request $request): Response
     {
-        $places = $this->placeRepository->findAll();
+        try {
+            $content = $this->orchestrator->content($request, 'place-list');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a listar demandantes');
 
-        return $this->render('places/list.html.twig', ['places' => $places]);
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('places/list.html.twig', $content);
     }
 
     public function create(Request $request): Response
     {
-        $place = new Place();
-
-        $form = $this->createForm(PlaceType::class, $place);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $place = $form->getData();
-
-            $this->placeRepository->save($place);
+        try {
+            $content = $this->orchestrator->content($request, 'place-create');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a crear demandantes');
 
             return $this->redirectToRoute('places');
         }
 
-        return $this->render('places/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        if (isset($content['error'])) {
+            $this->addFlash('error', $content['error']);
+
+            return $this->render('places/create.html.twig', $content);
+        }
+
+        if (isset($content['place'])) {
+            $this->addFlash('info', 'Demandante creado.');
+
+            return $this->redirectToRoute('places');
+        }
+
+        return $this->render('places/create.html.twig', $content);
     }
 
-    public function update(Request $request, int $placeId): Response
+    public function edit(Request $request): Response
     {
-//        if (!$this->isGranted('ROLE_ADMIN')) {
-//            return $this->redirect('/places');
-//        }
-
-        $place = $this->placeRepository->find($placeId);
-
-        $form = $this->createForm(PlaceType::class, $place);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData() holds the submitted values
-            // but, the original `$task` variable has also been updated
-            $place = $form->getData();
-
-            $this->placeRepository->save($place);
+        if (!$this->isGranted(PlaceVoter::EDIT)) {
+            $this->addFlash('warning', 'No tienes acceso a editar este demandante');
 
             return $this->redirectToRoute('places');
         }
 
-        return $this->render('places/update.html.twig', [
-            'form' => $form->createView(),
-            'hasNeeds' => $place->needs()->count() > 0,
-        ]);
+        $content = $this->orchestrator->content($request, 'place-edit');
+
+        if (isset($content['place'])) {
+            $this->addFlash('info', 'Demandante editado');
+
+            return $this->redirectToRoute('places');
+        }
+
+        return $this->render('places/update.html.twig', $content);
     }
 
     public function delete(Request $request, int $placeId): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect('/places');
+        try {
+            $this->orchestrator->content($request, 'place-delete');
+            $this->addFlash('info', 'Demandante borrado');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a borrar este demandante');
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+        } catch (\InvalidArgumentException $invalidArgumentException) {
+            $this->addFlash('error', $invalidArgumentException->getMessage());
         }
-
-        $place = $this->placeRepository->find($placeId);
-
-        if (null === $place) {
-            return $this->redirectToRoute('places');
-        }
-
-        if ($place->needs()->count() > 0) {
-            return $this->redirectToRoute('places');
-        }
-
-        $this->placeRepository->delete($place);
 
         return $this->redirectToRoute('places');
     }
 
-    public function addNeeds(Request $request, int $placeId): Response
+    public function addNeeds(Request $request): Response
     {
-//        if (!$this->isGranted('ROLE_ADMIN')) {
-//            return $this->redirect('/places');
-//        }
+        try {
+            $content = $this->orchestrator->content($request, 'place-add-needs');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a añadir necesidades a este demandante');
 
-        $place = $this->placeRepository->find($placeId);
-        $need = new Needs();
-        $need->setPlace($place);
+            return $this->redirectToRoute('places');
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
 
-        $form = $this->createForm(NeedType::class, $need);
+            return $this->redirectToRoute('places');
+        }
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Needs $currentNeed */
-            $currentNeed = $form->getData();
+        if (isset($content['placeId'])) {
+            $this->addFlash('info', 'Solicitud añadida.');
 
-            if (null === $currentNeed->thing() || null === $currentNeed->place()) {
-                return $this->redirectToRoute('places');
-            }
-
-            $thing = $currentNeed->thing();
-            $place = $currentNeed->place();
-            /** @var Needs|null $need */
-            $need = $this->needsRepository->findOneBy(['thing' => $thing, 'place' => $place]);
-
-            if (null !== $need) {
-                $need->setAmount($need->amount() + $currentNeed->amount());
-                $this->needsRepository->save($need);
-            } else {
-                $this->needsRepository->save($currentNeed);
-            }
-
-            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $content['placeId']]);
         }
 
         return $this->render('places/addNeeds.html.twig', [
-            'form' => $form->createView(),
+            'form' => $content['form'],
         ]);
     }
 
     public function needs(Request $request, int $placeId): Response
     {
-        $place = $this->placeRepository->find($placeId);
-        $needs = $this->needsRepository->findBy(['place' => $placeId]);
+        try {
+            $content = $this->orchestrator->content($request, 'place-list-needs');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a listar las necesidades a este demandante');
 
-        $needsResult = [];
-        foreach ($needs as $need) {
-            $collectedOrDelivered = $this->taskRepository->howManyThingsDelivered($need->thing());
-            $needsResult[] = ['need' => $need, 'collectedOrDelivered' => $collectedOrDelivered];
+            return $this->redirectToRoute('places');
         }
 
-        return $this->render('places/needs_list.html.twig', ['needs' => $needsResult, 'place' => $place]);
+        return $this->render('places/needs_list.html.twig', $content);
     }
 
-    public function coverNeed(Request $request, int $placeId, int $needId): Response
+    public function coverNeed(Request $request): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            return $this->redirect('/places');
+        try {
+            $content = $this->orchestrator->content($request, 'place-cover-needs');
+            if (isset($content['placeId'])) {
+                $this->addFlash('info', 'Solicitud cubierta');
+
+                return $this->redirectToRoute('places.needs.list', ['placeId' => $content['placeId']]);
+            }
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a cubrir las necesidades de este demandante');
+
+            return $this->redirectToRoute('places');
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('places');
         }
 
-        $need = $this->needsRepository->find($needId);
-        if (null === $need) {
-            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
-        }
-
-        $form = $this->createForm(CoverNeedType::class, $need);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->needsRepository->save($need);
-
-            return $this->redirectToRoute('places.needs.list', ['placeId' => $placeId]);
-        }
-
-        return $this->render('places/addNeeds.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('places/coverNeed.html.twig', [
+            'form' => $content['form'],
         ]);
     }
 }

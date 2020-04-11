@@ -18,9 +18,7 @@
                     <th scope="col">Hechas</th>
                     <th scope="col">Recogidas</th>
                     <th scope="col">Entregadas</th>
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <th scope="col"></th>
-                    {% endif %}
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,7 +35,7 @@
                             <td>{{ result.done }}</td>
                             <td>{{ result.collected }}</td>
                             <td>{{ result.delivered }}</td>
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('thing_edit', result.thing) %}
                                 <td class="col-md-2">
                                     {{ btn.link_button('Editar', path('things.edit', {thingId: result.thing.id}), 'fa fa-pen', 'info', 'sm') }}
                                 </td>

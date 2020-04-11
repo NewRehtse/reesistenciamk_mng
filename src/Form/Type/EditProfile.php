@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\User;
+use App\Persistence\Doctrine\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +21,7 @@ class EditProfile extends AbstractType
             ->add('address', AddressType::class, ['required' => false, 'label' => 'Dirección'])
             ->add('phoneNumber', TextType::class, ['required' => false, 'label' => 'Teléfono'])
             ->add('nickTelegram', TextType::class, ['required' => false, 'label' => 'Nick telegram'])
-            ->add('save', SubmitType::class, ['label' => 'Crear usuario', 'attr' => ['class' => 'login100-form-btn']])
+            ->add('save', SubmitType::class, ['label' => 'Guardar', 'attr' => ['class' => 'login100-form-btn']])
         ;
     }
 

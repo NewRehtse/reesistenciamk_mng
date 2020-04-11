@@ -8,7 +8,7 @@ task.create:
 
 task.create.from.need:
   path: /create/need/{needId}
-  controller: App\Controller\TaskController::createFromNeed
+  controller: App\Controller\TaskController::create
 
 task.edit:
   path: /{taskId}/edit

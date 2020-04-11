@@ -41,8 +41,12 @@
                             {% endif %}
                         </td>
                         <td>
-                            {{ btn.link_button('', path('task.detail', {taskId: task.id}), 'fa fa-eye', 'info', 'sm') }}
-                            {{ btn.link_button('', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+                            {% if is_granted('task_view', task) %}
+                                {{ btn.link_button('', path('task.detail', {taskId: task.id}), 'fa fa-eye', 'info', 'sm') }}
+                            {% endif %}
+                            {% if is_granted('task_edit', task) %}
+                                {{ btn.link_button('', path('task.edit', {taskId: task.id}), 'fa fa-pen', 'info', 'sm') }}
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

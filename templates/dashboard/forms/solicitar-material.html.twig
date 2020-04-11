@@ -13,7 +13,6 @@
                         <div class="form-group">
                             <label>Demandante</label>
                             <select class="form-control" id="place" name="place">
-                                <option value="user">(Usuario actual)</option>
                                 {% for place in places %}
                                     <option value="{{ place.id }}">{{ place.name }}</option>
                                 {% endfor %}

@@ -2,9 +2,9 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Needs;
-use App\Repository\PlaceRepository;
-use App\Repository\ThingRepository;
+use App\Persistence\Doctrine\Entity\Needs;
+use App\Persistence\Doctrine\Repository\PlaceRepository;
+use App\Persistence\Doctrine\Repository\ThingRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

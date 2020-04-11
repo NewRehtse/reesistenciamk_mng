@@ -2,7 +2,7 @@
 
 namespace App\EventListener;
 
-use App\Entity\User;
+use App\Persistence\Doctrine\Entity\User;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
