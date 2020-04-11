@@ -18,9 +18,16 @@ use Symfony\Component\Security\Core\Security;
  */
 class CreateUserOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
+
+    /** @var Security */
     private $security;
+
+    /** @var FormFactoryInterface */
     private $formFactory;
+
+    /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
     public function __construct(
@@ -35,6 +42,9 @@ class CreateUserOrchestrator implements OrchestratorInterface
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $userId = $request->attributes->get('userId', null);

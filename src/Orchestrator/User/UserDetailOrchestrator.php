@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class UserDetailOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
     public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
@@ -19,6 +20,9 @@ class UserDetailOrchestrator implements OrchestratorInterface
         $this->generalRepository = $generalDoctrineRepository;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $userId = $request->attributes->get('userId');

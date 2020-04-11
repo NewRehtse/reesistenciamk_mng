@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
@@ -24,18 +25,26 @@ class PlaceController extends AbstractController
 
     public function list(Request $request): Response
     {
-        $content = $this->orchestrator->content($request, 'place-list');
+        try {
+            $content = $this->orchestrator->content($request, 'place-list');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a listar demandantes');
+
+            return $this->redirectToRoute('home');
+        }
 
         return $this->render('places/list.html.twig', $content);
     }
 
     public function create(Request $request): Response
     {
-        if (!$this->isGranted(PlaceVoter::CREATE)) {
+        try {
+            $content = $this->orchestrator->content($request, 'place-create');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a crear demandantes');
+
             return $this->redirectToRoute('places');
         }
-
-        $content = $this->orchestrator->content($request, 'place-create');
 
         if (isset($content['error'])) {
             $this->addFlash('error', $content['error']);
@@ -54,7 +63,9 @@ class PlaceController extends AbstractController
 
     public function edit(Request $request): Response
     {
-        if (!$this->isGranted(PlaceVoter::CREATE)) {
+        if (!$this->isGranted(PlaceVoter::EDIT)) {
+            $this->addFlash('warning', 'No tienes acceso a editar este demandante');
+
             return $this->redirectToRoute('places');
         }
 
@@ -71,12 +82,11 @@ class PlaceController extends AbstractController
 
     public function delete(Request $request, int $placeId): Response
     {
-        if (!$this->isGranted(PlaceVoter::DELETE)) {
-            return $this->redirectToRoute('places');
-        }
-
         try {
             $this->orchestrator->content($request, 'place-delete');
+            $this->addFlash('info', 'Demandante borrado');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a borrar este demandante');
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
         } catch (\InvalidArgumentException $invalidArgumentException) {
@@ -88,22 +98,22 @@ class PlaceController extends AbstractController
 
     public function addNeeds(Request $request): Response
     {
-//        if (!$this->isGranted('ROLE_ADMIN')) {
-//            return $this->redirect('/places');
-//        }
-
         try {
             $content = $this->orchestrator->content($request, 'place-add-needs');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a añadir necesidades a este demandante');
 
-            if (isset($content['placeId'])) {
-                $this->addFlash('info', 'Solicitud añadida.');
-
-                return $this->redirectToRoute('places.needs.list', ['placeId' => $content['placeId']]);
-            }
+            return $this->redirectToRoute('places');
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToRoute('places');
+        }
+
+        if (isset($content['placeId'])) {
+            $this->addFlash('info', 'Solicitud añadida.');
+
+            return $this->redirectToRoute('places.needs.list', ['placeId' => $content['placeId']]);
         }
 
         return $this->render('places/addNeeds.html.twig', [
@@ -113,17 +123,19 @@ class PlaceController extends AbstractController
 
     public function needs(Request $request, int $placeId): Response
     {
-        $content = $this->orchestrator->content($request, 'place-list-needs');
+        try {
+            $content = $this->orchestrator->content($request, 'place-list-needs');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a listar las necesidades a este demandante');
+
+            return $this->redirectToRoute('places');
+        }
 
         return $this->render('places/needs_list.html.twig', $content);
     }
 
     public function coverNeed(Request $request): Response
     {
-        if (!$this->isGranted(PlaceVoter::COVER_NEED)) {
-            return $this->redirect('/places');
-        }
-
         try {
             $content = $this->orchestrator->content($request, 'place-cover-needs');
             if (isset($content['placeId'])) {
@@ -131,6 +143,10 @@ class PlaceController extends AbstractController
 
                 return $this->redirectToRoute('places.needs.list', ['placeId' => $content['placeId']]);
             }
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso a cubrir las necesidades de este demandante');
+
+            return $this->redirectToRoute('places');
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', $e->getMessage());
 

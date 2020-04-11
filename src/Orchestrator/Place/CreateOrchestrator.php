@@ -6,25 +6,45 @@ use App\Form\Type\PlaceType;
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\Entity\Place;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\PlaceVoter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class CreateOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
+
+    /** @var FormFactoryInterface */
     private $formFactory;
 
-    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository, FormFactoryInterface $formFactory)
-    {
+    /** @var Security */
+    private $security;
+
+    public function __construct(
+            GeneralDoctrineRepository $generalDoctrineRepository,
+            FormFactoryInterface $formFactory,
+            Security $security
+    ) {
         $this->generalRepository = $generalDoctrineRepository;
         $this->formFactory = $formFactory;
+        $this->security = $security;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
+        if (!$this->security->isGranted(PlaceVoter::CREATE)) {
+            throw new AccessDeniedException();
+        }
+
         $placeId = $request->attributes->get('placeId');
 
         $place = new Place();

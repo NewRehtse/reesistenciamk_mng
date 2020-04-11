@@ -28,15 +28,15 @@ users.admin.detail:
 
 users.profile:
   path: /profile
-  controller: App\Controller\UserController::profile
+  controller: App\Controller\ProfileController::profile
 
 users.profile.edit:
   path: /profile/edit
-  controller: App\Controller\UserController::profileEdit
+  controller: App\Controller\ProfileController::profileEdit
 
 users.profile.edit_password:
     path: /profile/edit/password
-    controller: App\Controller\UserController::editPassword
+    controller: App\Controller\ProfileController::editPassword
 
 home:
   path: /

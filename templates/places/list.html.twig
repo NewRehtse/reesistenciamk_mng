@@ -31,11 +31,15 @@
                                 {% endif %}
                             </td>
                             <td>
-                                {% if is_granted('place_edit') %}
+                                {% if is_granted('place_edit', place) %}
                                     {{ btn.link_button('Editar', path('places.edit', {placeId: place.id}), 'fa fa-pen', 'info', 'sm') }}
                                 {% endif %}
-                                {{ btn.link_button('Solicitar material', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
-                                {{ btn.link_button('Ver solicitudes', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                                {% if is_granted('place_add_need', place) %}
+                                    {{ btn.link_button('Solicitar material', path('places.needs.add', {placeId: place.id}), 'fa fa-plus', '', 'sm') }}
+                                {% endif %}
+                                {% if is_granted('place_list_needs', place) %}
+                                    {{ btn.link_button('Ver solicitudes', path('places.needs.list', {placeId: place.id}), 'fa fa-eye', '', 'sm') }}
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

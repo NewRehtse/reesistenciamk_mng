@@ -16,8 +16,8 @@ services:
         public: false
         lazy: true
         arguments:
-            - '@security.token_storage'
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -26,7 +26,6 @@ services:
         public: false
         lazy: true
         arguments:
-            - '@security.token_storage'
             - '@general.doctrine.repository'
         tags:
             - { name: 'orchestrator' }
@@ -37,7 +36,6 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
-            - '@security.token_storage'
         tags:
             - { name: 'orchestrator' }
 
@@ -47,6 +45,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -57,6 +56,7 @@ services:
         arguments:
             - '@general.doctrine.repository'
             - '@form.factory'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -66,6 +66,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -76,6 +77,7 @@ services:
         arguments:
             - '@general.doctrine.repository'
             - '@form.factory'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -85,6 +87,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -95,6 +98,7 @@ services:
         arguments:
             - '@general.doctrine.repository'
             - '@form.factory'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -114,11 +118,23 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
     app.orchestrator.tasks.create:
         class: App\Orchestrator\Task\CreateOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.tasks.edit:
+        class: App\Orchestrator\Task\EditOrchestrator
         public: false
         lazy: true
         arguments:
@@ -134,6 +150,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -144,6 +161,7 @@ services:
         arguments:
             - '@general.doctrine.repository'
             - '@form.factory'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -153,6 +171,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 
@@ -162,6 +181,7 @@ services:
         lazy: true
         arguments:
             - '@general.doctrine.repository'
+            - '@security.helper'
         tags:
             - { name: 'orchestrator' }
 

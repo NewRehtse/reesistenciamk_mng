@@ -4,25 +4,40 @@ namespace App\Orchestrator\Task;
 
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\TaskVoter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class DetailOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
+    /** @var Security */
+    private $security;
+
+    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository, Security $security)
     {
         $this->generalRepository = $generalDoctrineRepository;
+        $this->security = $security;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $taskId = $request->attributes->get('taskId');
 
         $task = $this->generalRepository->findTask($taskId);
+
+        if (!$this->security->isGranted(TaskVoter::VIEW, $task)) {
+            throw new AccessDeniedException();
+        }
 
         if (null === $task) {
             return [];

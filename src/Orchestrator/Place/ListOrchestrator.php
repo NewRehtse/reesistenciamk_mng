@@ -4,22 +4,39 @@ namespace App\Orchestrator\Place;
 
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\PlaceVoter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class ListOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
-    {
+    /** @var Security */
+    private $security;
+
+    public function __construct(
+            GeneralDoctrineRepository $generalDoctrineRepository,
+            Security $security
+    ) {
         $this->generalRepository = $generalDoctrineRepository;
+        $this->security = $security;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
+        if (!$this->security->isGranted(PlaceVoter::LIST)) {
+            throw new AccessDeniedException();
+        }
+
         $places = $this->generalRepository->getAllPlaces();
 
         return ['places' => $places];

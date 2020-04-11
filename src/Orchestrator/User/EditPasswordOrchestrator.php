@@ -17,9 +17,16 @@ use Symfony\Component\Security\Core\Security;
  */
 class EditPasswordOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
+
+    /** @var Security */
     private $security;
+
+    /** @var FormFactoryInterface */
     private $formFactory;
+
+    /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
 
     public function __construct(
@@ -34,6 +41,9 @@ class EditPasswordOrchestrator implements OrchestratorInterface
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         /** @var User $user */

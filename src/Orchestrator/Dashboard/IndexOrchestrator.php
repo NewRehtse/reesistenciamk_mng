@@ -7,21 +7,24 @@ use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\Entity\User;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class IndexOrchestrator implements OrchestratorInterface
 {
-    private $token;
+    /** @var Security */
+    private $security;
+
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        GeneralDoctrineRepository $generalDoctrineRepository
+        GeneralDoctrineRepository $generalDoctrineRepository,
+        Security $security
     ) {
-        $this->token = $tokenStorage->getToken();
+        $this->security = $security;
         $this->generalRepository = $generalDoctrineRepository;
     }
 
@@ -31,7 +34,7 @@ class IndexOrchestrator implements OrchestratorInterface
     public function content(Request $request, string $type): array
     {
         /** @var User $user */
-        $user = $this->token->getUser();
+        $user = $this->security->getUser();
 
         $done = $this->generalRepository->howManyThingsByStatus(Task::STATUS_DONE);
 

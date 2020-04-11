@@ -37,6 +37,8 @@ class OrchestratorChain implements OrchestratorChainInterface
 
     /**
      * @throws NotFoundHttpException
+     *
+     * @return array<mixed>
      */
     public function content(Request $request, string $type): array
     {

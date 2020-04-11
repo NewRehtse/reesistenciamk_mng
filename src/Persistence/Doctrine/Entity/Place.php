@@ -53,6 +53,12 @@ class Place
      */
     private $needs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Persistence\Doctrine\Entity\User")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
+     */
+    private $owner;
+
     public function __construct()
     {
         $this->needs = new ArrayCollection();
@@ -106,5 +112,21 @@ class Place
     public function invalidate(): void
     {
         $this->valid = false;
+    }
+
+    /**
+     * @return User
+     */
+    public function owner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $User
+     */
+    public function setOwner(User $owner): void
+    {
+        $this->owner = $owner;
     }
 }

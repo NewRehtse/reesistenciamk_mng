@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ListOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
     public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
@@ -18,6 +19,9 @@ class ListOrchestrator implements OrchestratorInterface
         $this->generalRepository = $generalDoctrineRepository;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $users = $this->generalRepository->getAllUsers();

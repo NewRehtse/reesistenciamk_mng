@@ -12,7 +12,7 @@ task.create.from.need:
 
 task.edit:
   path: /{taskId}/edit
-  controller: App\Controller\TaskController::create
+  controller: App\Controller\TaskController::edit
 
 task.detail:
   path: /{taskId}

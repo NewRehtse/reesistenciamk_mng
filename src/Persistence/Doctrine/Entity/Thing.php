@@ -3,6 +3,7 @@
 namespace App\Persistence\Doctrine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -66,10 +67,14 @@ class Thing
 
     /**
      * @ORM\OneToMany(targetEntity="App\Persistence\Doctrine\Entity\Task", mappedBy="thing")
-     *
-     * @var ArrayCollection
      */
     private $tasks;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Persistence\Doctrine\Entity\User")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
+     */
+    private $owner;
 
     public function __construct()
     {
@@ -112,17 +117,23 @@ class Thing
         $this->description = $description;
     }
 
-    public function tasks(): ArrayCollection
+    public function tasks(): Collection
     {
         return $this->tasks;
     }
 
-    /**
-     * @param Task[] $tasks
-     */
-    public function setTasks(array $tasks): void
+    public function addTask(Task $task): void
     {
-        $this->tasks = $tasks;
+        if (!$this->tasks->contains($task)) {
+            $this->tasks[] = $task;
+        }
+    }
+
+    public function removeTask(Task $task): void
+    {
+        if ($this->tasks->contains($task)) {
+            $this->tasks->removeElement($task);
+        }
     }
 
     public function urlThingiverse(): ?string
@@ -163,5 +174,18 @@ class Thing
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return User
+     */
+    public function owner()
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(User $owner): void
+    {
+        $this->owner = $owner;
     }
 }

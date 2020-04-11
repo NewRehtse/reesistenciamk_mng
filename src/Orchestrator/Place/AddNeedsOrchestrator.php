@@ -6,31 +6,56 @@ use App\Form\Type\NeedType;
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\Entity\Needs;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\PlaceVoter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class AddNeedsOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
+
+    /** @var FormFactoryInterface */
     private $formFactory;
 
-    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository, FormFactoryInterface $formFactory)
-    {
+    /** @var Security */
+    private $security;
+
+    public function __construct(
+            GeneralDoctrineRepository $generalDoctrineRepository,
+            FormFactoryInterface $formFactory,
+            Security $security
+    ) {
         $this->generalRepository = $generalDoctrineRepository;
         $this->formFactory = $formFactory;
+        $this->security = $security;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $placeId = $request->attributes->get('placeId');
 
         $place = $this->generalRepository->findPlace($placeId);
 
+        if (!$this->security->isGranted(PlaceVoter::ADD_NEED, $place)) {
+            throw new AccessDeniedException();
+        }
+
         $need = new Needs();
+
+        if (null === $place) {
+            throw new NotFoundHttpException('No se ha encontrado el demandante.');
+        }
+
         $need->setPlace($place);
 
         $form = $this->formFactory->create(NeedType::class, $need);

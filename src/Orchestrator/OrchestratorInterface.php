@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface OrchestratorInterface
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array;
 
     public function canHandleContentOfType(string $type): bool;

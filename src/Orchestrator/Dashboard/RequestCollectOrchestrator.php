@@ -7,21 +7,17 @@ use App\Persistence\Doctrine\Entity\RequestCollect;
 use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class RequestCollectOrchestrator implements OrchestratorInterface
 {
-    private $token;
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    public function __construct(
-            GeneralDoctrineRepository $generalDoctrineRepository,
-            TokenStorageInterface $tokenStorage
-    ) {
-        $this->token = $tokenStorage->getToken();
+    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
+    {
         $this->generalRepository = $generalDoctrineRepository;
     }
 

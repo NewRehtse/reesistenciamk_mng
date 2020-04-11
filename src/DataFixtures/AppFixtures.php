@@ -78,6 +78,7 @@ class AppFixtures extends Fixture
         $place->setId(1);
         $place->setName('HUBU');
         $place->setAddress($address);
+        $place->setOwner($user2);
         $manager->persist($place);
 
         $place = new Place();
@@ -91,6 +92,7 @@ class AppFixtures extends Fixture
         $thing->setType('Mascarilla');
         $thing->setDescription('sencilla');
         $thing->setModel('sencilla');
+        $thing->setOwner($user2);
         $manager->persist($thing);
 
         $needs = new Needs();

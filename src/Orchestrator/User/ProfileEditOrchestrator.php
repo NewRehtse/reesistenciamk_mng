@@ -15,8 +15,13 @@ use Symfony\Component\Security\Core\Security;
  */
 class ProfileEditOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
+
+    /** @var Security */
     private $security;
+
+    /** @var FormFactoryInterface */
     private $formFactory;
 
     public function __construct(
@@ -29,6 +34,9 @@ class ProfileEditOrchestrator implements OrchestratorInterface
         $this->formFactory = $formFactory;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
         $user = $this->security->getUser();

@@ -5,22 +5,39 @@ namespace App\Orchestrator\Thing;
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\ThingVoter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class ListOrchestrator implements OrchestratorInterface
 {
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
-    {
+    /** @var Security */
+    private $security;
+
+    public function __construct(
+            GeneralDoctrineRepository $generalDoctrineRepository,
+            Security $security
+    ) {
         $this->generalRepository = $generalDoctrineRepository;
+        $this->security = $security;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function content(Request $request, string $type): array
     {
+        if (!$this->security->isGranted(ThingVoter::LIST)) {
+            throw new AccessDeniedException();
+        }
+
         $things = $this->generalRepository->getAllThings();
 
         $result = [];

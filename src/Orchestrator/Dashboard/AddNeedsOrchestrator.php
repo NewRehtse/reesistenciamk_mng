@@ -7,26 +7,22 @@ use App\Persistence\Doctrine\Entity\Needs;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Esther Ibáñez González <eibanez@ces.vocento.com>
  */
 class AddNeedsOrchestrator implements OrchestratorInterface
 {
-    private $token;
+    /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    public function __construct(
-            TokenStorageInterface $tokenStorage,
-            GeneralDoctrineRepository $generalDoctrineRepository
-    ) {
-        $this->token = $tokenStorage->getToken();
+    public function __construct(GeneralDoctrineRepository $generalDoctrineRepository)
+    {
         $this->generalRepository = $generalDoctrineRepository;
     }
 
     /**
-     * @inheritDoc
+     * @return array<string, mixed>
      */
     public function content(Request $request, string $type): array
     {

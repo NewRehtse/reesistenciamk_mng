@@ -35,8 +35,11 @@
                                 </div>
                             </td>
                             <td>
-                                {{ btn.link_button('Añadir lote', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
-                                {% if is_granted('place_cover_need') %}
+                                {% if is_granted('task_create') %}
+                                    {{ btn.link_button('Añadir lote', path('task.create.from.need', {needId: need.id}), 'fa fa-tasks', '', 'sm') }}
+                                {% endif %}
+
+                                {% if is_granted('place_cover_need', place) %}
                                     {{ btn.link_button('Cantidad entregada', path('places.needs.cover', {placeId: place.id,needId: need.id}), 'fa fa-check', '', 'sm') }}
                                 {% endif %}
                             </td>

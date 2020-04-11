@@ -9,6 +9,7 @@
 
 namespace App\EventSubscriber;
 
+use App\Security\AdminUsersVoter;
 use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
@@ -57,27 +58,10 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         $event->addItem(
             new MenuItemModel('profile', 'Perfil', 'users.profile', [], 'fa fa-user')
         );
-//
-//        $event->addItem(
-//            new MenuItemModel('forms', 'menu.form', 'forms', [], 'fab fa-wpforms')
-//        );
-//
-//        $event->addItem(
-//            new MenuItemModel('context', 'AdminLTE context', 'context', [], 'fas fa-code')
-//        );
-//
-//        $demo = new MenuItemModel('demo', 'Demo', null, [], 'far fa-arrow-alt-circle-right');
-//        $demo->addChild(
-//            new MenuItemModel('sub-demo', 'Form - Horizontal', 'forms2', [], 'far fa-arrow-alt-circle-down')
-//        )->addChild(
-//            new MenuItemModel('sub-demo2', 'Form - Sidebar', 'forms3', [], 'far fa-arrow-alt-circle-up')
-//        );
-//        $event->addItem($demo);
-//        if ($this->security->isGranted('ROLE_ADMIN')) {
-        $event->addItem(
-                new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users')
-            );
-//        }
+
+        if ($this->security->isGranted(AdminUsersVoter::MENU)) {
+            $event->addItem(new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users'));
+        }
 
         if ($this->security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $event->addItem(
