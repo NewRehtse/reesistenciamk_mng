@@ -103,7 +103,7 @@ class TaskController extends AbstractController
             return $this->redirectToRoute('task.detail', ['taskId' => $content['taskId']]);
         }
 
-        return $this->render('tasks/create.html.twig', [
+        return $this->render('tasks/update.html.twig', [
                 'form' => $content['form'],
         ]);
     }

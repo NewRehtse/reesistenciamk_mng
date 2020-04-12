@@ -83,6 +83,7 @@ class CreateOrchestrator implements OrchestratorInterface
 
         $result['form'] = $form->createView();
         $result['hasNeeds'] = $hasNeeds;
+        $result['place'] = $place;
 
         return $result;
     }

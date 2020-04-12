@@ -45,7 +45,7 @@ class ThingController extends AbstractController
             return $this->redirectToRoute('things');
         }
 
-        if (isset($content['thingId'])) {
+        if (!isset($content['form'])) {
             $this->addFlash(
                     'info',
                     'Imprimible creado creado'
@@ -67,7 +67,7 @@ class ThingController extends AbstractController
             return $this->redirectToRoute('things');
         }
 
-        if (isset($content['thingId'])) {
+        if (!isset($content['form'])) {
             $this->addFlash(
                     'info',
                     'Imprimible creado creado'

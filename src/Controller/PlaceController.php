@@ -52,7 +52,7 @@ class PlaceController extends AbstractController
             return $this->render('places/create.html.twig', $content);
         }
 
-        if (isset($content['place'])) {
+        if (!isset($content['form'])) {
             $this->addFlash('info', 'Demandante creado.');
 
             return $this->redirectToRoute('places');
@@ -71,7 +71,7 @@ class PlaceController extends AbstractController
 
         $content = $this->orchestrator->content($request, 'place-edit');
 
-        if (isset($content['place'])) {
+        if (!isset($content['form'])) {
             $this->addFlash('info', 'Demandante editado');
 
             return $this->redirectToRoute('places');
