@@ -4,10 +4,17 @@
 {% block page_title %}Solicitudes{% endblock %}
 {% block page_subtitle %}Gestión de solicitudes{% endblock %}
 
-{% block page_content %}
-    <div class="row">
-        <div class="col-md-10">
-            {{ form(form) }}
+{% block content %}
+    <div class="panel panel-default">
+        <div class="box box-success p-3">
+            <div class="box-header with-border">
+                <h3 class="box-title">Solicitar material</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div style="padding:10px">
+                {{ form(form) }}
+            </div>
         </div>
     </div>
 {% endblock %}

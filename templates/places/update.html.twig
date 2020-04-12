@@ -4,20 +4,23 @@
 {% block page_title %}Demandantes{% endblock %}
 {% block page_subtitle %}Gestión de demandantes{% endblock %}
 
-{% block page_content %}
+{% block content %}
     {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
-    <div class="row">
-        <div class="col-md-10">
-            {{ form(form) }}
+    <div class="box box-success p-3">
+        <div class="box-header with-border">
+            <h3 class="box-title">Actualizar demandante</h3>
         </div>
-    </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <div style="padding:10px">
+            {{ form(form) }}
 
-    {% if is_granted('place_edit', place) %}
-        {% if hasNeeds %}
+    {% if is_granted('place_delete', place) %}
+        {% if hasNeeds == false %}
             <a class="btn btn-sm btn-danger"
            id="confirm-delete-btn"
            data-toggle="modal" data-original-title="Delete" data-target=".delete-modal">
-            <i class="fa fa-trash"></i> Delete</a>
+            <i class="fa fa-trash"></i> Borrar</a>
         {% endif %}
 
         <div class="modal fade delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -41,4 +44,6 @@
             </div>
         </div>
     {% endif %}
+        </div>
+    </div>
 {% endblock %}

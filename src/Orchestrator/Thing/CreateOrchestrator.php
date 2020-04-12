@@ -68,12 +68,12 @@ class CreateOrchestrator implements OrchestratorInterface
 
             $this->generalRepository->saveThing($thing);
 
-            return ['thingId' => $thing->id()];
+            return ['thing' => $thing];
         }
 
         return [
-                'form' => $form->createView(),
-            'hasTasks' => $thing->tasks()->count() > 0,
+            'form' => $form->createView(),
+            'thing' => $thing,
         ];
     }
 
