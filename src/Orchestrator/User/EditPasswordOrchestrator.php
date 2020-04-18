@@ -12,9 +12,6 @@ use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class EditPasswordOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

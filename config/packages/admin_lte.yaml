@@ -13,12 +13,32 @@ admin_lte:
         boxed_layout: false
         collapsed_sidebar: false
         mini_sidebar: false
+        form_theme: default
 
     knp_menu:
         enable: false
         # the default value is adminlte_main, so we don't need to set it manually
         #main_menu: adminlte_main
         breadcrumb_menu: true
+
+    theme:
+        widget:
+            # relates to box-<type>, default: primary
+            type: primary
+            # will add .with-border to .box-header, default: true
+            bordered: false
+            # will add a collapse button to the widget toolbar, default: true
+            collapsible: false
+            # sets the title attribute for the collapse button
+            collapsible_title: Collapse
+            # will ad a remove button to the widget toolbar
+            removable: false
+            # defines the title attribute for the remove button
+            removable_title: Remove
+            # will add .box-solid
+            solid: false
+            # will avoid rendering the .box-footer without content
+            use_footer: true
 
     routes:
         adminlte_welcome: home

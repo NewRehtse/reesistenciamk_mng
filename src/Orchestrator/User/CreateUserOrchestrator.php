@@ -13,9 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class CreateUserOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

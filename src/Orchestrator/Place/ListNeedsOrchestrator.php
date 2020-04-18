@@ -9,9 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ListNeedsOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

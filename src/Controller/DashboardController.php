@@ -4,15 +4,11 @@ namespace App\Controller;
 
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\Entity\Needs;
-use App\Persistence\Doctrine\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class DashboardController extends AbstractController
 {
     /** @var OrchestratorInterface */

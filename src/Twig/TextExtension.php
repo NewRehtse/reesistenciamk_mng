@@ -15,9 +15,6 @@ use App\Persistence\Doctrine\Entity\Task;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class TextExtension extends AbstractExtension
 {
     public function getFunctions(): array

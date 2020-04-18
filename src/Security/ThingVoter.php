@@ -4,13 +4,11 @@ namespace App\Security;
 
 use App\Persistence\Doctrine\Entity\Thing;
 use App\Persistence\Doctrine\Entity\User;
+use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ThingVoter extends Voter
 {
     public const CREATE = 'thing_create';
@@ -19,6 +17,17 @@ class ThingVoter extends Voter
     public const LIST = 'thing_list';
     public const DELETE = 'thing_delete';
     public const VIEW = 'thing_view';
+
+    private $generalDoctrineRepository;
+
+    /** @var Security */
+    private $security;
+
+    public function __construct(Security $security, GeneralDoctrineRepository $generalDoctrineRepository)
+    {
+        $this->security = $security;
+        $this->generalDoctrineRepository = $generalDoctrineRepository;
+    }
 
     private const VALID_ATTRIBUTES = [
             self::LIST,
@@ -75,14 +84,6 @@ class ThingVoter extends Voter
         }
     }
 
-    /** @var Security */
-    private $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
     private function isAttributeValid(string $attribute): bool
     {
         return \in_array($attribute, static::VALID_ATTRIBUTES, true);
@@ -114,13 +115,23 @@ class ThingVoter extends Voter
 
     private function canCreate(User $user, ?Thing $subject): bool
     {
-        return true;
+        // only admins, healthy and owners can create valid objects
+        $validRoles = ['ROLE_ADMIN'];
+
+        foreach ($validRoles as $validRole) {
+            if ($this->security->isGranted($validRole)) {
+                return true;
+            }
+        }
+        $configuration = $this->generalDoctrineRepository->getConfiguration();
+
+        return $configuration->usersCanCreatePrints();
     }
 
     private function canCreateValid(User $user, ?Thing $subject): bool
     {
         // only admins, healthy and owners can create valid objects
-        $validRoles = ['ROLE_ADMIN', 'ROLE_HEALTH'];
+        $validRoles = ['ROLE_ADMIN'];
 
         foreach ($validRoles as $validRole) {
             if ($this->security->isGranted($validRole)) {

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Persistence\Doctrine\Entity\Address;
+use App\Persistence\Doctrine\Entity\Configuration;
 use App\Persistence\Doctrine\Entity\Maker;
 use App\Persistence\Doctrine\Entity\Needs;
 use App\Persistence\Doctrine\Entity\Place;
@@ -24,6 +25,9 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $configuration = new Configuration();
+        $manager->persist($configuration);
+
         $address = new Address();
         $address->setId(1);
         $address->setCity('Burgos');

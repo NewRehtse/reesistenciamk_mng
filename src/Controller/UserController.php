@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class UserController extends AbstractController
 {
     /** @var OrchestratorInterface */

@@ -7,23 +7,20 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class AdminUsersVoter extends Voter
 {
     public const VIEW = 'user_view';
     public const EDIT = 'user_edit';
     public const CREATE = 'user_create';
     public const LIST = 'user_list';
-    public const MENU = 'user_menu';
+    public const MENU_ADMIN = 'user_menu';
 
     private const VALID_ATTRIBUTES = [
             self::EDIT,
             self::CREATE,
             self::VIEW,
             self::LIST,
-            self::MENU,
+            self::MENU_ADMIN,
     ];
 
     /** @var Security */

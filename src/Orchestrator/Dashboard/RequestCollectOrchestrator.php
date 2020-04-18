@@ -8,9 +8,6 @@ use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class RequestCollectOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

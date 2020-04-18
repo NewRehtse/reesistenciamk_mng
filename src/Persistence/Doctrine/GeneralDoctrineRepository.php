@@ -2,6 +2,7 @@
 
 namespace App\Persistence\Doctrine;
 
+use App\Persistence\Doctrine\Entity\Configuration;
 use App\Persistence\Doctrine\Entity\Maker;
 use App\Persistence\Doctrine\Entity\Needs;
 use App\Persistence\Doctrine\Entity\Place;
@@ -10,6 +11,7 @@ use App\Persistence\Doctrine\Entity\SerialNumber;
 use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\Entity\Thing;
 use App\Persistence\Doctrine\Entity\User;
+use App\Persistence\Doctrine\Repository\ConfigurationRejpository;
 use App\Persistence\Doctrine\Repository\NeedsRepository;
 use App\Persistence\Doctrine\Repository\PlaceRepository;
 use App\Persistence\Doctrine\Repository\RequestCollectRepository;
@@ -18,9 +20,6 @@ use App\Persistence\Doctrine\Repository\TaskRepository;
 use App\Persistence\Doctrine\Repository\ThingRepository;
 use App\Persistence\Doctrine\Repository\UserRepository;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class GeneralDoctrineRepository
 {
     /** @var TaskRepository */
@@ -44,6 +43,9 @@ class GeneralDoctrineRepository
     /** @var SerialNumberRepository */
     private $serialNumberRepository;
 
+    /** @var ConfigurationRejpository */
+    private $configurationRepository;
+
     public function __construct(
             TaskRepository $taskRepository,
             UserRepository $userRepository,
@@ -51,7 +53,8 @@ class GeneralDoctrineRepository
             ThingRepository $thingRepository,
             NeedsRepository $needsRepository,
             RequestCollectRepository $requestCollectRepository,
-            SerialNumberRepository $serialNumberRepository
+            SerialNumberRepository $serialNumberRepository,
+            ConfigurationRejpository $configurationRejpository
     ) {
         $this->taskRepository = $taskRepository;
         $this->userRepository = $userRepository;
@@ -60,6 +63,7 @@ class GeneralDoctrineRepository
         $this->needsRepository = $needsRepository;
         $this->requestCollectRepository = $requestCollectRepository;
         $this->serialNumberRepository = $serialNumberRepository;
+        $this->configurationRepository = $configurationRejpository;
     }
 
     public function howManyThingsDelivered(Thing $thing): int
@@ -257,5 +261,15 @@ class GeneralDoctrineRepository
     public function findUser(int $userId): ?User
     {
         return $this->userRepository->find($userId);
+    }
+
+    public function getConfiguration(): Configuration
+    {
+        return $this->configurationRepository->get();
+    }
+
+    public function saveConfiguration(Configuration $configuration): void
+    {
+        $this->configurationRepository->save($configuration);
     }
 }

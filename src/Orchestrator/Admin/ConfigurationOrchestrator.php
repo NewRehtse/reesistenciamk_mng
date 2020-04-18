@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Orchestrator\User;
+namespace App\Orchestrator\Admin;
 
-use App\Form\Type\EditProfile;
+use App\Form\Type\ConfigurationType;
 use App\Orchestrator\OrchestratorInterface;
-use App\Persistence\Doctrine\Entity\User;
+use App\Persistence\Doctrine\Entity\Configuration;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
+use App\Security\PlaceVoter;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
-class ProfileEditOrchestrator implements OrchestratorInterface
+class ConfigurationOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */
     private $generalRepository;
 
-    /** @var Security */
-    private $security;
-
     /** @var FormFactoryInterface */
     private $formFactory;
+
+    /** @var Security */
+    private $security;
 
     public function __construct(
             GeneralDoctrineRepository $generalDoctrineRepository,
@@ -27,8 +29,8 @@ class ProfileEditOrchestrator implements OrchestratorInterface
             Security $security
     ) {
         $this->generalRepository = $generalDoctrineRepository;
-        $this->security = $security;
         $this->formFactory = $formFactory;
+        $this->security = $security;
     }
 
     /**
@@ -36,26 +38,30 @@ class ProfileEditOrchestrator implements OrchestratorInterface
      */
     public function content(Request $request, string $type): array
     {
-        $user = $this->security->getUser();
+        if (!$this->security->isGranted(PlaceVoter::CREATE)) {
+            throw new AccessDeniedException();
+        }
 
-        $form = $this->formFactory->create(EditProfile::class, $user);
+        $configuration = $this->generalRepository->getConfiguration();
+
+        $form = $this->formFactory->create(ConfigurationType::class, $configuration);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
-            $user = $form->getData();
+            /** @var Configuration $configuration */
+            $configuration = $form->getData();
 
-            $this->generalRepository->saveUser($user);
-
-            return [];
+            $this->generalRepository->saveConfiguration($configuration);
         }
 
-        return ['form' => $form->createView()];
+        $result['form'] = $form->createView();
+
+        return $result;
     }
 
     public function canHandleContentOfType(string $type): bool
     {
-        $validTypes = ['user-profile-edit'];
+        $validTypes = ['admin-configuration'];
 
         return \in_array($type, $validTypes, true);
     }

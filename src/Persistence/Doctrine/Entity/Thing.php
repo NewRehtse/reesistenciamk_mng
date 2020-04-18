@@ -67,6 +67,7 @@ class Thing
 
     /**
      * @ORM\OneToMany(targetEntity="App\Persistence\Doctrine\Entity\Task", mappedBy="thing")
+     *
      * @var Collection<int, Task>
      */
     private $tasks;
@@ -78,11 +79,11 @@ class Thing
      */
     private $needs;
 
-        /**
-         * @ORM\Column(type="boolean")
-         *
-         * @var bool
-         */
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     * @var bool
+     */
     private $valid = false;
 
     /**

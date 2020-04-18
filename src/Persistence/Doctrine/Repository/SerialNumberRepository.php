@@ -7,9 +7,6 @@ use App\Persistence\Doctrine\Entity\Task;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class SerialNumberRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
