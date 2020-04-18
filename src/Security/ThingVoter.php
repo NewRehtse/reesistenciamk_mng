@@ -8,9 +8,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ThingVoter extends Voter
 {
     public const CREATE = 'thing_create';

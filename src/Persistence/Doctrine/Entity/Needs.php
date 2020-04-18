@@ -5,7 +5,6 @@ namespace App\Persistence\Doctrine\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
  * @ORM\Table(name="needs")
  * @ORM\Entity(repositoryClass="App\Persistence\Doctrine\Repository\NeedsRepository")
  */

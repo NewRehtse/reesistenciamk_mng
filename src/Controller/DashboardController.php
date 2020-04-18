@@ -9,9 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class DashboardController extends AbstractController
 {
     /** @var OrchestratorInterface */

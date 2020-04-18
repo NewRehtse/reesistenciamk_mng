@@ -13,9 +13,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class TaskUpdateType extends AbstractType
 {
     /** @var PlaceRepository */

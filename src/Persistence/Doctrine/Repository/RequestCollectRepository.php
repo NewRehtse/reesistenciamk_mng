@@ -6,9 +6,6 @@ use App\Persistence\Doctrine\Entity\RequestCollect;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class RequestCollectRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

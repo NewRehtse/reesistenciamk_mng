@@ -10,9 +10,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ProfileEditOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class SecurityController extends AbstractController
 {
     public function login(Request $request, AuthenticationUtils $authUtils): Response

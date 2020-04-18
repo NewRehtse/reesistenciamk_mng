@@ -9,9 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ProfileController extends AbstractController
 {
     /** @var OrchestratorInterface */

@@ -8,9 +8,6 @@ use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class AddNeedsOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */

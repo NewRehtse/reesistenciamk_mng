@@ -18,9 +18,6 @@ use App\Persistence\Doctrine\Repository\TaskRepository;
 use App\Persistence\Doctrine\Repository\ThingRepository;
 use App\Persistence\Doctrine\Repository\UserRepository;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class GeneralDoctrineRepository
 {
     /** @var TaskRepository */

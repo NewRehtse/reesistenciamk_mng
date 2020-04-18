@@ -6,9 +6,6 @@ use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @author Esther Ibáñez González <eibanez@ces.vocento.com>
- */
 class ListOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */
