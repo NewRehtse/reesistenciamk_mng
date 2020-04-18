@@ -237,3 +237,14 @@ services:
             - '@general.doctrine.repository'
         tags:
             - { name: 'orchestrator' }
+
+    app.orchestrator.admin.configuration:
+        class: App\Orchestrator\Admin\ConfigurationOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }

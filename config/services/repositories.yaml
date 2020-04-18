@@ -26,4 +26,5 @@ services:
       - '@App\Persistence\Doctrine\Repository\NeedsRepository'
       - '@App\Persistence\Doctrine\Repository\RequestCollectRepository'
       - '@App\Persistence\Doctrine\Repository\SerialNumberRepository'
+      - '@App\Persistence\Doctrine\Repository\ConfigurationRejpository'
 

@@ -59,8 +59,16 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             new MenuItemModel('profile', 'Perfil', 'users.profile', [], 'fa fa-user')
         );
 
-        if ($this->security->isGranted(AdminUsersVoter::MENU)) {
-            $event->addItem(new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users'));
+        if ($this->security->isGranted(AdminUsersVoter::MENU_ADMIN)) {
+            $administacion = new MenuItemModel('administacion', 'Administración', '', [], 'fa fa-cogs');
+            $administacion->setIsActive(true);
+            $administacion->addChild(
+                    new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users')
+            );
+            $administacion->addChild(
+                    new MenuItemModel('configuration', 'Configuración', 'admin.configuration', [], 'fa fa-gear')
+            );
+            $event->addItem($administacion);
         }
 
         if ($this->security->isGranted('IS_AUTHENTICATED_REMEMBERED')) {

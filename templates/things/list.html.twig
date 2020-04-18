@@ -48,7 +48,9 @@
             </div>
         </div>
         <div class="pull-left">
-            {{ btn.link_button('Crear imprimible', path('things.create'), 'far fa-save', 'success', 'lg') }}
+            {% if is_granted('thing_create') %}
+                {{ btn.link_button('Crear imprimible', path('things.create'), 'far fa-save', 'success', 'lg') }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

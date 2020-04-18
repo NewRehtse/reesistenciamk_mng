@@ -43,7 +43,7 @@ class AuditData
 
     //Datos de audición cuando se modifica la entidad
     public function preUpdate(LifecycleEventArgs $args)
-    { //Solo cuando se crea
+    {   //Solo cuando se crea
         $entity = $args->getObject();
 
         $token = $this->tokenStorage->getToken();
