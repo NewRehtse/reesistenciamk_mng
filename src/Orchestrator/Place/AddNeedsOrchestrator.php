@@ -75,6 +75,10 @@ class AddNeedsOrchestrator implements OrchestratorInterface
             /** @var Needs|null $need */
             $need = $this->generalRepository->findNeedsByThingAndPlace($thing, $place);
 
+            if ($this->security->isGranted(PlaceVoter::ADD_VALID_NEED)) {
+                $need->validate();
+            }
+
             if (null !== $need) {
                 $need->setAmount($need->amount() + $currentNeed->amount());
                 $this->generalRepository->saveNeeds($need);

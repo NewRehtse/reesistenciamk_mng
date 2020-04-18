@@ -87,7 +87,7 @@ class User implements UserInterface
      */
     private $address;
 
-    /** @var string */
+    /** @var array<int, string> */
     private $userType;
 
     public function getId(): ?int
@@ -249,14 +249,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return string
+     * @return array<int, string>
      */
     public function userType()
     {
         return $this->userType;
     }
 
-    public function setUserType(string $userType): void
+    /**
+     * @param array<int, string> $userType
+     */
+    public function setUserType(array $userType): void
     {
         $this->userType = $userType;
     }

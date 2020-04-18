@@ -36,11 +36,12 @@ class PlaceRepository extends ServiceEntityRepository
      */
     public function topRequestor(): array
     {
-        return $this->getEntityManager()
-                ->createQuery("SELECT sum(n.amount) as amount, p.name
-                                    FROM App\Persistence\Doctrine\Entity\Needs n, App\Persistence\Doctrine\Entity\Place p
-                                    WHERE p.id=n.place GROUP BY n.place ORDER BY amount DESC")
-                ->execute();
+        return $this->createQueryBuilder('place')
+                ->select('sum(needs.amount) as amount, place.name')
+                ->innerJoin('place.needs', 'needs')
+                ->groupBy('needs.place')
+                ->getQuery()
+                ->getResult();
     }
 
     public function findByName(string $name): ?Place

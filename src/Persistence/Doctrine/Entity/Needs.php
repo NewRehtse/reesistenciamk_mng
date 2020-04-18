@@ -31,7 +31,7 @@ class Needs
     private $place;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Persistence\Doctrine\Entity\Thing")
+     * @ORM\ManyToOne(targetEntity="App\Persistence\Doctrine\Entity\Thing", inversedBy="needs")
      *
      * @var Thing|null
      */

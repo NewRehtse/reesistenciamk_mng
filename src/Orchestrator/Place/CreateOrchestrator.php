@@ -66,6 +66,10 @@ class CreateOrchestrator implements OrchestratorInterface
             $place = $form->getData();
 
             if ($create) {
+                if ($this->security->isGranted(PlaceVoter::CREATE_VALID_PLACES)) {
+                    $place->validate();
+                }
+
                 $placeInBds = $this->generalRepository->findPlaceByName($place->name());
                 if (null === $placeInBds) {
                     $this->generalRepository->savePlace($place);

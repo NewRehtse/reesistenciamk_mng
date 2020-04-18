@@ -14,6 +14,7 @@ use Symfony\Component\Security\Core\Security;
 class ThingVoter extends Voter
 {
     public const CREATE = 'thing_create';
+    public const CREATE_VALID = 'thing_create_valid';
     public const EDIT = 'thing_edit';
     public const LIST = 'thing_list';
     public const DELETE = 'thing_delete';
@@ -25,6 +26,7 @@ class ThingVoter extends Voter
             self::DELETE,
             self::VIEW,
             self::CREATE,
+            self::CREATE_VALID,
     ];
 
     /**
@@ -64,6 +66,8 @@ class ThingVoter extends Voter
                 return $this->canList($user, $subject);
             case self::CREATE:
                 return $this->canCreate($user, $subject);
+            case self::CREATE_VALID:
+                return $this->canCreateValid($user, $subject);
             case self::DELETE:
                 return $this->canDelete($user, $subject);
             default:
@@ -111,6 +115,20 @@ class ThingVoter extends Voter
     private function canCreate(User $user, ?Thing $subject): bool
     {
         return true;
+    }
+
+    private function canCreateValid(User $user, ?Thing $subject): bool
+    {
+        // only admins, healthy and owners can create valid objects
+        $validRoles = ['ROLE_ADMIN', 'ROLE_HEALTH'];
+
+        foreach ($validRoles as $validRole) {
+            if ($this->security->isGranted($validRole)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function canDelete(User $user, ?Thing $subject): bool

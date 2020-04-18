@@ -67,8 +67,23 @@ class Thing
 
     /**
      * @ORM\OneToMany(targetEntity="App\Persistence\Doctrine\Entity\Task", mappedBy="thing")
+     * @var Collection<int, Task>
      */
     private $tasks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Persistence\Doctrine\Entity\Needs", mappedBy="thing", orphanRemoval=true)
+     *
+     * @var ArrayCollection<int, Needs>
+     */
+    private $needs;
+
+        /**
+         * @ORM\Column(type="boolean")
+         *
+         * @var bool
+         */
+    private $valid = false;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Persistence\Doctrine\Entity\User")
@@ -79,6 +94,7 @@ class Thing
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->needs = new ArrayCollection();
     }
 
     /**
@@ -117,6 +133,9 @@ class Thing
         $this->description = $description;
     }
 
+    /**
+     * @return Collection<int, Task>
+     */
     public function tasks(): Collection
     {
         return $this->tasks;
@@ -187,5 +206,42 @@ class Thing
     public function setOwner(User $owner): void
     {
         $this->owner = $owner;
+    }
+
+    public function valid(): bool
+    {
+        return $this->valid;
+    }
+
+    public function validate(): void
+    {
+        $this->valid = true;
+    }
+
+    public function invalidate(): void
+    {
+        $this->valid = false;
+    }
+
+    /**
+     * @return Collection<int, Task>
+     */
+    public function needs(): Collection
+    {
+        return $this->needs;
+    }
+
+    public function addNeed(Needs $need): void
+    {
+        if (!$this->needs->contains($need)) {
+            $this->needs[] = $need;
+        }
+    }
+
+    public function removeNeed(Needs $need): void
+    {
+        if ($this->needs->contains($need)) {
+            $this->needs->removeElement($need);
+        }
     }
 }

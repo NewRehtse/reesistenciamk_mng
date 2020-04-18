@@ -66,6 +66,10 @@ class CreateOrchestrator implements OrchestratorInterface
         if ($form->isSubmitted() && $form->isValid()) {
             $thing = $form->getData();
 
+            if ($this->security->isGranted(ThingVoter::CREATE_VALID)) {
+                $thing->validate();
+            }
+
             $this->generalRepository->saveThing($thing);
 
             return ['thing' => $thing];
