@@ -24,7 +24,7 @@ class Thing
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      *
      * @var string
      */
@@ -214,14 +214,9 @@ class Thing
         return $this->valid;
     }
 
-    public function validate(): void
+    public function setValid(bool $valid): void
     {
-        $this->valid = true;
-    }
-
-    public function invalidate(): void
-    {
-        $this->valid = false;
+        $this->valid = $valid;
     }
 
     /**
@@ -244,5 +239,10 @@ class Thing
         if ($this->needs->contains($need)) {
             $this->needs->removeElement($need);
         }
+    }
+
+    public function __toString()
+    {
+        return \sprintf('%s - %s', $this->type(), $this->model());
     }
 }

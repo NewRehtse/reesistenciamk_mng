@@ -21,12 +21,19 @@ class ThingController extends AbstractController
 
     public function list(Request $request): Response
     {
+        $route = $request->get('_route');
+        $isAdminRoute = 1 === \preg_match('/^admin\./', $route);
+
         try {
             $content = $this->orchestrator->content($request, 'thing-list');
         } catch (AccessDeniedException $accessDeniedException) {
             $this->addFlash('warning', 'No tienes acceso a listar imprimibles');
 
             return $this->redirectToRoute('home');
+        }
+
+        if ($isAdminRoute) {
+            return $this->render('things/admin.list.html.twig', $content);
         }
 
         return $this->render('things/list.html.twig', $content);
@@ -100,5 +107,24 @@ class ThingController extends AbstractController
         );
 
         return $this->redirectToRoute('things');
+    }
+
+    public function detail(Request $request): Response
+    {
+        $route = $request->get('_route');
+//        $isAdminRoute = 1 === \preg_match('/^admin\./', $route);
+
+        try {
+            $content = $this->orchestrator->content($request, 'thing-detail');
+        } catch (AccessDeniedException $accessDeniedException) {
+            $this->addFlash('warning', 'No tienes acceso al detalle imprimibles');
+
+            return $this->redirectToRoute('things');
+        }
+
+//        if ($isAdminRoute) {
+//            return $this->render('things/admin.detail.html.twig', $content);
+//        }
+        return $this->render('things/detail.html.twig', $content);
     }
 }

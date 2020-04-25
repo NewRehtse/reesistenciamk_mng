@@ -17,7 +17,7 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     // generate only two files: app.js and app.css
-    .addEntry('adminlte', './assets/adminlte-demo.js')
+    .addEntry('makers', './assets/makers.js')
 
     // enable sass/scss parser
     .enableSassLoader()

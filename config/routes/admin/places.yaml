@@ -1,0 +1,27 @@
+admin.places.list:
+  path: /
+  controller: App\Controller\PlaceController::list
+
+admin.places.create:
+  path: /create
+  controller: App\Controller\PlaceController::create
+
+admin.places.edit:
+  path: /{placeId}/edit
+  controller: App\Controller\PlaceController::edit
+
+admin.places.delete:
+  path: /{placeId}/delete
+  controller: App\Controller\PlaceController::delete
+
+admin.places.needs.add:
+  path: /{placeId}/need/add
+  controller: App\Controller\PlaceController::addNeeds
+
+admin.places.needs.list:
+  path: /{placeId}/need
+  controller: App\Controller\PlaceController::needs
+
+admin.places.needs.cover:
+  path: /{placeId}/need/{needId}
+  controller: App\Controller\PlaceController::coverNeed

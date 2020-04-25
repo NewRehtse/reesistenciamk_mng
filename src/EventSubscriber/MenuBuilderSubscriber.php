@@ -45,18 +45,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     public function onSetupNavbar(SidebarMenuEvent $event)
     {
         $event->addItem(
-            new MenuItemModel('places', 'Demandantes', 'places', [], 'fa fa-map-marker')
-        );
-
-        $event->addItem(
-            new MenuItemModel('things', 'Imprimibles', 'things', [], 'fa fa-print')
-        );
-
-        $event->addItem(
-            new MenuItemModel('tasks', 'Lotes', 'tasks', [], 'fa fa-print')
-        );
-        $event->addItem(
-            new MenuItemModel('profile', 'Perfil', 'users.profile', [], 'fa fa-user')
+                new MenuItemModel('imprimibles', 'Imprimibles', 'things', [], 'fas fa-sign-in-alt')
         );
 
         if ($this->security->isGranted(AdminUsersVoter::MENU_ADMIN)) {
@@ -66,7 +55,21 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                     new MenuItemModel('users', 'Usuarios', 'users.admin', [], 'fa fa-users')
             );
             $administacion->addChild(
-                    new MenuItemModel('configuration', 'Configuración', 'admin.configuration', [], 'fa fa-gear')
+                    new MenuItemModel('configuration', 'Configuración', 'admin.configuration', [], 'fa fa-cog')
+            );
+            $administacion->addChild(
+                    new MenuItemModel('places', 'Demandantes', 'admin.places.list', [], 'fa fa-map-marker')
+            );
+
+            $administacion->addChild(
+                    new MenuItemModel('things', 'Imprimibles', 'admin.things.list', [], 'fa fa-print')
+            );
+
+            $administacion->addChild(
+                    new MenuItemModel('tasks', 'Lotes', 'admin.tasks.list', [], 'fa fa-print')
+            );
+            $administacion->addChild(
+                    new MenuItemModel('profile', 'Perfil', 'users.profile', [], 'fa fa-user')
             );
             $event->addItem($administacion);
         }

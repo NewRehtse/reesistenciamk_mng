@@ -165,6 +165,17 @@ services:
         tags:
             - { name: 'orchestrator' }
 
+    app.orchestrator.thing.edit:
+        class: App\Orchestrator\Thing\EditOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@form.factory'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
     app.orchestrator.thing.delete:
         class: App\Orchestrator\Thing\DeleteOrchestrator
         public: false
@@ -177,6 +188,16 @@ services:
 
     app.orchestrator.thing.list:
         class: App\Orchestrator\Thing\ListOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
+    app.orchestrator.thing.detail:
+        class: App\Orchestrator\Thing\DetailOrchestrator
         public: false
         lazy: true
         arguments:

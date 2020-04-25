@@ -1,5 +1,9 @@
-
 {% extends '@AdminLTE/layout/security-layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% include 'includes/css.html.twig' %}
+{% endblock %}
 
 {% block logo_login %}<b>Reesistencia</b> Maker{% endblock %}
 
@@ -54,4 +58,9 @@
 
 {% block login_box_msg %}
     Login
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% include 'includes/javascript.html.twig' %}
 {% endblock %}
