@@ -3,6 +3,7 @@
 namespace App\Orchestrator\Thing;
 
 use App\Orchestrator\OrchestratorInterface;
+use App\Persistence\Doctrine\Entity\Task;
 use App\Persistence\Doctrine\GeneralDoctrineRepository;
 use App\Security\ThingVoter;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,16 @@ class DetailOrchestrator implements OrchestratorInterface
             throw new AccessDeniedException();
         }
 
-        return ['thing' => $thing];
+        $collected = $this->generalRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_COLLECTED);
+        $delivered = $this->generalRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DELIVERED);
+        $done = $this->generalRepository->howManyThingsByIdAndStatus($thing, Task::STATUS_DONE);
+
+        return [
+                'thing' => $thing,
+                'collected' => $collected,
+                'delivered' => $delivered,
+                'done' => $done,
+        ];
     }
 
     public function canHandleContentOfType(string $type): bool

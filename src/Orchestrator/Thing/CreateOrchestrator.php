@@ -2,7 +2,8 @@
 
 namespace App\Orchestrator\Thing;
 
-use App\Form\Type\ThingType;
+use App\Form\Type\EditAdminThingType;
+use App\Form\Type\EditThingType;
 use App\Orchestrator\OrchestratorInterface;
 use App\Persistence\Doctrine\Entity\Thing;
 use App\Persistence\Doctrine\Entity\User;
@@ -57,14 +58,24 @@ class CreateOrchestrator implements OrchestratorInterface
             }
         }
 
-        $form = $this->formFactory->create(ThingType::class, $thing);
+        $form = $this->formFactory->create(EditThingType::class, $thing);
+        if ($this->security->isGranted(ThingVoter::CREATE_VALID)) {
+            $form = $this->formFactory->create(EditAdminThingType::class, $thing);
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Thing $thing */
             $thing = $form->getData();
 
+            if ('thing-update' === $type) {
+                $this->generalRepository->saveThing($thing);
+
+                return ['thing' => $thing];
+            }
+
             if ($this->security->isGranted(ThingVoter::CREATE_VALID)) {
-                $thing->validate();
+                $thing->setValid(true);
             }
 
             $this->generalRepository->saveThing($thing);

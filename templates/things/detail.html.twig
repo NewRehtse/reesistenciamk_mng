@@ -3,41 +3,72 @@
 {% block document_title %}{% endblock %}
 {% block page_title %}Imprimible: {{ thing }}{% endblock %}
 {% block page_subtitle %}
+    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
     {% if is_granted('thing_edit', thing) %}
-        {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
         {{ btn.link_button('Editar imprimible', path('things.edit', {'thingId': thing.id}), 'far fa-save', 'success', 'sm') }}
+    {% endif %}
+    {% if is_granted('thing_delete', thing) %}
+        {{ btn.link_button('Borrar imprimible', path('things.delete', {'thingId': thing.id}), 'fa fa-trash', 'danger', 'sm') }}
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="col-md-12">
-        <div class="box box-solid">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="box-header with-border">
-                        <img src="{{ thing.photoUrl }}" alt="{{ thing.type }} {{ thing.model }}" style="width:100%">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="box-header with-border">
+                            <img src="{{ thing.photoUrl }}" alt="{{ thing.type }} {{ thing.model }}" style="width:100%">
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <p class="lead">
+                                {{ thing }}
+                            </p>
+                            <p>
+                                {{ thing.description|raw }}
+                            </p>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
                 </div>
-                <div class="col-md-9">
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <p class="lead">
-                            {{ thing }}
-                        </p>
-                        {#                <ul class="nav nav-stacked">#}
-                        {#                    <li><a href="#">Hechos <span class="pull-right badge bg-red">{{ done }}</span></a></li>#}
-                        {#                    <li><a href="#">Recogidos <span class="pull-right badge bg-blue">{{ collected }}</span></a></li>#}
-                        {#                    <li><a href="#">Entregados <span class="pull-right badge bg-green">{{ delivered }}</span></a></li>#}
-                        {#                </ul>#}
-                        <ul class="nav nav-stacked">
-                            <li><a href="{{ thing.urlThingiverse }}" target="_blank">Thingiverse</a></li>
-                            <li><a href="{{ thing.otherUrl }}" target="_blank">Otra</a></li>
-                        </ul>
-                        <p>
-                            {{ thing.description|raw }}
-                        </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <p class="lead">
+                                Estadísticas
+                            </p>
+                            <ul class="nav nav-stacked">
+                                <li><a href="#">Hechos <span class="pull-right badge bg-red">{{ done }}</span></a></li>
+                                <li><a href="#">Recogidos <span class="pull-right badge bg-blue">{{ collected }}</span></a></li>
+                                <li><a href="#">Entregados <span class="pull-right badge bg-green">{{ delivered }}</span></a></li>
+                            </ul>
+                        </div>
+                        <!-- /.box-body -->
                     </div>
-                    <!-- /.box-body -->
+                    <div class="col-md-6">
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <p class="lead">
+                                Enlaces
+                            </p>
+                            <ul class="nav nav-stacked">
+                                <li><a href="{{ thing.urlThingiverse }}" target="_blank">Thingiverse</a></li>
+                                <li><a href="{{ thing.otherUrl }}" target="_blank">Otra</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
                 </div>
             </div>
         </div>

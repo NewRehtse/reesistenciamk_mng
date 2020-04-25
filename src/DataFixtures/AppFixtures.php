@@ -101,6 +101,7 @@ class AppFixtures extends Fixture
             $thing->setOtherUrl($thingData['other']);
             $thing->setUrlThingiverse($thingData['url']);
             $thing->setOwner($user2);
+            $thing->setValid(true);
             $manager->persist($thing);
         }
 

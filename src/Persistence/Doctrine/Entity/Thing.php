@@ -214,14 +214,9 @@ class Thing
         return $this->valid;
     }
 
-    public function validate(): void
+    public function setValid(bool $valid): void
     {
-        $this->valid = true;
-    }
-
-    public function invalidate(): void
-    {
-        $this->valid = false;
+        $this->valid = $valid;
     }
 
     /**
