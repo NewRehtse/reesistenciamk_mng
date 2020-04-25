@@ -248,6 +248,6 @@ class Thing
 
     public function __toString()
     {
-        return \sprintf("%s - %s", $this->type(), $this->model());
+        return \sprintf('%s - %s', $this->type(), $this->model());
     }
 }

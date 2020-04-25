@@ -14,4 +14,8 @@ things.delete:
   path: /{thingId}/delete
   controller: App\Controller\ThingController::delete
 
+things.detail:
+    path: /{thingId}/
+    controller: App\Controller\ThingController::detail
+
 

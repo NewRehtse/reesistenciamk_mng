@@ -185,6 +185,16 @@ services:
         tags:
             - { name: 'orchestrator' }
 
+    app.orchestrator.thing.detail:
+        class: App\Orchestrator\Thing\DetailOrchestrator
+        public: false
+        lazy: true
+        arguments:
+            - '@general.doctrine.repository'
+            - '@security.helper'
+        tags:
+            - { name: 'orchestrator' }
+
     app.orchestrator.user.create:
         class: App\Orchestrator\User\CreateUserOrchestrator
         public: false
