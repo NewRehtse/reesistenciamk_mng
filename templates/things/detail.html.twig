@@ -7,9 +7,6 @@
     {% if is_granted('thing_edit', thing) %}
         {{ btn.link_button('Editar imprimible', path('things.edit', {'thingId': thing.id}), 'far fa-save', 'success', 'sm') }}
     {% endif %}
-    {% if is_granted('thing_delete', thing) %}
-        {{ btn.link_button('Borrar imprimible', path('things.delete', {'thingId': thing.id}), 'fa fa-trash', 'danger', 'sm') }}
-    {% endif %}
 {% endblock %}
 
 {% block content %}

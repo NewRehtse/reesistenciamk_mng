@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Security;
 
-class CreateOrchestrator implements OrchestratorInterface
+class EditOrchestrator implements OrchestratorInterface
 {
     /** @var GeneralDoctrineRepository */
     private $generalRepository;
@@ -40,25 +40,22 @@ class CreateOrchestrator implements OrchestratorInterface
      */
     public function content(Request $request, string $type): array
     {
-        if ('thing-create' === $type && !$this->security->isGranted(ThingVoter::CREATE)) {
+        $thingId = $request->attributes->get('thingId');
+        $thing = $this->generalRepository->findThing($thingId);
+
+        if (!$this->security->isGranted(ThingVoter::EDIT, $thing)) {
             throw new AccessDeniedException();
         }
 
-        $thing = new Thing();
-        /** @var User $user */
-        $user = $this->security->getUser();
-        $thing->setOwner($user);
-
         $form = $this->formFactory->create(EditThingType::class, $thing);
+        if ($this->security->isGranted(ThingVoter::CREATE_VALID)) {
+            $form = $this->formFactory->create(EditAdminThingType::class, $thing);
+        }
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Thing $thing */
             $thing = $form->getData();
-
-            if ($this->security->isGranted(ThingVoter::CREATE_VALID)) {
-                $thing->setValid(true);
-            }
 
             $this->generalRepository->saveThing($thing);
 
@@ -73,7 +70,7 @@ class CreateOrchestrator implements OrchestratorInterface
 
     public function canHandleContentOfType(string $type): bool
     {
-        $validTypes = ['thing-create'];
+        $validTypes = ['thing-update'];
 
         return \in_array($type, $validTypes, true);
     }
