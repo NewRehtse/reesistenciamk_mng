@@ -10,14 +10,6 @@ logout:
   path: /logout
   controller: App\Controller\SecurityController::logout
 
-users.admin:
-  path: /admin/users
-  controller: App\Controller\UserController::adminUsers
-
-admin.configuration:
-    path: /admin/configuration
-    controller: App\Controller\ConfigurationController::configuration
-
 users.admin.create:
   path: /admin/users/create
   controller: App\Controller\UserController::adminUsersCreate
@@ -57,3 +49,7 @@ things:
 tasks:
   resource: "./routes/tasks.yaml"
   prefix: /tasks
+
+admin:
+    resource: "./routes/admin.yaml"
+    prefix: /admin

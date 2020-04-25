@@ -1,0 +1,17 @@
+admin.things.list:
+  path: /
+  controller: App\Controller\ThingController::list
+
+admin.things.create:
+  path: /create
+  controller: App\Controller\ThingController::create
+
+admin.things.edit:
+  path: /{thingId}/edit
+  controller: App\Controller\ThingController::update
+
+admin.things.delete:
+  path: /{thingId}/delete
+  controller: App\Controller\ThingController::delete
+
+

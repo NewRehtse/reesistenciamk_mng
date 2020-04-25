@@ -1,0 +1,19 @@
+users.admin:
+    path: /users
+    controller: App\Controller\UserController::adminUsers
+
+admin.configuration:
+    path: /configuration
+    controller: App\Controller\ConfigurationController::configuration
+
+admin.places:
+    resource: "./admin/places.yaml"
+    prefix: /places
+
+admin.tasks:
+    resource: "./admin/tasks.yaml"
+    prefix: /tasks
+
+admin.things:
+    resource: "./admin/things.yaml"
+    prefix: /things

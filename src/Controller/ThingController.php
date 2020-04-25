@@ -21,6 +21,9 @@ class ThingController extends AbstractController
 
     public function list(Request $request): Response
     {
+        $route = $request->get('_route');
+        $isAdminRoute = 1 === \preg_match('/^admin\./', $route);
+
         try {
             $content = $this->orchestrator->content($request, 'thing-list');
         } catch (AccessDeniedException $accessDeniedException) {
@@ -29,6 +32,9 @@ class ThingController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
+        if ($isAdminRoute) {
+            return $this->render('things/admin.list.html.twig', $content);
+        }
         return $this->render('things/list.html.twig', $content);
     }
 

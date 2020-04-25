@@ -1,0 +1,24 @@
+admin.tasks.list:
+  path: /
+  controller: App\Controller\TaskController::list
+
+admin.task.create:
+  path: /create
+  controller: App\Controller\TaskController::create
+
+admin.task.create.from.need:
+  path: /create/need/{needId}
+  controller: App\Controller\TaskController::create
+
+admin.task.edit:
+  path: /{taskId}/edit
+  controller: App\Controller\TaskController::edit
+
+admin.task.detail:
+  path: /{taskId}
+  controller: App\Controller\TaskController::detail
+
+admin.task.update_status:
+    path: /{taskId}/update_status
+    controller: App\Controller\TaskController::updateStatus
+
