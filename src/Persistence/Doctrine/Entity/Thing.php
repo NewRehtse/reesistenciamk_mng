@@ -24,7 +24,7 @@ class Thing
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180)
      *
      * @var string
      */
@@ -244,5 +244,10 @@ class Thing
         if ($this->needs->contains($need)) {
             $this->needs->removeElement($need);
         }
+    }
+
+    public function __toString()
+    {
+        return \sprintf("%s - %s", $this->type(), $this->model());
     }
 }

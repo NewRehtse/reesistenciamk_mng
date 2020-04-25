@@ -19,8 +19,8 @@
 
             <div class="info-box-content">
                 <span class="info-box-text">Top Maker</span>
-                <span class="info-box-number">{{ topMaker.nick|default(topMaker.telegram)|default("Anonimo") }}</span>
-                <span class="info-box-number">{{ topMaker.amount }}</span>
+                <span class="info-box-number">{{ topMaker.nick|default(topMaker.telegram|default("Anonimo")) }}</span>
+                <span class="info-box-number">{{ topMaker.amount|default }}</span>
             </div>
             <!-- /.info-box-content -->
         </div>
