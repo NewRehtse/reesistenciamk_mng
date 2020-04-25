@@ -70,5 +70,17 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    {% import '@AdminLTE/Macros/buttons.html.twig'  as btn %}
+                    {{ btn.link_button('He impreso X unidades', path('task.create', {'thingId': thing.id}), 'fa fa-print', 'info', 'sm') }}
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
 {% endblock content%}
 
